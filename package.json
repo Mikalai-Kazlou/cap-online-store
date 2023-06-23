@@ -1,8 +1,8 @@
 {
   "name": "cap-online-store",
   "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
+  "description": "Online store",
+  "repository": "https://github.com/mikalai-kazlou/cap-online-store.git",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
