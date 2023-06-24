@@ -32,11 +32,11 @@ entity ProductImages : managed {
 entity Categories : managed {
   key ID         : UUID @(Core.Computed: true);
       identifier : Integer;
-      title      : String(100);
+      title      : String(50);
 }
 
 entity Brands : managed {
   key ID         : UUID @(Core.Computed: true);
       identifier : Integer;
-      title      : String(100);
+      title      : String(50);
 }
