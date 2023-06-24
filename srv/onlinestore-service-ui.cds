@@ -15,7 +15,10 @@ annotate OnlineStoreService.Categories with
 }
 @UI.LineItem           : [
   {Value: identifier},
-  {Value: title}
+  {
+    Value                : title,
+    ![@HTML5.CssDefaults]: {width: '100%'}
+  }
 ]
 @UI.Facets             : [{
   $Type : 'UI.ReferenceFacet',
