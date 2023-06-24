@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-brands": "cds watch --open brands/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -27,6 +28,7 @@
     }
   },
   "sapux": [
-    "app/categories"
+    "app/categories",
+    "app/brands"
   ]
 }
