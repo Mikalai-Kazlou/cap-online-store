@@ -1,4 +1,4 @@
-ID,identifier,category,brand,title,description,price,currency,discount,rating,stock,thumbnail
+ID,identifier,category_id,brand_id,title,description,price,currency_code,discount,rating,stock,thumbnail
 3d4ccfca-57e9-8e32-7cf6-d26ac8424ffb,1,3aa3fb62-fcd9-08d1-ed38-168b84b1840b,36a55cc2-73f9-1617-9ee0-155f993b5db0,IPhone 9,An apple mobile which is nothing like apple,549,USD,12.96,4.69,94,https://i.dummyjson.com/data/products/1/thumbnail.jpg
 eade3e53-001e-2f38-5c84-89e3d91bb165,2,3aa3fb62-fcd9-08d1-ed38-168b84b1840b,36a55cc2-73f9-1617-9ee0-155f993b5db0,IPhone X,"SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",899,USD,17.94,4.44,34,https://i.dummyjson.com/data/products/2/thumbnail.jpg
 2406b596-b09f-f965-6c56-21e0ecf1ad37,3,3aa3fb62-fcd9-08d1-ed38-168b84b1840b,e59c97f4-5023-769f-cb78-a5b1bf714b6a,Samsung Universe 9,Samsung's new variant which goes beyond Galaxy to the Universe,1249,USD,15.46,4.09,36,https://i.dummyjson.com/data/products/3/thumbnail.jpg

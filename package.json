@@ -14,5 +14,14 @@
   },
   "scripts": {
     "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "[production]": {
+        "db": "hana-cloud",
+        "auth": "xsuaa"
+      },
+      "db": "sql"
+    }
   }
 }
