@@ -1,0 +1,1 @@
+using OnlineStoreService as service from '../../srv/onlinestore-service';
