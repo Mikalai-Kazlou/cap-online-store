@@ -10,10 +10,12 @@
     "express": "^4"
   },
   "devDependencies": {
+    "@sap/ux-specification": "^1.108.7",
     "sqlite3": "^5"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -23,5 +25,8 @@
       },
       "db": "sql"
     }
-  }
+  },
+  "sapux": [
+    "app/categories"
+  ]
 }
