@@ -1,0 +1,60 @@
+_schema-version: "3.1"
+ID: cap-online-store
+version: 1.0.0
+description: "Online store"
+parameters:
+  enable-parallel-deployments: true
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install --production
+        - npx -p @sap/cds-dk cds build --production
+
+modules:
+  # -------------------------------------------------------------------------
+  - name: cap-online-store-srv
+    # -----------------------------------------------------------------------
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: cap-online-store-db
+      - name: cap-online-store-auth
+  # -------------------------------------------------------------------------
+  - name: cap-online-store-db-deployer
+    # -----------------------------------------------------------------------
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: cap-online-store-db
+
+resources:
+  # -------------------------------------------------------------------------
+  - name: cap-online-store-db
+    # -----------------------------------------------------------------------
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+      # ---------------------------------------------------------------------
+  - name: cap-online-store-auth
+    # -----------------------------------------------------------------------
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: cap-online-store-${org}-${space}
+        tenant-mode: dedicated
