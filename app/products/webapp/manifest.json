@@ -15,6 +15,18 @@
             "version": "1.9.7",
             "toolsId": "07b77a1b-c865-4dfc-8a24-b586face2140"
         },
+        "crossNavigation": {
+            "inbounds": {
+                "Products-display": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "Products",
+                    "action": "display"
+                }
+            }
+        },
         "dataSources": {
             "mainService": {
                 "uri": "/onlinestore/",
@@ -161,5 +173,9 @@
     "sap.fiori": {
         "registrationIds": [],
         "archeType": "transactional"
+    },
+    "sap.cloud": {
+        "public": true,
+        "service": "cap-online-store.service"
     }
 }

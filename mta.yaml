@@ -1,60 +1,170 @@
 _schema-version: "3.1"
 ID: cap-online-store
+description: Online store
 version: 1.0.0
-description: "Online store"
+modules:
+  - name: cap-online-store-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: cap-online-store-db
+      - name: cap-online-store-auth
+      - name: cap-online-store-uaa
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+  - name: cap-online-store-db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+      - name: cap-online-store-db
+    parameters:
+      buildpack: nodejs_buildpack
+  - name: cap-online-store-destinations
+    type: com.sap.application.content
+    requires:
+      - name: cap-online-store-uaa
+        parameters:
+          service-key:
+            name: cap-online-store-uaa-key
+      - name: cap-online-store-html5-repo-host
+        parameters:
+          service-key:
+            name: cap-online-store-html5-repo-host-key
+      - name: srv-api
+      - name: cap-online-store-destination
+        parameters:
+          content-target: true
+    parameters:
+      content:
+        instance:
+          destinations:
+            - Authentication: OAuth2UserTokenExchange
+              Name: cap-online-store-app-srv
+              TokenServiceInstanceName: cap-online-store-uaa
+              TokenServiceKeyName: cap-online-store-uaa-key
+              URL: ~{srv-api/srv-url}
+              sap.cloud.service: cap-online-store.service
+            - Name: cap-online-store-html5-repo-host
+              ServiceInstanceName: cap-online-store-html5-repo-host
+              ServiceKeyName: cap-online-store-html5-repo-host-key
+              sap.cloud.service: cap-online-store.service
+            - Authentication: OAuth2UserTokenExchange
+              Name: cap-online-store-uaa
+              ServiceInstanceName: cap-online-store-uaa
+              ServiceKeyName: cap-online-store-uaa-key
+              sap.cloud.service: cap-online-store.service
+          existing_destinations_policy: update
+    build-parameters:
+      no-source: true
+  - name: cap-online-store-app-content
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: cap-online-store-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - nsbrands.zip
+          name: nsbrands
+          target-path: resources/
+        - artifacts:
+            - nscategories.zip
+          name: nscategories
+          target-path: resources/
+        - artifacts:
+            - nsproducts.zip
+          name: nsproducts
+          target-path: resources/
+  - name: nsbrands
+    type: html5
+    path: app/brands
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: nscategories
+    type: html5
+    path: app/categories
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+  - name: nsproducts
+    type: html5
+    path: app/products
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+resources:
+  - name: cap-online-store-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: cap-online-store-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        tenant-mode: dedicated
+        xsappname: cap-online-store-${org}-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: cap-online-store-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        tenant-mode: dedicated
+        xsappname: cap-online-store-${space}
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+  - name: cap-online-store-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        HTML5Runtime_enabled: true
+        init_data:
+          instance:
+            destinations:
+              - Authentication: NoAuthentication
+                Name: ui5
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://ui5.sap.com
+            existing_destinations_policy: update
+      service: destination
+      service-plan: lite
+  - name: cap-online-store-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
 parameters:
+  deploy_mode: html5-repo
   enable-parallel-deployments: true
-
 build-parameters:
   before-all:
     - builder: custom
       commands:
         - npm install --production
         - npx -p @sap/cds-dk cds build --production
-
-modules:
-  # -------------------------------------------------------------------------
-  - name: cap-online-store-srv
-    # -----------------------------------------------------------------------
-    type: nodejs
-    path: gen/srv
-    parameters:
-      buildpack: nodejs_buildpack
-    build-parameters:
-      builder: npm-ci
-    provides:
-      - name: srv-api # required by consumers of CAP services (e.g. approuter)
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: cap-online-store-db
-      - name: cap-online-store-auth
-  # -------------------------------------------------------------------------
-  - name: cap-online-store-db-deployer
-    # -----------------------------------------------------------------------
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
-      - name: cap-online-store-db
-
-resources:
-  # -------------------------------------------------------------------------
-  - name: cap-online-store-db
-    # -----------------------------------------------------------------------
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-      # ---------------------------------------------------------------------
-  - name: cap-online-store-auth
-    # -----------------------------------------------------------------------
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: cap-online-store-${org}-${space}
-        tenant-mode: dedicated

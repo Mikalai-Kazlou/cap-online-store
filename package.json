@@ -1,42 +1,46 @@
 {
-  "name": "cap-online-store",
-  "version": "1.0.0",
-  "description": "Online store",
-  "repository": "https://github.com/mikalai-kazlou/cap-online-store.git",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^6",
-    "@sap/xssec": "^3",
-    "passport": "^0",
-    "express": "^4",
-    "hdb": "^0.19.0"
-  },
-  "devDependencies": {
-    "@sap/ux-specification": "^1.108.7",
-    "sqlite3": "^5"
-  },
-  "engines": {
-    "node": "^18"
-  },
-  "scripts": {
-    "start": "cds-serve",
-    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-brands": "cds watch --open brands/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-products": "cds watch --open products/webapp/index.html?sap-ui-xx-viewCache=false"
-  },
-  "cds": {
-    "requires": {
-      "[production]": {
-        "db": "hana-cloud",
-        "auth": "xsuaa"
-      },
-      "db": "sql"
-    }
-  },
-  "sapux": [
-    "app/categories",
-    "app/brands",
-    "app/products"
-  ]
+    "name": "cap-online-store",
+    "version": "1.0.0",
+    "description": "Online store",
+    "repository": "https://github.com/mikalai-kazlou/cap-online-store.git",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^6",
+        "@sap/xssec": "^3",
+        "passport": "^0",
+        "express": "^4",
+        "hdb": "^0.19.0"
+    },
+    "devDependencies": {
+        "@sap/ux-specification": "^1.108.7",
+        "sqlite3": "^5",
+        "rimraf": "^3.0.2"
+    },
+    "engines": {
+        "node": "^18"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-brands": "cds watch --open brands/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-products": "cds watch --open products/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy cap-online-store --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    },
+    "cds": {
+        "requires": {
+            "[production]": {
+                "db": "hana-cloud",
+                "auth": "xsuaa"
+            },
+            "db": "sql"
+        }
+    },
+    "sapux": [
+        "app/categories",
+        "app/brands",
+        "app/products"
+    ]
 }
