@@ -1,23 +1,43 @@
-sap.ui.define([
+sap.ui.define(
+  [
     "sap/ui/model/json/JSONModel",
-    "sap/ui/Device"
-], 
-    /**
-     * provide app-view type models (as in the first "V" in MVVC)
-     * 
-     * @param {typeof sap.ui.model.json.JSONModel} JSONModel
-     * @param {typeof sap.ui.Device} Device
-     * 
-     * @returns {Function} createDeviceModel() for providing runtime info for the device the UI5 app is running on
-     */
-    function (JSONModel, Device) {
-        "use strict";
+    "sap/ui/model/BindingMode",
+    "sap/ui/Device",
+    "./Cart",
+    "./constants",
+  ],
+  function (JSONModel, BindingMode, Device, Cart, constants) {
+    "use strict";
 
-        return {
-            createDeviceModel: function () {
-                var oModel = new JSONModel(Device);
-                oModel.setDefaultBindingMode("OneWay");
-                return oModel;
-        }
+    return {
+      createDeviceModel: function () {
+        var oModel = new JSONModel(Device);
+        oModel.setDefaultBindingMode(BindingMode.OneWay);
+        return oModel;
+      },
+
+      createLocalDataModel: () => {
+        const oModel = new JSONModel();
+        oModel.setJSON(
+          localStorage.getItem(constants.localStorageDataID) ||
+            JSON.stringify({ cart: [] })
+        );
+        oModel.setDefaultBindingMode(BindingMode.TwoWay);
+        return oModel;
+      },
+
+      createCartModel: () => {
+        const oCart = new Cart();
+
+        const oModel = new JSONModel({
+          totalQuantity: oCart.getTotalQuantity(),
+          totalAmount: oCart.getTotalAmount(),
+          currency: constants.currency,
+        });
+
+        oModel.setDefaultBindingMode(BindingMode.TwoWay);
+        return oModel;
+      },
     };
-});
+  }
+);

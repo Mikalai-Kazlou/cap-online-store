@@ -1,17 +1,19 @@
 <mvc:View
     controllerName="ns.shop.controller.NotFound"
     xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc">
-
-    <MessagePage
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <IllustratedMessage
         title="{i18n>notFoundTitle}"
-        text="{i18n>notFoundText}"
-        icon="sap-icon://document"
-        id="page"
-        description="">
-        <customDescription>
-            <Link id="link" text="{i18n>backToWorklist}" press=".onLinkPressed"/>
-        </customDescription>
-    </MessagePage>
-
+        id="idNotFoundMessage"
+        description="{i18n>notFoundText}"
+    >
+        <additionalContent>
+            <Button
+                id="link"
+                text="{i18n>backToHome}"
+                press=".onLinkPressed"
+            />
+        </additionalContent>
+    </IllustratedMessage>
 </mvc:View>
