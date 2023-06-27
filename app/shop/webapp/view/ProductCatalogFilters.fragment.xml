@@ -49,14 +49,14 @@
                             <List
                                 id="idFilterCategory"
                                 items="{
-                                  path: 'mockdata>/ZMK_I_CATEGORY', 
-                                  sorter: {path: 'Category'}
+                                  path: '/Categories', 
+                                  sorter: {path: 'title'}
                                 }"
                                 mode="MultiSelect"
                                 includeItemInSelection="true"
                                 selectionChange=".onFilterCategorySelectionChange"
                             >
-                                <StandardListItem title="{mockdata>Category}" />
+                                <StandardListItem title="{title}" />
                             </List>
                         </Panel>
                     </VBox>
@@ -76,14 +76,14 @@
                             <List
                                 id="idFilterBrand"
                                 items="{
-                                  path: 'mockdata>/ZMK_I_BRAND', 
-                                  sorter: {path: 'Brand'}
+                                  path: '/Brands', 
+                                  sorter: {path: 'title'}
                                 }"
                                 mode="MultiSelect"
                                 includeItemInSelection="true"
                                 selectionChange=".onFilterBrandSelectionChange"
                             >
-                                <StandardListItem title="{mockdata>Brand}" />
+                                <StandardListItem title="{title}" />
                             </List>
                         </Panel>
                     </VBox>

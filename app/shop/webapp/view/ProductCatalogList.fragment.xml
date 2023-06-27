@@ -74,7 +74,7 @@
                     <f:GridList
                         id="idProductCatalog"
                         items="{
-                            path: 'mockdata>/ZMK_C_PRODUCT',
+                            path: '/Products',
                             factory: '.createProductCatalogListContent',
                             sorter: {path: 'ID'}
                         }"

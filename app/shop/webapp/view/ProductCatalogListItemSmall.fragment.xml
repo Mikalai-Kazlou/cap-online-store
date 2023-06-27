@@ -11,7 +11,7 @@
         >
             <VBox class="sapUiTinyMargin">
                 <Image
-                    src="{mockdata>Thumbnail}"
+                    src="{thumbnail}"
                     mode="Background"
                     width="5rem"
                     height="5rem"
@@ -25,25 +25,25 @@
                 </layoutData>
                 <HBox alignItems="Center">
                     <Title
-                        text="{mockdata>Title}"
+                        text="{title}"
                         wrapping="true"
                     />
                     <Label
                         class="sapUiTinyMarginBegin"
-                        text="{mockdata>Brand}"
+                        text="{brand/title}"
                         wrapping="true"
                     />
                 </HBox>
-                <Text text="{mockdata>Description}" />
+                <Text text="{description}" />
             </VBox>
             <ObjectNumber
                 class="sapUiTinyMargin sapMObjectNumberLarge"
                 number="{
-                  parts: [{path: 'mockdata>Price'}, {path: 'mockdata>Currency'}],
+                  parts: [{path: 'price'}, {path: 'currency/code'}],
                   type: 'sap.ui.model.type.Currency',
                   formatOptions: {showMeasure: false}
                 }"
-                unit="{mockdata>Currency}"
+                unit="{currency}"
             />
             <VBox class="sapUiTinyMargin">
                 <Button

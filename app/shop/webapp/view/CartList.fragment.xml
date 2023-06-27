@@ -29,7 +29,7 @@
                                 justifyContent="Center"
                             >
                                 <Image
-                                    src="{mockdata>Thumbnail}"
+                                    src="{thumbnail}"
                                     mode="Background"
                                     width="10rem"
                                     height="10rem"
@@ -46,14 +46,14 @@
                                         text="{i18n>detailsProductName}"
                                         design="Bold"
                                     />
-                                    <Text text="{mockdata>Title}" />
+                                    <Text text="{title}" />
                                 </VBox>
                                 <VBox class="sapUiTinyMarginTopBottom">
                                     <Label
                                         text="{i18n>detailsBrand}"
                                         design="Bold"
                                     />
-                                    <Text text="{mockdata>Brand}" />
+                                    <Text text="{brand/title}" />
                                 </VBox>
                                 <VBox
                                     class="sapUiTinyMarginTopBottom"
@@ -63,7 +63,7 @@
                                         text="{i18n>detailsDescription}"
                                         design="Bold"
                                     />
-                                    <Text text="{mockdata>Description}" />
+                                    <Text text="{description}" />
                                 </VBox>
                                 <VBox class="sapUiTinyMarginTopBottom">
                                     <Label
@@ -73,11 +73,11 @@
                                     <ObjectNumber
                                         class="sapMObjectNumberLarge"
                                         number="{
-                                          parts: [{path: 'mockdata>Price'}, {path: 'mockdata>Currency'}],
+                                          parts: [{path: 'price'}, {path: 'currency/code'}],
                                           type: 'sap.ui.model.type.Currency',
                                           formatOptions: {showMeasure: false}
                                         }"
-                                        unit="{mockdata>Currency}"
+                                        unit="{currency/code}"
                                     />
                                 </VBox>
                             </VBox>

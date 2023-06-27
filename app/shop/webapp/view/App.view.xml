@@ -4,12 +4,10 @@
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc"
 >
-    <Shell>
-        <App
-            id="app"
-            class="myOnlineStoreSAPUI5"
-            busy="{appView>/busy}"
-            busyIndicatorDelay="{appView>/delay}"
-        />
-    </Shell>
+    <App
+        id="app"
+        class="myOnlineStoreSAPUI5"
+        busy="{appView>/busy}"
+        busyIndicatorDelay="{appView>/delay}"
+    />
 </mvc:View>

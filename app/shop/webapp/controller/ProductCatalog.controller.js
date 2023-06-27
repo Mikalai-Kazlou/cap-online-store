@@ -57,7 +57,7 @@ sap.ui.define(
       onOpenDetails: function (oEvent) {
         const oButton = oEvent.getSource();
         this.navTo('details', {
-          id: oButton.getBindingContext('mockdata').getObject().ID,
+          id: oButton.getBindingContext().getObject().ID,
         });
       },
 
@@ -65,7 +65,7 @@ sap.ui.define(
         const oProductCatalog = oEvent.getSource();
         const aItems = oProductCatalog.getItems();
 
-        const aItemsData = aItems.map((item) => item.getBindingContext('mockdata').getObject());
+        const aItemsData = aItems.map((item) => item.getBindingContext().getObject());
 
         this._setRangeFilterAttributes(this.byId('idFilterPrice'), aItemsData, 'Price');
         this._setRangeFilterAttributes(this.byId('idFilterStock'), aItemsData, 'Stock');
@@ -75,7 +75,7 @@ sap.ui.define(
 
       _setAddToCartButtonsAttributes: function (items) {
         items.forEach((item) => {
-          const oItemData = item.getBindingContext('mockdata').getObject();
+          const oItemData = item.getBindingContext().getObject();
           const oAddToCartButton = item.getContent()[0].getControlsByFieldGroupId('idAddToCartButtonGroup')[0];
           this._setAddToCartButtonAttributes(oItemData.ID, oAddToCartButton);
         });
@@ -206,7 +206,7 @@ sap.ui.define(
       onAddToCart: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext('mockdata');
+        const oBindingContext = oButton.getBindingContext();
         const oItemData = oBindingContext.getObject();
 
         if (!this.oCart.has(oItemData.ID)) {
