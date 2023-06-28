@@ -31,19 +31,19 @@
                                 text="Default"
                             />
                             <core:ListItem
-                                key="Price"
+                                key="price"
                                 text="Price (Lowest)"
                             />
                             <core:ListItem
-                                key="Price-Descending"
+                                key="price-Descending"
                                 text="Price (Highest)"
                             />
                             <core:ListItem
-                                key="Title"
+                                key="title"
                                 text="Name (A-Z)"
                             />
                             <core:ListItem
-                                key="Title-Descending"
+                                key="title-Descending"
                                 text="Name (Z-A)"
                             />
                         </items>
