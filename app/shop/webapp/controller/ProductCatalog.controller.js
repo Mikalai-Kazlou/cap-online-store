@@ -67,8 +67,8 @@ sap.ui.define(
 
         const aItemsData = aItems.map((item) => item.getBindingContext().getObject());
 
-        this._setRangeFilterAttributes(this.byId('idFilterPrice'), aItemsData, 'Price');
-        this._setRangeFilterAttributes(this.byId('idFilterStock'), aItemsData, 'Stock');
+        this._setRangeFilterAttributes(this.byId('idFilterPrice'), aItemsData, 'price');
+        this._setRangeFilterAttributes(this.byId('idFilterStock'), aItemsData, 'stock');
 
         this._setAddToCartButtonsAttributes(aItems);
       },
@@ -96,10 +96,10 @@ sap.ui.define(
       _setRangeFilterAttributes: function (filter, items, property) {
         if (!filter.getRange()[0]) {
           const min = items.reduce(
-            (min, item) => (min < item[property] ? min : item[property]),
+            (min, item) => (min < +item[property] ? min : +item[property]),
             Number.MAX_SAFE_INTEGER
           );
-          const max = items.reduce((max, item) => (max > item[property] ? max : item[property]), 0);
+          const max = items.reduce((max, item) => (max > +item[property] ? max : +item[property]), 0);
 
           filter.setMin(min);
           filter.setMax(max);
@@ -144,7 +144,8 @@ sap.ui.define(
 
         const aSelectedItems = oSource.getSelectedItems();
         aSelectedItems.forEach((item) => {
-          aFilters.push(new Filter(property, FilterOperator.EQ, item.getTitle()));
+          const oItem = item.getBindingContext().getObject();
+          aFilters.push(new Filter(property, FilterOperator.EQ, oItem.ID));
         });
 
         this._applyFilters(aFilters, property);
@@ -164,43 +165,43 @@ sap.ui.define(
       onClearFilters: function () {
         const oFilterSearch = this.byId('idFilterSearch');
         oFilterSearch.setValue('');
-        this._applyTextFilter(oFilterSearch, 'Title');
+        this._applyTextFilter(oFilterSearch, 'title');
 
         const oFilterCategory = this.byId('idFilterCategory');
         oFilterCategory.removeSelections(true);
-        this._applyListFilter(oFilterCategory, 'Category');
+        this._applyListFilter(oFilterCategory, 'category_ID');
 
         const oFilterBrand = this.byId('idFilterBrand');
         oFilterBrand.removeSelections(true);
-        this._applyListFilter(oFilterBrand, 'Brand');
+        this._applyListFilter(oFilterBrand, 'brand_ID');
 
         const oFilterPrice = this.byId('idFilterPrice');
         oFilterPrice.setRange([oFilterPrice.getMin(), oFilterPrice.getMax()]);
-        this._applyRangeFilter(oFilterPrice, 'Price');
+        this._applyRangeFilter(oFilterPrice, 'price');
 
         const oFilterStock = this.byId('idFilterStock');
         oFilterStock.setRange([oFilterStock.getMin(), oFilterStock.getMax()]);
-        this._applyRangeFilter(oFilterStock, 'Stock');
+        this._applyRangeFilter(oFilterStock, 'stock');
       },
 
       onSearch: function (oEvent) {
-        this._applyTextFilter(oEvent.getSource(), 'Title');
+        this._applyTextFilter(oEvent.getSource(), 'title');
       },
 
       onFilterCategorySelectionChange: function (oEvent) {
-        this._applyListFilter(oEvent.getSource(), 'Category');
+        this._applyListFilter(oEvent.getSource(), 'category_ID');
       },
 
       onFilterBrandSelectionChange: function (oEvent) {
-        this._applyListFilter(oEvent.getSource(), 'Brand');
+        this._applyListFilter(oEvent.getSource(), 'brand_ID');
       },
 
       onFilterPriceChange: function (oEvent) {
-        this._applyRangeFilter(oEvent.getSource(), 'Price');
+        this._applyRangeFilter(oEvent.getSource(), 'price');
       },
 
       onFilterStockChange: function (oEvent) {
-        this._applyRangeFilter(oEvent.getSource(), 'Stock');
+        this._applyRangeFilter(oEvent.getSource(), 'stock');
       },
 
       onAddToCart: function (oEvent) {

@@ -43,7 +43,7 @@
                   type: 'sap.ui.model.type.Currency',
                   formatOptions: {showMeasure: false}
                 }"
-                unit="{currency}"
+                unit="{currency/code}"
             />
             <VBox class="sapUiTinyMargin">
                 <Button

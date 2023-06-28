@@ -31,15 +31,32 @@
                     </layoutData>
                 </Image>
             </VBox>
-            <ObjectNumber
-                class="sapUiSmallMarginTopBottom sapMObjectNumberLarge"
-                number="{
-                  parts: [{path: 'price'}, {path: 'currency/code'}],
-                  type: 'sap.ui.model.type.Currency',
-                  formatOptions: {showMeasure: false}
-                }"
-                unit="{currency/code}"
-            />
+            <HBox alignItems="Center">
+                <ObjectNumber
+                    class="sapUiSmallMarginTopBottom sapMObjectNumberLarge"
+                    number="{
+                        parts: [{path: 'price'}, {path: 'currency/code'}],
+                        type: 'sap.ui.model.type.Currency',
+                        formatOptions: {showMeasure: false}
+                    }"
+                    unit="{currency/code}"
+                />
+                <HBox
+                    alignItems="Center"
+                    justifyContent="End"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <Label
+                        class="sapUiTinyMarginEnd"
+                        text="{i18n>detailsStock}"
+                        vAlign="Middle"
+                        design="Bold"
+                    />
+                    <Text text="{stock}" />
+                </HBox>
+            </HBox>
             <Text text="{description}">
                 <layoutData>
                     <FlexItemData growFactor="1" />
