@@ -16,7 +16,7 @@
       "toolsId": "b0f4cd67-85bd-4559-a78f-341490f0aec8"
     },
     "dataSources": {
-      "mainService": {
+      "main": {
         "uri": "/onlinestore/",
         "type": "OData",
         "settings": {
@@ -68,8 +68,8 @@
           "bundleName": "ns.shop.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
+      "main": {
+        "dataSource": "main",
         "preload": true,
         "settings": {
           "synchronizationMode": "None",

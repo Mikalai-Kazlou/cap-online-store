@@ -88,7 +88,7 @@ sap.ui.define(
 
         aCartItems.forEach((oCartItem) => {
           const oCartItemData = oCartItem.getBindingContext('localdata').getObject();
-          oCartItem.bindElement({ path: `/Products(ID=${oCartItemData.id},IsActiveEntity=true)` });
+          oCartItem.bindElement({ path: `/Products(ID=${oCartItemData.id},IsActiveEntity=true)`, model: 'main' });
         });
       },
 

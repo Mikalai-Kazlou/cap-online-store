@@ -15,7 +15,7 @@ sap.ui.define(
 
       _onPatternMatched: function (oEvent) {
         const iProductID = oEvent.getParameter('arguments').id;
-        this.getView().bindElement({ path: `/Products(ID=${iProductID},IsActiveEntity=true)` });
+        this.getView().bindElement({ path: `/Products(ID=${iProductID},IsActiveEntity=true)`, model: 'main' });
 
         const aFilters = [];
         aFilters.push(new Filter('product_ID', FilterOperator.EQ, iProductID));
@@ -34,7 +34,7 @@ sap.ui.define(
       onAddToCart: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext();
+        const oBindingContext = oButton.getBindingContext('main');
         const oItemData = oBindingContext.getObject();
 
         const oStepInput = this.byId('idQuantityStepInput');
@@ -54,7 +54,7 @@ sap.ui.define(
       onBuyNow: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext();
+        const oBindingContext = oButton.getBindingContext('main');
         const oItemData = oBindingContext.getObject();
 
         const oStepInput = this.byId('idQuantityStepInput');

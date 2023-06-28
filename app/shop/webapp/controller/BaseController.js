@@ -71,7 +71,7 @@ sap.ui.define(
       onQuantityStepInputChange: function (oEvent) {
         const oStepInput = oEvent.getSource();
 
-        const oBindingContext = oStepInput.getBindingContext();
+        const oBindingContext = oStepInput.getBindingContext('main');
         const oItemData = oBindingContext.getObject();
 
         this.oCart.replace(oItemData.ID, oStepInput.getValue(), oItemData.price);

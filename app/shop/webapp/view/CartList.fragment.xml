@@ -29,7 +29,7 @@
                                 justifyContent="Center"
                             >
                                 <Image
-                                    src="{thumbnail}"
+                                    src="{main>thumbnail}"
                                     mode="Background"
                                     width="10rem"
                                     height="10rem"
@@ -46,14 +46,14 @@
                                         text="{i18n>detailsProductName}"
                                         design="Bold"
                                     />
-                                    <Text text="{title}" />
+                                    <Text text="{main>title}" />
                                 </VBox>
                                 <VBox class="sapUiTinyMarginTopBottom">
                                     <Label
                                         text="{i18n>detailsBrand}"
                                         design="Bold"
                                     />
-                                    <Text text="{brand/title}" />
+                                    <Text text="{main>brand/title}" />
                                 </VBox>
                                 <VBox
                                     class="sapUiTinyMarginTopBottom"
@@ -63,7 +63,7 @@
                                         text="{i18n>detailsDescription}"
                                         design="Bold"
                                     />
-                                    <Text text="{description}" />
+                                    <Text text="{main>description}" />
                                 </VBox>
                                 <VBox class="sapUiTinyMarginTopBottom">
                                     <Label
@@ -73,11 +73,11 @@
                                     <ObjectNumber
                                         class="sapMObjectNumberLarge"
                                         number="{
-                                          parts: [{path: 'price'}, {path: 'currency/code'}],
+                                          parts: [{path: 'main>price'}, {path: 'main>currency/code'}],
                                           type: 'sap.ui.model.type.Currency',
                                           formatOptions: {showMeasure: false}
                                         }"
-                                        unit="{currency/code}"
+                                        unit="{main>currency/code}"
                                     />
                                 </VBox>
                             </VBox>

@@ -39,10 +39,10 @@
                     >
                         <fiori:MediaGallery
                             id="idMediaGallery"
-                            items="{path: 'images'}"
+                            items="{path: 'main>images'}"
                         >
                             <fiori:MediaGalleryItem>
-                                <Image src="{url}" />
+                                <Image src="{main>url}" />
                             </fiori:MediaGalleryItem>
                         </fiori:MediaGallery>
                     </VBox>
@@ -56,21 +56,21 @@
                             text="{i18n>detailsProductName}"
                             design="Bold"
                         />
-                        <Text text="{title}" />
+                        <Text text="{main>title}" />
                     </VBox>
                     <VBox class="sapUiTinyMarginTopBottom">
                         <Label
                             text="{i18n>detailsBrand}"
                             design="Bold"
                         />
-                        <Text text="{brand/title}" />
+                        <Text text="{main>brand/title}" />
                     </VBox>
                     <VBox class="sapUiTinyMarginTopBottom">
                         <Label
                             text="{i18n>detailsCategory}"
                             design="Bold"
                         />
-                        <Text text="{category/title}" />
+                        <Text text="{main>category/title}" />
                     </VBox>
                     <VBox class="sapUiTinyMarginTopBottom">
                         <Label
@@ -79,13 +79,13 @@
                         />
                         <HBox alignItems="Center">
                             <RatingIndicator
-                                value="{rating}"
+                                value="{main>rating}"
                                 iconSize="1.5rem"
                                 displayOnly="true"
                             />
                             <Text
                                 class="sapUiTinyMarginBegin"
-                                text="{rating}"
+                                text="{main>rating}"
                             />
                         </HBox>
                     </VBox>
@@ -94,7 +94,7 @@
                             text="{i18n>detailsDiscountPercentage}"
                             design="Bold"
                         />
-                        <Text text="{discount}" />
+                        <Text text="{main>discount}" />
                     </VBox>
                     <VBox
                         class="sapUiTinyMarginTopBottom"
@@ -104,14 +104,14 @@
                             text="{i18n>detailsDescription}"
                             design="Bold"
                         />
-                        <Text text="{description}" />
+                        <Text text="{main>description}" />
                     </VBox>
                     <VBox class="sapUiTinyMarginTopBottom">
                         <Label
                             text="{i18n>detailsStock}"
                             design="Bold"
                         />
-                        <Text text="{stock}" />
+                        <Text text="{main>stock}" />
                     </VBox>
                     <VBox class="sapUiTinyMarginTopBottom">
                         <Label
@@ -121,11 +121,11 @@
                         <ObjectNumber
                             class="sapMObjectNumberLarge"
                             number="{
-                                parts: [{path: 'price'}, {path: 'currency/code'}],
+                                parts: [{path: 'main>price'}, {path: 'main>currency/code'}],
                                 type: 'sap.ui.model.type.Currency',
                                 formatOptions: {showMeasure: false}
                             }"
-                            unit="{currency/code}"
+                            unit="{main>currency/code}"
                         />
                     </VBox>
                     <VBox

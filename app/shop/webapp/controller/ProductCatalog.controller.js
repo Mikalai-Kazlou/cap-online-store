@@ -57,7 +57,7 @@ sap.ui.define(
       onOpenDetails: function (oEvent) {
         const oButton = oEvent.getSource();
         this.navTo('details', {
-          id: oButton.getBindingContext().getObject().ID,
+          id: oButton.getBindingContext('main').getObject().ID,
         });
       },
 
@@ -65,7 +65,7 @@ sap.ui.define(
         const oProductCatalog = oEvent.getSource();
         const aItems = oProductCatalog.getItems();
 
-        const aItemsData = aItems.map((item) => item.getBindingContext().getObject());
+        const aItemsData = aItems.map((item) => item.getBindingContext('main').getObject());
 
         this._setRangeFilterAttributes(this.byId('idFilterPrice'), aItemsData, 'price');
         this._setRangeFilterAttributes(this.byId('idFilterStock'), aItemsData, 'stock');
@@ -75,7 +75,7 @@ sap.ui.define(
 
       _setAddToCartButtonsAttributes: function (items) {
         items.forEach((item) => {
-          const oItemData = item.getBindingContext().getObject();
+          const oItemData = item.getBindingContext('main').getObject();
           const oAddToCartButton = item.getContent()[0].getControlsByFieldGroupId('idAddToCartButtonGroup')[0];
           this._setAddToCartButtonAttributes(oItemData.ID, oAddToCartButton);
         });
@@ -144,7 +144,7 @@ sap.ui.define(
 
         const aSelectedItems = oSource.getSelectedItems();
         aSelectedItems.forEach((item) => {
-          const oItem = item.getBindingContext().getObject();
+          const oItem = item.getBindingContext('main').getObject();
           aFilters.push(new Filter(property, FilterOperator.EQ, oItem.ID));
         });
 
@@ -207,7 +207,7 @@ sap.ui.define(
       onAddToCart: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext();
+        const oBindingContext = oButton.getBindingContext('main');
         const oItemData = oBindingContext.getObject();
 
         if (!this.oCart.has(oItemData.ID)) {

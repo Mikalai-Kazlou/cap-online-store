@@ -49,14 +49,14 @@
                             <List
                                 id="idFilterCategory"
                                 items="{
-                                  path: '/Categories', 
+                                  path: 'main>/Categories', 
                                   sorter: {path: 'title'}
                                 }"
                                 mode="MultiSelect"
                                 includeItemInSelection="true"
                                 selectionChange=".onFilterCategorySelectionChange"
                             >
-                                <StandardListItem title="{title}" />
+                                <StandardListItem title="{main>title}" />
                             </List>
                         </Panel>
                     </VBox>
@@ -76,14 +76,14 @@
                             <List
                                 id="idFilterBrand"
                                 items="{
-                                  path: '/Brands', 
+                                  path: 'main>/Brands', 
                                   sorter: {path: 'title'}
                                 }"
                                 mode="MultiSelect"
                                 includeItemInSelection="true"
                                 selectionChange=".onFilterBrandSelectionChange"
                             >
-                                <StandardListItem title="{title}" />
+                                <StandardListItem title="{main>title}" />
                             </List>
                         </Panel>
                     </VBox>
