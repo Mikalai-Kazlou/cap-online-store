@@ -211,7 +211,7 @@ sap.ui.define(
         const oItemData = oBindingContext.getObject();
 
         if (!this.oCart.has(oItemData.ID)) {
-          this.oCart.add(oItemData.ID, 1, oItemData.Price);
+          this.oCart.add(oItemData.ID, 1, oItemData.price);
         } else {
           this.oCart.drop(oItemData.ID);
         }

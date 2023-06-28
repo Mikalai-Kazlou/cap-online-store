@@ -88,7 +88,7 @@ sap.ui.define(
 
         aCartItems.forEach((oCartItem) => {
           const oCartItemData = oCartItem.getBindingContext('localdata').getObject();
-          oCartItem.bindElement({ path: `/ZMK_C_PRODUCT(${oCartItemData.id})`, model: 'mockdata' });
+          oCartItem.bindElement({ path: `/Products(ID=${oCartItemData.id},IsActiveEntity=true)` });
         });
       },
 
@@ -110,7 +110,7 @@ sap.ui.define(
 
         if (!this.oConfirmOrderDialog) {
           this.oConfirmOrderDialog = this.loadFragment({
-            name: 'com.exercise.onlinestoresapui5.view.ConfirmOrderDialog',
+            name: 'ns.shop.view.ConfirmOrderDialog',
           });
         }
 

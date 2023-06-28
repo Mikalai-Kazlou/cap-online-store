@@ -39,7 +39,7 @@
                     >
                         <fiori:MediaGallery
                             id="idMediaGallery"
-                            items="{path: 'to_images'}"
+                            items="{path: 'images'}"
                         >
                             <fiori:MediaGalleryItem>
                                 <Image src="{url}" />

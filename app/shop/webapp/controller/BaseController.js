@@ -2,16 +2,12 @@ sap.ui.define(
   [
     'sap/ui/core/mvc/Controller',
     'sap/ui/core/UIComponent',
-    'sap/m/library',
     'sap/ui/core/routing/History',
     '../model/Cart',
     '../model/constants',
   ],
-  function (Controller, UIComponent, mobileLibrary, History, Cart, constants) {
+  function (Controller, UIComponent, History, Cart, constants) {
     'use strict';
-
-    // shortcut for sap.m.URLHelper
-    var URLHelper = mobileLibrary.URLHelper;
 
     return Controller.extend('ns.shop.controller.BaseController', {
       oCart: new Cart(),
@@ -59,19 +55,6 @@ sap.ui.define(
         return this.getOwnerComponent().getModel('i18n').getResourceBundle();
       },
 
-      /**
-       * Event handler when the share by E-Mail button has been clicked
-       * @public
-       */
-      onShareEmailPress: function () {
-        var oViewModel = this.getModel('objectView') || this.getModel('worklistView');
-        URLHelper.triggerEmail(
-          null,
-          oViewModel.getProperty('/shareSendEmailSubject'),
-          oViewModel.getProperty('/shareSendEmailMessage')
-        );
-      },
-
       navTo: function (sName, oParameters, bReplace) {
         this.getRouter().navTo(sName, oParameters, undefined, bReplace);
       },
@@ -88,10 +71,10 @@ sap.ui.define(
       onQuantityStepInputChange: function (oEvent) {
         const oStepInput = oEvent.getSource();
 
-        const oBindingContext = oStepInput.getBindingContext('mockdata');
+        const oBindingContext = oStepInput.getBindingContext();
         const oItemData = oBindingContext.getObject();
 
-        this.oCart.replace(oItemData.ID, oStepInput.getValue(), oItemData.Price);
+        this.oCart.replace(oItemData.ID, oStepInput.getValue(), oItemData.price);
 
         this._refreshCartModel();
         this._refreshLocalDataModel();

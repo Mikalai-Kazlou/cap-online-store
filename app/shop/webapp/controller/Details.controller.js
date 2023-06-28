@@ -14,11 +14,11 @@ sap.ui.define(
       },
 
       _onPatternMatched: function (oEvent) {
-        const iProductID = +oEvent.getParameter('arguments').id;
-        this.getView().bindElement({ path: `/ZMK_C_PRODUCT(${iProductID})`, model: 'mockdata' });
+        const iProductID = oEvent.getParameter('arguments').id;
+        this.getView().bindElement({ path: `/Products(ID=${iProductID},IsActiveEntity=true)` });
 
         const aFilters = [];
-        aFilters.push(new Filter('ProductID', FilterOperator.EQ, iProductID));
+        aFilters.push(new Filter('product_ID', FilterOperator.EQ, iProductID));
 
         const oMediaGallery = this.byId('idMediaGallery');
         const oBinding = oMediaGallery.getBinding('items');
@@ -34,13 +34,13 @@ sap.ui.define(
       onAddToCart: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext('mockdata');
+        const oBindingContext = oButton.getBindingContext();
         const oItemData = oBindingContext.getObject();
 
         const oStepInput = this.byId('idQuantityStepInput');
 
         if (!this.oCart.has(oItemData.ID)) {
-          this.oCart.add(oItemData.ID, oStepInput.getValue(), oItemData.Price);
+          this.oCart.add(oItemData.ID, oStepInput.getValue(), oItemData.price);
         } else {
           this.oCart.drop(oItemData.ID);
         }
@@ -54,13 +54,13 @@ sap.ui.define(
       onBuyNow: function (oEvent) {
         const oButton = oEvent.getSource();
 
-        const oBindingContext = oButton.getBindingContext('mockdata');
+        const oBindingContext = oButton.getBindingContext();
         const oItemData = oBindingContext.getObject();
 
         const oStepInput = this.byId('idQuantityStepInput');
 
         if (!this.oCart.has(oItemData.ID)) {
-          this.oCart.add(oItemData.ID, oStepInput.getValue(), oItemData.Price);
+          this.oCart.add(oItemData.ID, oStepInput.getValue(), oItemData.price);
         }
 
         this._refreshCartModel();
