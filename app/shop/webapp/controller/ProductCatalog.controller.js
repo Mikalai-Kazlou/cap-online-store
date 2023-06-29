@@ -48,10 +48,10 @@ sap.ui.define(
       onListViewSelectorChange: function (oEvent) {
         const oList = this.byId('idProductCatalog');
 
-        const oBinding = oList.getBinding('items');
-        oBinding.refresh(true);
+        const oBindingInfo = oList.getBindingInfo('items');
+        oList.unbindItems();
 
-        oList.updateAggregation('items', ChangeReason.Refresh);
+        oList.bindItems(oBindingInfo);
       },
 
       onOpenDetails: function (oEvent) {
