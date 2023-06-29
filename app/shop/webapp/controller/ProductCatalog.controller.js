@@ -46,12 +46,18 @@ sap.ui.define(
       },
 
       onListViewSelectorChange: function (oEvent) {
-        const oList = this.byId('idProductCatalog');
+        const oProductCatalog = this.byId('idProductCatalog');
+        const oBindingInfo = oProductCatalog.getBindingInfo('items');
 
-        const oBindingInfo = oList.getBindingInfo('items');
-        oList.unbindItems();
+        let oBinding = oProductCatalog.getBinding('items');
+        let aFilters = oBinding.getFilters(FilterType.Application);
 
-        oList.bindItems(oBindingInfo);
+        oProductCatalog.unbindItems();
+        oProductCatalog.bindItems(oBindingInfo);
+
+        oBinding = oProductCatalog.getBinding('items');
+        oBinding.filter(aFilters, FilterType.Application);
+        this._applySorts(this.byId('idListSortSelector'), oBinding);
       },
 
       onOpenDetails: function (oEvent) {
@@ -108,12 +114,15 @@ sap.ui.define(
       },
 
       onSortingChange: function (oEvent) {
-        const oSource = oEvent.getSource();
-        const sSortingKey = oSource.getSelectedKey();
-        const [sProperty, sDirection] = sSortingKey.split('-');
-
         const oProductCatalog = this.byId('idProductCatalog');
         const oBinding = oProductCatalog.getBinding('items');
+
+        this._applySorts(oEvent.getSource(), oBinding);
+      },
+
+      _applySorts: function (oSource, oBinding) {
+        const sSortingKey = oSource.getSelectedKey();
+        const [sProperty, sDirection] = sSortingKey.split('-');
         oBinding.sort([new Sorter(sProperty, Boolean(sDirection))]);
       },
 

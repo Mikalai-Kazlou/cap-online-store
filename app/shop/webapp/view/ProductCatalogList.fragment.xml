@@ -21,6 +21,7 @@
                         design="Bold"
                     />
                     <Select
+                        id="idListSortSelector"
                         forceSelection="false"
                         selectedKey="ID"
                         change=".onSortingChange"
