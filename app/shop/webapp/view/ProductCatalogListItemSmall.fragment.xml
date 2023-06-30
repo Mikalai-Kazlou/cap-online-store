@@ -35,6 +35,18 @@
                     />
                 </HBox>
                 <Text text="{main>description}" />
+                <HBox
+                    class="sapUiTinyMarginTop"
+                    alignItems="Center"
+                >
+                    <Label
+                        class="sapUiTinyMarginEnd"
+                        text="{i18n>detailsStock}"
+                        vAlign="Middle"
+                        design="Bold"
+                    />
+                    <Text text="{main>stock}" />
+                </HBox>
             </VBox>
             <ObjectNumber
                 class="sapUiTinyMargin sapMObjectNumberLarge"
