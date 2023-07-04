@@ -40,3 +40,8 @@ entity Brands : managed {
       identifier : Integer;
       title      : String(50);
 }
+
+type RangeFilterParameters : {
+  min : Decimal;
+  max : Decimal;
+};

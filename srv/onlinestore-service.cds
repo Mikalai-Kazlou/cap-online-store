@@ -11,8 +11,5 @@ service OnlineStoreService {
   @odata.draft.enabled
   entity Brands     as projection on os.Brands;
 
-  function getProductCatalogRangeFilterParameters(property : String) returns {
-    min : Decimal;
-    max : Decimal;
-  };
+  function getProductRangeFilterParameters(property : String) returns os.RangeFilterParameters;
 }
