@@ -15,6 +15,18 @@
       "version": "1.9.7",
       "toolsId": "b0f4cd67-85bd-4559-a78f-341490f0aec8"
     },
+    "crossNavigation": {
+      "inbounds": {
+        "Shop-display": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "Shop",
+          "action": "display"
+        }
+      }
+    },
     "dataSources": {
       "main": {
         "uri": "/onlinestore/",
