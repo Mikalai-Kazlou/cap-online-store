@@ -1,0 +1,83 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:grid="sap.ui.layout.cssgrid"
+>
+    <f:GridListItem id="idListItemLarge">
+        <VBox
+            class="sapUiSmallMargin"
+            height="93%"
+        >
+            <Title
+                text="{main>title}"
+                wrapping="true"
+            />
+            <Label
+                text="{main>brand/title}"
+                wrapping="true"
+            />
+            <VBox class="sapUiTinyMarginTop">
+                <Image
+                    src="{main>thumbnail}"
+                    mode="Background"
+                    width="100%"
+                    height="16rem"
+                    backgroundSize="cover"
+                    backgroundPosition="center center"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                </Image>
+            </VBox>
+            <HBox alignItems="Center">
+                <ObjectNumber
+                    class="sapUiSmallMarginTopBottom sapMObjectNumberLarge"
+                    number="{
+                        parts: [{path: 'main>price'}, {path: 'main>currency/code'}],
+                        type: 'sap.ui.model.type.Currency',
+                        formatOptions: {showMeasure: false}
+                    }"
+                    unit="{main>currency/code}"
+                />
+                <HBox
+                    alignItems="Center"
+                    justifyContent="End"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <Label
+                        class="sapUiTinyMarginEnd"
+                        text="{i18n>detailsStock}"
+                        vAlign="Middle"
+                        design="Bold"
+                    />
+                    <Text text="{main>stock}" />
+                </HBox>
+            </HBox>
+            <Text text="{main>description}">
+                <layoutData>
+                    <FlexItemData growFactor="1" />
+                </layoutData>
+            </Text>
+            <HBox
+                class="sapUiTinyMarginTop"
+                justifyContent="SpaceBetween"
+            >
+                <Button
+                    text="{i18n>productCatalogAddToCartButtonText}"
+                    width="10rem"
+                    press=".onAddToCart"
+                    fieldGroupIds="idAddToCartButtonGroup"
+                />
+                <Button
+                    text="{i18n>productCatalogDetailsButtonText}"
+                    width="10rem"
+                    press=".onOpenDetails"
+                />
+            </HBox>
+        </VBox>
+    </f:GridListItem>
+</core:FragmentDefinition>

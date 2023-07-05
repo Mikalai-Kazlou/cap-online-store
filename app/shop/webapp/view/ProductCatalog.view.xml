@@ -1,0 +1,18 @@
+<mvc:View
+    controllerName="ns.shop.controller.ProductCatalog"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <HBox class="sapUiTinyMargin">
+        <core:Fragment
+            fragmentName="ns.shop.view.ProductCatalogFilters"
+            type="XML"
+        />
+        <core:Fragment
+            fragmentName="ns.shop.view.ProductCatalogList"
+            type="XML"
+        />
+    </HBox>
+</mvc:View>

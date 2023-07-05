@@ -1,0 +1,172 @@
+<mvc:View
+    controllerName="ns.shop.controller.Details"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns:fiori="sap.ui.webc.fiori"
+>
+    <Page
+        title="{i18n>detailsPageTitle}"
+        class="sapUiResponsivePadding--header"
+        showNavButton="true"
+        navButtonPress=".onNavBack"
+    >
+        <headerContent>
+            <core:Fragment
+                fragmentName="ns.shop.view.CartInfo"
+                type="XML"
+            />
+        </headerContent>
+        <content>
+            <ObjectHeader
+                responsive="true"
+                fullScreenOptimized="true"
+                intro="{brand/title}"
+                title="{title}"
+            />
+            <HBox>
+                <VBox
+                    alignItems="End"
+                    justifyContent="Center"
+                >
+                    <layoutData>
+                        <FlexItemData growFactor="1" />
+                    </layoutData>
+                    <VBox
+                        class="sapUiMediumMargin"
+                        width="70%"
+                    >
+                        <fiori:MediaGallery
+                            id="idMediaGallery"
+                            items="{path: 'main>images'}"
+                        >
+                            <fiori:MediaGalleryItem>
+                                <Image src="{main>url}" />
+                            </fiori:MediaGalleryItem>
+                        </fiori:MediaGallery>
+                    </VBox>
+                </VBox>
+                <VBox
+                    class="sapUiMediumMargin"
+                    width="35%"
+                >
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsProductName}"
+                            design="Bold"
+                        />
+                        <Text text="{main>title}" />
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsBrand}"
+                            design="Bold"
+                        />
+                        <Text text="{main>brand/title}" />
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsCategory}"
+                            design="Bold"
+                        />
+                        <Text text="{main>category/title}" />
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsRating}"
+                            design="Bold"
+                        />
+                        <HBox alignItems="Center">
+                            <RatingIndicator
+                                value="{main>rating}"
+                                iconSize="1.5rem"
+                                displayOnly="true"
+                            />
+                            <Text
+                                class="sapUiTinyMarginBegin"
+                                text="{main>rating}"
+                            />
+                        </HBox>
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsDiscountPercentage}"
+                            design="Bold"
+                        />
+                        <Text text="{main>discount}" />
+                    </VBox>
+                    <VBox
+                        class="sapUiTinyMarginTopBottom"
+                        width="70%"
+                    >
+                        <Label
+                            text="{i18n>detailsDescription}"
+                            design="Bold"
+                        />
+                        <Text text="{main>description}" />
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsStock}"
+                            design="Bold"
+                        />
+                        <Text text="{main>stock}" />
+                    </VBox>
+                    <VBox class="sapUiTinyMarginTopBottom">
+                        <Label
+                            text="{i18n>detailsPrice}"
+                            design="Bold"
+                        />
+                        <ObjectNumber
+                            class="sapMObjectNumberLarge"
+                            number="{
+                                parts: [{path: 'main>price'}, {path: 'main>currency/code'}],
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {showMeasure: false}
+                            }"
+                            unit="{main>currency/code}"
+                        />
+                    </VBox>
+                    <VBox
+                        class="sapUiLargeMarginTop"
+                        alignItems="Center"
+                        justifyContent="Center"
+                    >
+                        <VBox>
+                            <StepInput
+                                id="idQuantityStepInput"
+                                value="1"
+                                min="1"
+                                max="99"
+                                width="10rem"
+                                textAlign="Center"
+                                change=".onQuantityStepInputChange"
+                            />
+                        </VBox>
+                        <VBox
+                            alignItems="Center"
+                            justifyContent="Center"
+                        >
+                            <HBox class="sapUiSmallMarginTop">
+                                <Button
+                                    id="idAddToCartButton"
+                                    class="sapUiSmallMargin"
+                                    text="{i18n>productCatalogAddToCartButtonText}"
+                                    width="10rem"
+                                    press=".onAddToCart"
+                                />
+                                <Button
+                                    class="sapUiSmallMargin"
+                                    text="{i18n>productCatalogBuyNowButtonText}"
+                                    width="10rem"
+                                    press=".onBuyNow"
+                                />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </content>
+    </Page>
+</mvc:View>

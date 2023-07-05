@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/HTML5.xml">
+        <edmx:Include Alias="HTML5" Namespace="com.sap.vocabularies.HTML5.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="OnlineStoreService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Products" EntityType="OnlineStoreService.Products">
+                    <NavigationPropertyBinding Path="category" Target="Categories"/>
+                    <NavigationPropertyBinding Path="brand" Target="Brands"/>
+                    <NavigationPropertyBinding Path="currency" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="images" Target="ProductImages"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Products"/>
+                </EntitySet>
+                <EntitySet Name="Categories" EntityType="OnlineStoreService.Categories">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Categories"/>
+                </EntitySet>
+                <EntitySet Name="Brands" EntityType="OnlineStoreService.Brands">
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="Brands"/>
+                </EntitySet>
+                <EntitySet Name="Currencies" EntityType="OnlineStoreService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="ProductImages" EntityType="OnlineStoreService.ProductImages">
+                    <NavigationPropertyBinding Path="product" Target="Products"/>
+                    <NavigationPropertyBinding Path="SiblingEntity" Target="ProductImages"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="OnlineStoreService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="Products">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="identifier" Type="Edm.Int32"/>
+                <NavigationProperty Name="category" Type="OnlineStoreService.Categories">
+                    <ReferentialConstraint Property="category_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="category_ID" Type="Edm.Guid"/>
+                <NavigationProperty Name="brand" Type="OnlineStoreService.Brands">
+                    <ReferentialConstraint Property="brand_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="brand_ID" Type="Edm.Guid"/>
+                <Property Name="title" Type="Edm.String" MaxLength="100"/>
+                <Property Name="description" Type="Edm.String"/>
+                <Property Name="price" Type="Edm.Decimal" Scale="variable"/>
+                <NavigationProperty Name="currency" Type="OnlineStoreService.Currencies">
+                    <ReferentialConstraint Property="currency_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currency_code" Type="Edm.String" MaxLength="3"/>
+                <Property Name="discount" Type="Edm.Decimal" Scale="variable"/>
+                <Property Name="rating" Type="Edm.Decimal" Scale="variable"/>
+                <Property Name="stock" Type="Edm.Int32"/>
+                <Property Name="thumbnail" Type="Edm.String"/>
+                <NavigationProperty Name="images" Type="Collection(OnlineStoreService.ProductImages)" Partner="product">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="OnlineStoreService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="OnlineStoreService.Products"/>
+            </EntityType>
+            <EntityType Name="Categories">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="identifier" Type="Edm.Int32"/>
+                <Property Name="title" Type="Edm.String" MaxLength="50"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="OnlineStoreService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="OnlineStoreService.Categories"/>
+            </EntityType>
+            <EntityType Name="Brands">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="identifier" Type="Edm.Int32"/>
+                <Property Name="title" Type="Edm.String" MaxLength="50"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="OnlineStoreService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="OnlineStoreService.Brands"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <NavigationProperty Name="texts" Type="Collection(OnlineStoreService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="OnlineStoreService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="ProductImages">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                    <PropertyRef Name="IsActiveEntity"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="identifier" Type="Edm.Int32"/>
+                <NavigationProperty Name="product" Type="OnlineStoreService.Products" Partner="images">
+                    <ReferentialConstraint Property="product_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="product_ID" Type="Edm.Guid"/>
+                <Property Name="url" Type="Edm.String"/>
+                <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+                <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+                <NavigationProperty Name="DraftAdministrativeData" Type="OnlineStoreService.DraftAdministrativeData" ContainsTarget="true"/>
+                <NavigationProperty Name="SiblingEntity" Type="OnlineStoreService.ProductImages"/>
+            </EntityType>
+            <EntityType Name="DraftAdministrativeData">
+                <Key>
+                    <PropertyRef Name="DraftUUID"/>
+                </Key>
+                <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+                <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Products"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="OnlineStoreService.Products"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Categories"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="OnlineStoreService.Categories"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Brands"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="OnlineStoreService.Brands"/>
+            </Action>
+            <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.ProductImages"/>
+                <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+                <ReturnType Type="OnlineStoreService.ProductImages"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Products"/>
+                <ReturnType Type="OnlineStoreService.Products"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Categories"/>
+                <ReturnType Type="OnlineStoreService.Categories"/>
+            </Action>
+            <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Brands"/>
+                <ReturnType Type="OnlineStoreService.Brands"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Products"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="OnlineStoreService.Products"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Categories"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="OnlineStoreService.Categories"/>
+            </Action>
+            <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+                <Parameter Name="in" Type="OnlineStoreService.Brands"/>
+                <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+                <ReturnType Type="OnlineStoreService.Brands"/>
+            </Action>
+            <Annotations Target="OnlineStoreService.Products">
+                <Annotation Term="UI.PresentationVariant">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.LineItem</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>category_ID</PropertyPath>
+                        <PropertyPath>brand_ID</PropertyPath>
+                        <PropertyPath>price</PropertyPath>
+                        <PropertyPath>currency_code</PropertyPath>
+                        <PropertyPath>discount</PropertyPath>
+                        <PropertyPath>rating</PropertyPath>
+                        <PropertyPath>stock</PropertyPath>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.LineItem">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="identifier"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="category_ID"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="brand_ID"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="title"/>
+                            <Annotation Term="HTML5.CssDefaults">
+                                <Record Type="HTML5.CssDefaultsType">
+                                    <PropertyValue Property="width" String="100%"/>
+                                </Record>
+                            </Annotation>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="price"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="currency_code"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="discount"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="rating"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="stock"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="Product"/>
+                        <PropertyValue Property="TypeNamePlural" String="Products"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="title"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="description"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="ImageUrl" Path="thumbnail"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Facets">
+                    <Collection>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Main"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Main"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Properties"/>
+                            <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Properties"/>
+                        </Record>
+                        <Record Type="UI.ReferenceFacet">
+                            <PropertyValue Property="Label" String="Images"/>
+                            <PropertyValue Property="Target" AnnotationPath="images/@UI.LineItem"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Main">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="identifier"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="category_ID"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="brand_ID"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="title"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.FieldGroup" Qualifier="Properties">
+                    <Record Type="UI.FieldGroupType">
+                        <PropertyValue Property="Data">
+                            <Collection>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="price"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="currency_code"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="discount"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="rating"/>
+                                </Record>
+                                <Record Type="UI.DataField">
+                                    <PropertyValue Property="Value" Path="stock"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="OnlineStoreService.EntityContainer/Products">
+                <Annotation Term="UI.PresentationVariant">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.LineItem</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Common.DraftRoot">
+                    <Record Type="Common.DraftRootType">
+                        <PropertyValue Property="ActivationAction" String="OnlineStoreService.draftActivate"/>
+                        <PropertyValue Property="EditAction" String="OnlineStoreService.draftEdit"/>
+                        <PropertyValue Property="PreparationAction" String="OnlineStoreService.draftPrepare"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="OnlineStoreService.Products/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="OnlineStoreService.Products/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="OnlineStoreService.Products/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="OnlineStoreService.Products/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/ID">
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/identifier">
+                                        <Annotation Term="Common.Label" String="Identifier"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/category">
+                                        <Annotation Term="Common.Label" String="Category"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/category_ID">
+                                        <Annotation Term="Common.Text" Path="category/title">
+                                            <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                                        </Annotation>
+                                        <Annotation Term="Common.ValueList">
+                                            <Record Type="Common.ValueListType">
+                                                <PropertyValue Property="Label" String="Categories"/>
+                                                <PropertyValue Property="CollectionPath" String="Categories"/>
+                                                <PropertyValue Property="Parameters">
+                                                    <Collection>
+                                                        <Record Type="Common.ValueListParameterInOut">
+                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="category_ID"/>
+                                                            <PropertyValue Property="ValueListProperty" String="ID"/>
+                                                        </Record>
+                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                            <PropertyValue Property="ValueListProperty" String="title"/>
+                                                        </Record>
+                                                    </Collection>
+                                                </PropertyValue>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Common.Label" String="Category"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/brand">
+                                        <Annotation Term="Common.Label" String="Brand"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/brand_ID">
+                                        <Annotation Term="Common.Text" Path="brand/title">
+                                            <Annotation Term="UI.TextArrangement" EnumMember="UI.TextArrangementType/TextOnly"/>
+                                        </Annotation>
+                                        <Annotation Term="Common.ValueList">
+                                            <Record Type="Common.ValueListType">
+                                                <PropertyValue Property="Label" String="Brands"/>
+                                                <PropertyValue Property="CollectionPath" String="Brands"/>
+                                                <PropertyValue Property="Parameters">
+                                                    <Collection>
+                                                        <Record Type="Common.ValueListParameterInOut">
+                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="brand_ID"/>
+                                                            <PropertyValue Property="ValueListProperty" String="ID"/>
+                                                        </Record>
+                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                            <PropertyValue Property="ValueListProperty" String="title"/>
+                                                        </Record>
+                                                    </Collection>
+                                                </PropertyValue>
+                                            </Record>
+                                        </Annotation>
+                                        <Annotation Term="Common.Label" String="Brand"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/title">
+                                        <Annotation Term="Common.Label" String="Title"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/description">
+                                        <Annotation Term="Common.Label" String="Description"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/price">
+                                        <Annotation Term="Common.Label" String="Price"/>
+                                    </Annotations>
+                                    <Annotations Target="OnlineStoreService.Products/currency">
+                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                            </Annotations>
+                                            <Annotations Target="OnlineStoreService.Products/currency_code">
+                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                    <Annotation Term="Common.ValueList">
+                                                        <Record Type="Common.ValueListType">
+                                                            <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                <PropertyValue Property="Parameters">
+                                                                    <Collection>
+                                                                        <Record Type="Common.ValueListParameterInOut">
+                                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="currency_code"/>
+                                                                            <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                        </Record>
+                                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                            <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                        </Record>
+                                                                    </Collection>
+                                                                </PropertyValue>
+                                                            </Record>
+                                                        </Annotation>
+                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/discount">
+                                                            <Annotation Term="Common.Label" String="Discount"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/rating">
+                                                            <Annotation Term="Common.Label" String="Rating"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/stock">
+                                                            <Annotation Term="Common.Label" String="Stock"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/thumbnail">
+                                                            <Annotation Term="Common.Label" String="Thumbnail"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/IsActiveEntity">
+                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/HasActiveEntity">
+                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/HasDraftEntity">
+                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Products/DraftAdministrativeData">
+                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Categories">
+                                                            <Annotation Term="UI.PresentationVariant">
+                                                                <Record Type="UI.PresentationVariantType">
+                                                                    <PropertyValue Property="Visualizations">
+                                                                        <Collection>
+                                                                            <AnnotationPath>@UI.LineItem</AnnotationPath>
+                                                                        </Collection>
+                                                                    </PropertyValue>
+                                                                    <PropertyValue Property="SortOrder">
+                                                                        <Collection>
+                                                                            <Record Type="Common.SortOrderType">
+                                                                                <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                                                            </Record>
+                                                                        </Collection>
+                                                                    </PropertyValue>
+                                                                </Record>
+                                                            </Annotation>
+                                                            <Annotation Term="UI.LineItem">
+                                                                <Collection>
+                                                                    <Record Type="UI.DataField">
+                                                                        <PropertyValue Property="Value" Path="identifier"/>
+                                                                    </Record>
+                                                                    <Record Type="UI.DataField">
+                                                                        <PropertyValue Property="Value" Path="title"/>
+                                                                        <Annotation Term="HTML5.CssDefaults">
+                                                                            <Record Type="HTML5.CssDefaultsType">
+                                                                                <PropertyValue Property="width" String="100%"/>
+                                                                            </Record>
+                                                                        </Annotation>
+                                                                    </Record>
+                                                                </Collection>
+                                                            </Annotation>
+                                                            <Annotation Term="UI.HeaderInfo">
+                                                                <Record Type="UI.HeaderInfoType">
+                                                                    <PropertyValue Property="TypeName" String="Category"/>
+                                                                    <PropertyValue Property="TypeNamePlural" String="Categories"/>
+                                                                    <PropertyValue Property="Title">
+                                                                        <Record Type="UI.DataField">
+                                                                            <PropertyValue Property="Value" Path="title"/>
+                                                                        </Record>
+                                                                    </PropertyValue>
+                                                                </Record>
+                                                            </Annotation>
+                                                            <Annotation Term="UI.Facets">
+                                                                <Collection>
+                                                                    <Record Type="UI.ReferenceFacet">
+                                                                        <PropertyValue Property="Label" String="Main"/>
+                                                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Main"/>
+                                                                    </Record>
+                                                                </Collection>
+                                                            </Annotation>
+                                                            <Annotation Term="UI.FieldGroup" Qualifier="Main">
+                                                                <Record Type="UI.FieldGroupType">
+                                                                    <PropertyValue Property="Data">
+                                                                        <Collection>
+                                                                            <Record Type="UI.DataField">
+                                                                                <PropertyValue Property="Value" Path="identifier"/>
+                                                                            </Record>
+                                                                            <Record Type="UI.DataField">
+                                                                                <PropertyValue Property="Value" Path="title"/>
+                                                                            </Record>
+                                                                        </Collection>
+                                                                    </PropertyValue>
+                                                                </Record>
+                                                            </Annotation>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.EntityContainer/Categories">
+                                                            <Annotation Term="UI.PresentationVariant">
+                                                                <Record Type="UI.PresentationVariantType">
+                                                                    <PropertyValue Property="Visualizations">
+                                                                        <Collection>
+                                                                            <AnnotationPath>@UI.LineItem</AnnotationPath>
+                                                                        </Collection>
+                                                                    </PropertyValue>
+                                                                    <PropertyValue Property="SortOrder">
+                                                                        <Collection>
+                                                                            <Record Type="Common.SortOrderType">
+                                                                                <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                                                            </Record>
+                                                                        </Collection>
+                                                                    </PropertyValue>
+                                                                </Record>
+                                                            </Annotation>
+                                                            <Annotation Term="Common.DraftRoot">
+                                                                <Record Type="Common.DraftRootType">
+                                                                    <PropertyValue Property="ActivationAction" String="OnlineStoreService.draftActivate"/>
+                                                                    <PropertyValue Property="EditAction" String="OnlineStoreService.draftEdit"/>
+                                                                    <PropertyValue Property="PreparationAction" String="OnlineStoreService.draftPrepare"/>
+                                                                </Record>
+                                                            </Annotation>
+                                                        </Annotations>
+                                                        <Annotations Target="OnlineStoreService.Categories/createdAt">
+                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="OnlineStoreService.Categories/createdBy">
+                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="OnlineStoreService.Categories/modifiedAt">
+                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                        </Annotations>
+                                                                        <Annotations Target="OnlineStoreService.Categories/modifiedBy">
+                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/ID">
+                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/identifier">
+                                                                                    <Annotation Term="Common.Label" String="Identifier"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/title">
+                                                                                    <Annotation Term="Common.Label" String="Title"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/IsActiveEntity">
+                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/HasActiveEntity">
+                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/HasDraftEntity">
+                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Categories/DraftAdministrativeData">
+                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Brands">
+                                                                                    <Annotation Term="UI.PresentationVariant">
+                                                                                        <Record Type="UI.PresentationVariantType">
+                                                                                            <PropertyValue Property="Visualizations">
+                                                                                                <Collection>
+                                                                                                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                                                                                                </Collection>
+                                                                                            </PropertyValue>
+                                                                                            <PropertyValue Property="SortOrder">
+                                                                                                <Collection>
+                                                                                                    <Record Type="Common.SortOrderType">
+                                                                                                        <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                                                                                    </Record>
+                                                                                                </Collection>
+                                                                                            </PropertyValue>
+                                                                                        </Record>
+                                                                                    </Annotation>
+                                                                                    <Annotation Term="UI.LineItem">
+                                                                                        <Collection>
+                                                                                            <Record Type="UI.DataField">
+                                                                                                <PropertyValue Property="Value" Path="identifier"/>
+                                                                                            </Record>
+                                                                                            <Record Type="UI.DataField">
+                                                                                                <PropertyValue Property="Value" Path="title"/>
+                                                                                                <Annotation Term="HTML5.CssDefaults">
+                                                                                                    <Record Type="HTML5.CssDefaultsType">
+                                                                                                        <PropertyValue Property="width" String="100%"/>
+                                                                                                    </Record>
+                                                                                                </Annotation>
+                                                                                            </Record>
+                                                                                        </Collection>
+                                                                                    </Annotation>
+                                                                                    <Annotation Term="UI.HeaderInfo">
+                                                                                        <Record Type="UI.HeaderInfoType">
+                                                                                            <PropertyValue Property="TypeName" String="Brand"/>
+                                                                                            <PropertyValue Property="TypeNamePlural" String="Brands"/>
+                                                                                            <PropertyValue Property="Title">
+                                                                                                <Record Type="UI.DataField">
+                                                                                                    <PropertyValue Property="Value" Path="title"/>
+                                                                                                </Record>
+                                                                                            </PropertyValue>
+                                                                                        </Record>
+                                                                                    </Annotation>
+                                                                                    <Annotation Term="UI.Facets">
+                                                                                        <Collection>
+                                                                                            <Record Type="UI.ReferenceFacet">
+                                                                                                <PropertyValue Property="Label" String="Main"/>
+                                                                                                <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Main"/>
+                                                                                            </Record>
+                                                                                        </Collection>
+                                                                                    </Annotation>
+                                                                                    <Annotation Term="UI.FieldGroup" Qualifier="Main">
+                                                                                        <Record Type="UI.FieldGroupType">
+                                                                                            <PropertyValue Property="Data">
+                                                                                                <Collection>
+                                                                                                    <Record Type="UI.DataField">
+                                                                                                        <PropertyValue Property="Value" Path="identifier"/>
+                                                                                                    </Record>
+                                                                                                    <Record Type="UI.DataField">
+                                                                                                        <PropertyValue Property="Value" Path="title"/>
+                                                                                                    </Record>
+                                                                                                </Collection>
+                                                                                            </PropertyValue>
+                                                                                        </Record>
+                                                                                    </Annotation>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.EntityContainer/Brands">
+                                                                                    <Annotation Term="UI.PresentationVariant">
+                                                                                        <Record Type="UI.PresentationVariantType">
+                                                                                            <PropertyValue Property="Visualizations">
+                                                                                                <Collection>
+                                                                                                    <AnnotationPath>@UI.LineItem</AnnotationPath>
+                                                                                                </Collection>
+                                                                                            </PropertyValue>
+                                                                                            <PropertyValue Property="SortOrder">
+                                                                                                <Collection>
+                                                                                                    <Record Type="Common.SortOrderType">
+                                                                                                        <PropertyValue Property="Property" PropertyPath="identifier"/>
+                                                                                                    </Record>
+                                                                                                </Collection>
+                                                                                            </PropertyValue>
+                                                                                        </Record>
+                                                                                    </Annotation>
+                                                                                    <Annotation Term="Common.DraftRoot">
+                                                                                        <Record Type="Common.DraftRootType">
+                                                                                            <PropertyValue Property="ActivationAction" String="OnlineStoreService.draftActivate"/>
+                                                                                            <PropertyValue Property="EditAction" String="OnlineStoreService.draftEdit"/>
+                                                                                            <PropertyValue Property="PreparationAction" String="OnlineStoreService.draftPrepare"/>
+                                                                                        </Record>
+                                                                                    </Annotation>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OnlineStoreService.Brands/createdAt">
+                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="OnlineStoreService.Brands/createdBy">
+                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="OnlineStoreService.Brands/modifiedAt">
+                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="OnlineStoreService.Brands/modifiedBy">
+                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/ID">
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/identifier">
+                                                                                                            <Annotation Term="Common.Label" String="Identifier"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/title">
+                                                                                                            <Annotation Term="Common.Label" String="Title"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/IsActiveEntity">
+                                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/HasActiveEntity">
+                                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/HasDraftEntity">
+                                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Brands/DraftAdministrativeData">
+                                                                                                            <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Currencies">
+                                                                                                            <Annotation Term="UI.Identification">
+                                                                                                                <Collection>
+                                                                                                                    <Record Type="UI.DataField">
+                                                                                                                        <PropertyValue Property="Value" Path="name"/>
+                                                                                                                    </Record>
+                                                                                                                </Collection>
+                                                                                                            </Annotation>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OnlineStoreService.Currencies/name">
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="OnlineStoreService.Currencies/descr">
+                                                                                                                <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                </Annotations>
+                                                                                                                <Annotations Target="OnlineStoreService.Currencies/code">
+                                                                                                                    <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="OnlineStoreService.Currencies/symbol">
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="OnlineStoreService.ProductImages">
+                                                                                                                            <Annotation Term="UI.LineItem">
+                                                                                                                                <Collection>
+                                                                                                                                    <Record Type="UI.DataField">
+                                                                                                                                        <PropertyValue Property="Value" Path="url"/>
+                                                                                                                                        <Annotation Term="HTML5.CssDefaults">
+                                                                                                                                            <Record Type="HTML5.CssDefaultsType">
+                                                                                                                                                <PropertyValue Property="width" String="100%"/>
+                                                                                                                                            </Record>
+                                                                                                                                        </Annotation>
+                                                                                                                                    </Record>
+                                                                                                                                    <Record Type="UI.DataField">
+                                                                                                                                        <PropertyValue Property="Value" Path="createdAt"/>
+                                                                                                                                    </Record>
+                                                                                                                                    <Record Type="UI.DataField">
+                                                                                                                                        <PropertyValue Property="Value" Path="modifiedAt"/>
+                                                                                                                                    </Record>
+                                                                                                                                </Collection>
+                                                                                                                            </Annotation>
+                                                                                                                            <Annotation Term="UI.Facets">
+                                                                                                                                <Collection>
+                                                                                                                                    <Record Type="UI.ReferenceFacet">
+                                                                                                                                        <PropertyValue Property="Label" String="Main"/>
+                                                                                                                                        <PropertyValue Property="Target" AnnotationPath="@UI.FieldGroup#Main"/>
+                                                                                                                                    </Record>
+                                                                                                                                </Collection>
+                                                                                                                            </Annotation>
+                                                                                                                            <Annotation Term="UI.FieldGroup" Qualifier="Main">
+                                                                                                                                <Record Type="UI.FieldGroupType">
+                                                                                                                                    <PropertyValue Property="Data">
+                                                                                                                                        <Collection>
+                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                <PropertyValue Property="Value" Path="identifier"/>
+                                                                                                                                            </Record>
+                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                <PropertyValue Property="Value" Path="url"/>
+                                                                                                                                            </Record>
+                                                                                                                                        </Collection>
+                                                                                                                                    </PropertyValue>
+                                                                                                                                </Record>
+                                                                                                                            </Annotation>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="OnlineStoreService.EntityContainer/ProductImages">
+                                                                                                                            <Annotation Term="Common.DraftNode">
+                                                                                                                                <Record Type="Common.DraftNodeType">
+                                                                                                                                    <PropertyValue Property="PreparationAction" String="OnlineStoreService.draftPrepare"/>
+                                                                                                                                </Record>
+                                                                                                                            </Annotation>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="OnlineStoreService.ProductImages/createdAt">
+                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                                            </Annotations>
+                                                                                                                            <Annotations Target="OnlineStoreService.ProductImages/createdBy">
+                                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="OnlineStoreService.ProductImages/modifiedAt">
+                                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="OnlineStoreService.ProductImages/modifiedBy">
+                                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/ID">
+                                                                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/identifier">
+                                                                                                                                                    <Annotation Term="Common.Label" String="Identifier"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/product">
+                                                                                                                                                    <Annotation Term="Common.Label" String="Product"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/product_ID">
+                                                                                                                                                    <Annotation Term="Common.Label" String="Product"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/url">
+                                                                                                                                                    <Annotation Term="Common.Label" String="Url"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/IsActiveEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/HasActiveEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/HasDraftEntity">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.ProductImages/DraftAdministrativeData">
+                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="OnlineStoreService.DraftAdministrativeData">
+                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftAdministrativeData}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="OnlineStoreService.DraftAdministrativeData/DraftUUID">
+                                                                                                                                                        <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_DraftUUID}"/>
+                                                                                                                                                        </Annotations>
+                                                                                                                                                        <Annotations Target="OnlineStoreService.DraftAdministrativeData/CreationDateTime">
+                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_CreationDateTime}"/>
+                                                                                                                                                            </Annotations>
+                                                                                                                                                            <Annotations Target="OnlineStoreService.DraftAdministrativeData/CreatedByUser">
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_CreatedByUser}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                                <Annotations Target="OnlineStoreService.DraftAdministrativeData/DraftIsCreatedByMe">
+                                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsCreatedByMe}"/>
+                                                                                                                                                                    </Annotations>
+                                                                                                                                                                    <Annotations Target="OnlineStoreService.DraftAdministrativeData/LastChangeDateTime">
+                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Draft_LastChangeDateTime}"/>
+                                                                                                                                                                        </Annotations>
+                                                                                                                                                                        <Annotations Target="OnlineStoreService.DraftAdministrativeData/LastChangedByUser">
+                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Draft_LastChangedByUser}"/>
+                                                                                                                                                                            </Annotations>
+                                                                                                                                                                            <Annotations Target="OnlineStoreService.DraftAdministrativeData/InProcessByUser">
+                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Draft_InProcessByUser}"/>
+                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                <Annotations Target="OnlineStoreService.DraftAdministrativeData/DraftIsProcessedByMe">
+                                                                                                                                                                                    <Annotation Term="UI.Hidden" Bool="true"/>
+                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Draft_DraftIsProcessedByMe}"/>
+                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                    <Annotations Target="OnlineStoreService.Currencies_texts/locale">
+                                                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                                                        </Annotations>
+                                                                                                                                                                                        <Annotations Target="OnlineStoreService.Currencies_texts/name">
+                                                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                                                            </Annotations>
+                                                                                                                                                                                            <Annotations Target="OnlineStoreService.Currencies_texts/descr">
+                                                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                                                                </Annotations>
+                                                                                                                                                                                                <Annotations Target="OnlineStoreService.Currencies_texts/code">
+                                                                                                                                                                                                    <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                                                    </Annotations>
+                                                                                                                                                                                                </Schema>
+                                                                                                                                                                                            </edmx:DataServices>
+                                                                                                                                                                                        </edmx:Edmx>
