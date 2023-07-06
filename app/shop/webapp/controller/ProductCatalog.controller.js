@@ -37,8 +37,8 @@ sap.ui.define(
         const oUIControl = this.byId(sListItemId).clone(sId);
         const oLayout = new GridBoxLayout(oLayoutSettings);
 
-        const oList = this.byId('idProductCatalog');
-        oList.setCustomLayout(oLayout);
+        const oProductCatalog = this.byId('idProductCatalog');
+        oProductCatalog.setCustomLayout(oLayout);
 
         return oUIControl;
       },
@@ -93,19 +93,21 @@ sap.ui.define(
       },
 
       _setRangeFilterAttributes: function (oFilter, sProperty) {
-        const oModel = this.getModel('main');
+        if (!oFilter.getMin() && !oFilter.getMax()) {
+          const oModel = this.getModel('main');
 
-        const oOperation = oModel.bindContext(`/getProductRangeFilterParameters(...)`);
-        oOperation.setParameter('property', sProperty);
+          const oOperation = oModel.bindContext(`/getProductRangeFilterParameters(...)`);
+          oOperation.setParameter('property', sProperty);
 
-        oOperation.execute().then(() => {
-          const oResults = oOperation.getBoundContext().getObject();
-          const { min, max } = oResults;
+          oOperation.execute().then(() => {
+            const oResults = oOperation.getBoundContext().getObject();
+            const { min, max } = oResults;
 
-          oFilter.setMin(+min);
-          oFilter.setMax(+max);
-          oFilter.setRange([+min, +max]);
-        });
+            oFilter.setMin(+min);
+            oFilter.setMax(+max);
+            oFilter.setRange([+min, +max]);
+          });
+        }
       },
 
       onSortingChange: function (oEvent) {
