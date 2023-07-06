@@ -18,6 +18,7 @@ sap.ui.define(
       },
 
       _onPatternMatched: function () {
+        this._setAddToCartButtonsAttributes();
         this._setRangeFilterAttributes(this.byId('idFilterPrice'), 'price');
         this._setRangeFilterAttributes(this.byId('idFilterStock'), 'stock');
       },
@@ -65,13 +66,14 @@ sap.ui.define(
       },
 
       onProductCatalogUpdateFinished(oEvent) {
-        const oProductCatalog = oEvent.getSource();
-        const aItems = oProductCatalog.getItems();
-        this._setAddToCartButtonsAttributes(aItems);
+        this._setAddToCartButtonsAttributes();
       },
 
-      _setAddToCartButtonsAttributes: function (items) {
-        items.forEach((item) => {
+      _setAddToCartButtonsAttributes: function () {
+        const oProductCatalog = this.byId('idProductCatalog');
+        const aItems = oProductCatalog.getItems();
+
+        aItems.forEach((item) => {
           const oItemData = item.getBindingContext('main').getObject();
           const oAddToCartButton = item.getContent()[0].getControlsByFieldGroupId('idAddToCartButtonGroup')[0];
           this._setAddToCartButtonAttributes(oItemData.ID, oAddToCartButton);
