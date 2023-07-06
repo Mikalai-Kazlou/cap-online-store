@@ -1,10 +1,7 @@
-sap.ui.define([
-  "sap/ui/base/Object",
-  "./constants"
-], function (Object, constants) {
-  "use strict";
+sap.ui.define(['sap/ui/base/Object', './constants'], function (Object, constants) {
+  'use strict';
 
-  return Object.extend("com.exercise.onlinestoresapui5.model.Cart", {
+  return Object.extend('ns.shop.model.Cart', {
     _cart: [],
 
     constructor: function () {
@@ -58,7 +55,6 @@ sap.ui.define([
 
     getTotalAmount() {
       return this._cart.reduce((total, item) => total + item.q * item.p, 0);
-    }
+    },
   });
-
 });
