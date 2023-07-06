@@ -15,6 +15,18 @@
             "version": "1.9.7",
             "toolsId": "3c05e495-f59e-4f3c-9bbc-ae430196f658"
         },
+        "crossNavigation": {
+            "inbounds": {
+                "SalesOrders-display": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "SalesOrders",
+                    "action": "display"
+                }
+            }
+        },
         "dataSources": {
             "mainService": {
                 "uri": "/onlinestore/",
@@ -84,7 +96,6 @@
             "css": []
         },
         "routing": {
-            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
@@ -117,7 +128,8 @@
                                         "route": "SalesOrdersObjectPage"
                                     }
                                 }
-                            }
+                            },
+                            "initialLoad": "Enabled"
                         }
                     }
                 },
@@ -150,6 +162,11 @@
                         }
                     }
                 }
+            }
+        },
+        "extends": {
+            "extensions": {
+                "sap.ui.controllerExtensions": {}
             }
         }
     },

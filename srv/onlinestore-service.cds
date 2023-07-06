@@ -6,7 +6,10 @@ service OnlineStoreService {
   entity Products @(restrict: [
     {
       grant: ['READ'],
-      to   : ['Customer']
+      to   : [
+        'Customer',
+        'SalesManager'
+      ]
     },
     {
       grant: ['*'],
@@ -21,7 +24,10 @@ service OnlineStoreService {
   entity Categories @(restrict: [
     {
       grant: ['READ'],
-      to   : ['Customer']
+      to   : [
+        'Customer',
+        'SalesManager'
+      ]
     },
     {
       grant: ['*'],
@@ -36,7 +42,10 @@ service OnlineStoreService {
   entity Brands @(restrict: [
     {
       grant: ['READ'],
-      to   : ['Customer']
+      to   : [
+        'Customer',
+        'SalesManager'
+      ]
     },
     {
       grant: ['*'],

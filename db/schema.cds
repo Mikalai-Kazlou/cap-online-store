@@ -45,11 +45,11 @@ entity SalesOrders : managed {
   key ID                      : UUID @(Core.Computed: true);
       identifier              : Integer;
       status                  : Association to Statuses;
+      deliveryDate            : DateTime;
       customerName            : String(100);
       customerDeliveryAddress : String(250);
       customerPhoneNumber     : String(15);
       customerEmail           : String(50);
-      deliveryDate            : DateTime;
       items                   : Composition of many SalesOrderItems
                                   on items.salesOrder = $self;
 }

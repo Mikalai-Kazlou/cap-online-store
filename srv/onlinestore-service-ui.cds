@@ -197,7 +197,7 @@ annotate OnlineStoreService.Products with {
       ]
     }
   };
-}
+};
 
 // -------------------------------------------------
 // Product images
@@ -223,4 +223,161 @@ annotate OnlineStoreService.ProductImages with
   identifier @title : 'Identifier';
   product    @title : 'Product';
   url        @title : 'Url';
+};
+
+// -------------------------------------------------
+// Sales orders
+// -------------------------------------------------
+annotate OnlineStoreService.SalesOrders with
+@UI.PresentationVariant         : {
+  Visualizations: ['@UI.LineItem'],
+  SortOrder     : [{Property: identifier}]
 }
+@UI.SelectionFields             : [
+  status_ID,
+  deliveryDate,
+  customerName,
+  customerDeliveryAddress,
+  customerPhoneNumber,
+  customerEmail
+]
+@UI.LineItem                    : [
+  {Value: identifier},
+  {Value: status_ID},
+  {Value: deliveryDate},
+  {Value: customerName},
+  {
+    Value                : customerDeliveryAddress,
+    ![@HTML5.CssDefaults]: {width: '100%'}
+  },
+  {Value: customerPhoneNumber},
+  {Value: customerEmail}
+]
+@UI.HeaderInfo                  : {
+  TypeName      : 'Sales order',
+  TypeNamePlural: 'Sales orders',
+  Title         : {
+    $Type: 'UI.DataField',
+    Value: identifier
+  },
+  Description   : {
+    $Type: 'UI.DataField',
+    Value: customerName
+  }
+}
+@UI.Facets                      : [
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : 'Main',
+    Target: '@UI.FieldGroup#Main'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : 'Customer',
+    Target: '@UI.FieldGroup#Customer'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : 'Items',
+    Target: 'items/@UI.LineItem'
+  }
+]
+@UI.FieldGroup #Main            : {Data: [
+  {Value: identifier},
+  {Value: status_ID},
+  {Value: deliveryDate}
+]}
+@UI.FieldGroup #Customer        : {Data: [
+  {Value: customerName},
+  {Value: customerDeliveryAddress},
+  {Value: customerPhoneNumber},
+  {Value: customerEmail}
+]} {
+  identifier              @title: 'Identifier';
+  status                  @title: 'Status';
+  deliveryDate            @title: 'Delivery date';
+  customerName            @title: 'Customer';
+  customerDeliveryAddress @title: 'Delivery Address';
+  customerPhoneNumber     @title: 'Phone number';
+  customerEmail           @title: 'Email';
+};
+
+annotate OnlineStoreService.SalesOrders with {
+  status @Common: {
+    Text           : status.title,
+    TextArrangement: #TextOnly,
+    ValueList      : {
+      Label         : 'Statuses',
+      CollectionPath: 'Statuses',
+      Parameters    : [
+        {
+          $Type            : 'Common.ValueListParameterInOut',
+          LocalDataProperty: status_ID,
+          ValueListProperty: 'ID'
+        },
+        {
+          $Type            : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty: 'title'
+        }
+      ]
+    }
+  };
+};
+
+// -------------------------------------------------
+// Product images
+// -------------------------------------------------
+annotate OnlineStoreService.SalesOrderItems with
+@UI.LineItem        : [
+  {
+    Value                : product_ID,
+    ![@HTML5.CssDefaults]: {width: '100%'}
+  },
+  {Value: quantity},
+  {Value: price},
+  {Value: amount},
+  {Value: currency_code}
+]
+@UI.Facets          : [{
+  $Type : 'UI.ReferenceFacet',
+  Label : 'Main',
+  Target: '@UI.FieldGroup#Main'
+}]
+@UI.FieldGroup #Main: {Data: [
+  {Value: identifier},
+  {Value: product_ID},
+  {Value: quantity},
+  {Value: price},
+  {Value: amount},
+  {Value: currency_code}
+]} {
+  identifier @title : 'Identifier';
+  salesOrder @title : 'Sales order';
+  product    @title : 'Product';
+  quantity   @title : 'Quantity';
+  price      @title : 'Price';
+  amount     @title : 'Amount';
+  currency   @title : 'Currency';
+};
+
+annotate OnlineStoreService.SalesOrderItems with {
+  product @Common: {
+    Text           : product.title,
+    TextArrangement: #TextOnly,
+    ValueList      : {
+      Label         : 'Products',
+      CollectionPath: 'Products',
+      Parameters    : [
+        {
+          $Type            : 'Common.ValueListParameterInOut',
+          LocalDataProperty: product_ID,
+          ValueListProperty: 'ID'
+        },
+        {
+          $Type            : 'Common.ValueListParameterDisplayOnly',
+          ValueListProperty: 'title'
+        }
+      ]
+    }
+  };
+};
