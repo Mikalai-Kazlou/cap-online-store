@@ -1,5 +1,30 @@
 {
-  "scopes": [],
-  "attributes": [],
-  "role-templates": []
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.ShopManager",
+      "description": "Shop Manager"
+    },
+    {
+      "name": "$XSAPPNAME.Customer",
+      "description": "Customer"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "ShopManager",
+      "description": "Shop Manager",
+      "scope-references": [
+        "$XSAPPNAME.ShopManager"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "Customer",
+      "description": "Customer",
+      "scope-references": [
+        "$XSAPPNAME.Customer"
+      ],
+      "attribute-references": []
+    }
+  ]
 }

@@ -102,6 +102,8 @@
                             showHandleTooltip="false"
                             inputsAsTooltips="true"
                             change=".onFilterPriceChange"
+                            min="0"
+                            max="0"
                         />
                     </VBox>
                     <VBox
@@ -119,6 +121,8 @@
                             showHandleTooltip="false"
                             inputsAsTooltips="true"
                             change=".onFilterStockChange"
+                            min="0"
+                            max="0"
                         />
                     </VBox>
                 </VBox>

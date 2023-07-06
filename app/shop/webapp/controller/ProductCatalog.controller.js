@@ -18,6 +18,7 @@ sap.ui.define(
       },
 
       _onPatternMatched: function () {
+        this._setAddToCartButtonsAttributes();
         this._setRangeFilterAttributes(this.byId('idFilterPrice'), 'price');
         this._setRangeFilterAttributes(this.byId('idFilterStock'), 'stock');
       },
@@ -36,8 +37,8 @@ sap.ui.define(
         const oUIControl = this.byId(sListItemId).clone(sId);
         const oLayout = new GridBoxLayout(oLayoutSettings);
 
-        const oList = this.byId('idProductCatalog');
-        oList.setCustomLayout(oLayout);
+        const oProductCatalog = this.byId('idProductCatalog');
+        oProductCatalog.setCustomLayout(oLayout);
 
         return oUIControl;
       },
@@ -65,13 +66,14 @@ sap.ui.define(
       },
 
       onProductCatalogUpdateFinished(oEvent) {
-        const oProductCatalog = oEvent.getSource();
-        const aItems = oProductCatalog.getItems();
-        this._setAddToCartButtonsAttributes(aItems);
+        this._setAddToCartButtonsAttributes();
       },
 
-      _setAddToCartButtonsAttributes: function (items) {
-        items.forEach((item) => {
+      _setAddToCartButtonsAttributes: function () {
+        const oProductCatalog = this.byId('idProductCatalog');
+        const aItems = oProductCatalog.getItems();
+
+        aItems.forEach((item) => {
           const oItemData = item.getBindingContext('main').getObject();
           const oAddToCartButton = item.getContent()[0].getControlsByFieldGroupId('idAddToCartButtonGroup')[0];
           this._setAddToCartButtonAttributes(oItemData.ID, oAddToCartButton);
@@ -91,19 +93,21 @@ sap.ui.define(
       },
 
       _setRangeFilterAttributes: function (oFilter, sProperty) {
-        const oModel = this.getModel('main');
+        if (!oFilter.getMin() && !oFilter.getMax()) {
+          const oModel = this.getModel('main');
 
-        const oOperation = oModel.bindContext(`/getProductRangeFilterParameters(...)`);
-        oOperation.setParameter('property', sProperty);
+          const oOperation = oModel.bindContext(`/getProductRangeFilterParameters(...)`);
+          oOperation.setParameter('property', sProperty);
 
-        oOperation.execute().then(() => {
-          const oResults = oOperation.getBoundContext().getObject();
-          const { min, max } = oResults;
+          oOperation.execute().then(() => {
+            const oResults = oOperation.getBoundContext().getObject();
+            const { min, max } = oResults;
 
-          oFilter.setMin(+min);
-          oFilter.setMax(+max);
-          oFilter.setRange([+min, +max]);
-        });
+            oFilter.setMin(+min);
+            oFilter.setMax(+max);
+            oFilter.setRange([+min, +max]);
+          });
+        }
       },
 
       onSortingChange: function (oEvent) {

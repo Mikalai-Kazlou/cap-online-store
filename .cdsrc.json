@@ -1,1 +1,25 @@
-{}
+{
+  "[development]": {
+    "auth": {
+      "passport": {
+        "strategy": "mock",
+        "users": {
+          "shop.manager@tester.com": {
+            "password": "initial",
+            "ID": "shop.manager@tester.com",
+            "roles": [
+              "ShopManager"
+            ]
+          },
+          "customer@tester.com": {
+            "password": "initial",
+            "ID": "customer@tester.com",
+            "roles": [
+              "Customer"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
