@@ -4,6 +4,20 @@
       "passport": {
         "strategy": "mock",
         "users": {
+          "administrator@tester.com": {
+            "password": "initial",
+            "ID": "administrator@tester.com",
+            "roles": [
+              "Administrator"
+            ]
+          },
+          "sales.manager@tester.com": {
+            "password": "initial",
+            "ID": "sales.manager@tester.com",
+            "roles": [
+              "SalesManager"
+            ]
+          },
           "shop.manager@tester.com": {
             "password": "initial",
             "ID": "shop.manager@tester.com",

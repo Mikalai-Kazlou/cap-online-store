@@ -140,6 +140,14 @@ resources:
         tenant-mode: dedicated
         xsappname: cap-online-store-${space}
         role-collections:
+          - name: "Administrator-${space}"
+            description: Administrator
+            role-template-references:
+              - $XSAPPNAME.Administrator
+          - name: "SalesManager-${space}"
+            description: Sales Manager
+            role-template-references:
+              - $XSAPPNAME.SalesManager
           - name: "ShopManager-${space}"
             description: Shop Manager
             role-template-references:

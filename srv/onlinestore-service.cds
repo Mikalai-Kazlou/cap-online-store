@@ -10,9 +10,12 @@ service OnlineStoreService {
     },
     {
       grant: ['*'],
-      to   : ['ShopManager']
+      to   : [
+        'ShopManager',
+        'Administrator'
+      ]
     }
-  ]) as projection on os.Products;
+  ])              as projection on os.Products;
 
   @odata.draft.enabled
   entity Categories @(restrict: [
@@ -22,9 +25,12 @@ service OnlineStoreService {
     },
     {
       grant: ['*'],
-      to   : ['ShopManager']
+      to   : [
+        'ShopManager',
+        'Administrator'
+      ]
     }
-  ]) as projection on os.Categories;
+  ])              as projection on os.Categories;
 
   @odata.draft.enabled
   entity Brands @(restrict: [
@@ -34,9 +40,24 @@ service OnlineStoreService {
     },
     {
       grant: ['*'],
-      to   : ['ShopManager']
+      to   : [
+        'ShopManager',
+        'Administrator'
+      ]
     }
-  ]) as projection on os.Brands;
+  ])              as projection on os.Brands;
+
+  @odata.draft.enabled
+  entity SalesOrders @(restrict: [{
+    grant: ['*'],
+    to   : [
+      'SalesManager',
+      'Administrator'
+    ]
+  }])             as projection on os.SalesOrders;
+
+  @readonly
+  entity Statuses as projection on os.Statuses;
 
   function getProductRangeFilterParameters(property : String) returns os.RangeFilterParameters;
 }
