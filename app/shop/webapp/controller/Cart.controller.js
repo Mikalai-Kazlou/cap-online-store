@@ -371,9 +371,21 @@ sap.ui.define(
         return sIcon;
       },
 
+      onCancelOrder: function () {
+        this.oDialog.close();
+      },
+
       onConfirmOrder: function () {
         const oButton = this.byId('idMessagePopoverButton');
         oButton.setVisible(true);
+
+        // this.byId('idDialogInputName').setValue('Test name');
+        // this.byId('idDialogInputDeliveryAddress').setValue('Test address');
+        // this.byId('idDialogInputPhoneNumber').setValue('+123456789');
+        // this.byId('idDialogInputEmail').setValue('test.name@test.com');
+        // this.byId('idDialogInputCardNumber').setValue('1234567890123456');
+        // this.byId('idDialogInputValid').setValue('12/25');
+        // this.byId('idDialogInputCVV').setValue('111');
 
         this.requiredFieldsIDs.forEach((id) => {
           const oInput = this.byId(id);
@@ -397,23 +409,87 @@ sap.ui.define(
         if (this.oMP.getItems().length) {
           setTimeout(() => this.oMP.openBy(oButton), 100);
         } else {
-          MessageBox.success(this.oResourceBundle.getText('confirmOrderSuccess'), {
-            title: this.oResourceBundle.getText('cartSummaryConfirmOrderButtonText'),
-            styleClass: this.getOwnerComponent().getContentDensityClass(),
-            onClose: () => {
-              this.oCart.clear();
-
-              this._refreshCartModel();
-              this._refreshLocalDataModel();
-
-              this.navTo('main');
-            },
-          });
-          this.oDialog.close();
+          this._createSalesOrder();
         }
       },
 
-      onCancelOrder: function () {
+      _createSalesOrder: async function () {
+        const oNewSalesOrder = {};
+
+        const oFieldMapping = new Map();
+        oFieldMapping.set('idDialogInputName', 'customerName');
+        oFieldMapping.set('idDialogInputDeliveryAddress', 'customerDeliveryAddress');
+        oFieldMapping.set('idDialogInputPhoneNumber', 'customerPhoneNumber');
+        oFieldMapping.set('idDialogInputEmail', 'customerEmail');
+
+        oFieldMapping.forEach((value, key) => {
+          const oDialogInput = this.byId(key);
+          oNewSalesOrder[value] = oDialogInput.getValue();
+        });
+
+        const oModel = this.getModel('main');
+        const oSalesOrderBinding = oModel.bindList('/SalesOrders');
+        const oNewSalesOrderContext = oSalesOrderBinding.create(oNewSalesOrder, true);
+
+        try {
+          await oNewSalesOrderContext.created();
+        } catch (error) {
+          throw new Error(`The Order has not been created: ${error.message}`);
+        }
+
+        await this._createSalesOrderItems(oNewSalesOrderContext);
+        await this._activateSalesOrder(oNewSalesOrderContext);
+
+        this._showOrderCreationSuccessMessageBox();
+      },
+
+      _createSalesOrderItems: async function (oNewSalesOrderContext) {
+        const oModel = this.getModel('main');
+        const oSalesOrderItemBinding = oModel.bindList('items', oNewSalesOrderContext);
+        const aCartItems = this.oCart.get();
+
+        const aItemsCreated = aCartItems.map((oCartItem) => {
+          const oItem = {
+            product_ID: oCartItem.id,
+            quantity: oCartItem.q,
+            price: oCartItem.p,
+          };
+
+          const oNewSalesOrderItemsContext = oSalesOrderItemBinding.create(oItem, true);
+          return oNewSalesOrderItemsContext.created();
+        });
+
+        try {
+          await Promise.all(aItemsCreated);
+        } catch (error) {
+          throw new Error(`The Order items have not been created: ${error.message}`);
+        }
+      },
+
+      _activateSalesOrder: async function (oNewSalesOrderContext) {
+        const oModel = this.getModel('main');
+        const oOperation = oModel.bindContext('OnlineStoreService.draftActivate(...)', oNewSalesOrderContext);
+
+        try {
+          await oOperation.execute();
+        } catch (error) {
+          throw new Error(`The Order has not been activated: ${error.message}`);
+        }
+      },
+
+      _showOrderCreationSuccessMessageBox: function () {
+        MessageBox.success(this.oResourceBundle.getText('confirmOrderSuccess'), {
+          title: this.oResourceBundle.getText('cartSummaryConfirmOrderButtonText'),
+          styleClass: this.getOwnerComponent().getContentDensityClass(),
+          onClose: () => {
+            this.oCart.clear();
+
+            this._refreshCartModel();
+            this._refreshLocalDataModel();
+
+            this.navTo('main');
+          },
+        });
         this.oDialog.close();
       },
     });

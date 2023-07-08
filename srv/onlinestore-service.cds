@@ -57,13 +57,27 @@ service OnlineStoreService {
   ])              as projection on os.Brands;
 
   @odata.draft.enabled
-  entity SalesOrders @(restrict: [{
-    grant: ['*'],
-    to   : [
-      'SalesManager',
-      'Administrator'
-    ]
-  }])             as projection on os.SalesOrders;
+  entity SalesOrders @(restrict: [
+    {
+      grant: ['CREATE'],
+      to   : ['Customer']
+    },
+    {
+      grant: [
+        'READ',
+        'UPDATE'
+      ],
+      to   : ['Customer'],
+      where: 'CreatedBy = $user'
+    },
+    {
+      grant: ['*'],
+      to   : [
+        'SalesManager',
+        'Administrator'
+      ]
+    }
+  ])              as projection on os.SalesOrders;
 
   @readonly
   entity Statuses as projection on os.Statuses;
