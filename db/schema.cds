@@ -30,15 +30,15 @@ entity ProductImages : managed {
 }
 
 entity Categories : managed {
-  key ID         : UUID    @(Core.Computed: true);
-      identifier : Integer @(Core.Computed: true);
-      title      : String(50);
+  key ID         : UUID       @(Core.Computed: true);
+      identifier : Integer    @(Core.Computed: true);
+      title      : String(50) @mandatory;
 }
 
 entity Brands : managed {
-  key ID         : UUID    @(Core.Computed: true);
-      identifier : Integer @(Core.Computed: true);
-      title      : String(50);
+  key ID         : UUID       @(Core.Computed: true);
+      identifier : Integer    @(Core.Computed: true);
+      title      : String(50) @mandatory;
 }
 
 entity SalesOrders : managed {
