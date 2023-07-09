@@ -32,6 +32,7 @@ annotate OnlineStoreService.Categories with
   {Value: identifier},
   {Value: title}
 ]} {
+  ID         @UI.Hidden;
   identifier @title    : 'Identifier';
   title      @title    : 'Title';
 };
@@ -68,6 +69,7 @@ annotate OnlineStoreService.Brands with
   {Value: identifier},
   {Value: title}
 ]} {
+  ID         @UI.Hidden;
   identifier @title    : 'Identifier';
   title      @title    : 'Title';
 };
@@ -146,6 +148,7 @@ annotate OnlineStoreService.Products with
   {Value: rating},
   {Value: stock}
 ]} {
+  ID          @UI.Hidden;
   identifier  @title      : 'Identifier';
   category    @title      : 'Category';
   brand       @title      : 'Brand';
@@ -220,6 +223,7 @@ annotate OnlineStoreService.ProductImages with
   {Value: identifier},
   {Value: url}
 ]} {
+  ID         @UI.Hidden;
   identifier @title : 'Identifier';
   product    @title : 'Product';
   url        @title : 'Url';
@@ -293,6 +297,7 @@ annotate OnlineStoreService.SalesOrders with
   {Value: customerPhoneNumber},
   {Value: customerEmail}
 ]} {
+  ID                      @UI.Hidden;
   identifier              @title: 'Identifier';
   status                  @title: 'Status';
   deliveryDate            @title: 'Delivery date';
@@ -351,6 +356,7 @@ annotate OnlineStoreService.SalesOrderItems with
   {Value: amount},
   {Value: currency_code}
 ]} {
+  ID         @UI.Hidden;
   identifier @title : 'Identifier';
   salesOrder @title : 'Sales order';
   product    @title : 'Product';
