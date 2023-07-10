@@ -33,8 +33,9 @@ annotate OnlineStoreService.Brands with
 @UI.FieldGroup #Main   : {Data: [
   {Value: identifier},
   {Value: title}
-]} {
+]}
 
+{
   @UI.Hidden
   @Common: {
     Text           : title,
@@ -47,5 +48,4 @@ annotate OnlineStoreService.Brands with
 
   @title : 'Title'
   title;
-
 };

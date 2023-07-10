@@ -80,8 +80,9 @@ annotate OnlineStoreService.Products with
   {Value: discount},
   {Value: rating},
   {Value: stock}
-]} {
+]}
 
+{
   @UI.Hidden
   @Common: {
     Text           : title,
@@ -156,7 +157,6 @@ annotate OnlineStoreService.Products with
 
   @title : 'Thumbnail'
   thumbnail;
-
 };
 
 // -------------------------------------------------
@@ -179,21 +179,15 @@ annotate OnlineStoreService.ProductImages with
   Target: '@UI.FieldGroup#Main'
 }]
 
-@UI.FieldGroup #Main: {Data: [
-  {Value: identifier},
-  {Value: url}
-]} {
+@UI.FieldGroup #Main: {Data: [{Value: url}]}
 
+{
   @UI.Hidden
   ID;
 
-  @title: 'ID'
-  identifier;
-
-  @title: 'Product'
-  product;
+  @UI.Hidden
+  parent;
 
   @title: 'Url'
   url;
-
 };

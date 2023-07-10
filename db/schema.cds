@@ -6,69 +6,67 @@ using {
 } from '@sap/cds/common';
 
 entity Products : managed {
-  key ID          : UUID    @(Core.Computed: true);
-      identifier  : Integer @(Core.Computed: true);
-      category    : Association to Categories;
-      brand       : Association to Brands;
-      title       : String(100);
+  key ID          : UUID                      @Core.Computed: true;
+      identifier  : Integer                   @Core.Computed: true;
+      category    : Association to Categories @mandatory;
+      brand       : Association to Brands     @mandatory;
+      title       : String(100)               @mandatory;
       description : String;
-      price       : Decimal;
-      currency    : Currency;
+      price       : Decimal                   @mandatory;
+      currency    : Currency                  @mandatory;
       discount    : Decimal;
       rating      : Decimal;
       stock       : Integer;
       thumbnail   : String;
       images      : Composition of many ProductImages
-                      on images.product = $self;
+                      on images.parent = $self;
 }
 
 entity ProductImages : managed {
-  key ID         : UUID @(Core.Computed: true);
-      identifier : Integer;
-      product    : Association to Products;
-      url        : String;
+  key ID     : UUID   @Core.Computed: true;
+      parent : Association to Products;
+      url    : String @mandatory;
 }
 
 entity Categories : managed {
-  key ID         : UUID       @(Core.Computed: true);
-      identifier : Integer    @(Core.Computed: true);
+  key ID         : UUID       @Core.Computed: true;
+      identifier : Integer    @Core.Computed: true;
       title      : String(50) @mandatory;
 }
 
 entity Brands : managed {
-  key ID         : UUID       @(Core.Computed: true);
-      identifier : Integer    @(Core.Computed: true);
+  key ID         : UUID       @Core.Computed: true;
+      identifier : Integer    @Core.Computed: true;
       title      : String(50) @mandatory;
 }
 
 entity SalesOrders : managed {
-  key ID                      : UUID    @(Core.Computed: true);
-      identifier              : Integer @(Core.Computed: true);
-      status                  : Association to Statuses;
+  key ID                      : UUID                    @Core.Computed: true;
+      identifier              : Integer                 @Core.Computed: true;
+      status                  : Association to Statuses @mandatory;
       deliveryDate            : DateTime;
-      customerName            : String(100);
-      customerDeliveryAddress : String(250);
-      customerPhoneNumber     : String(15);
+      customerName            : String(100)             @mandatory;
+      customerDeliveryAddress : String(250)             @mandatory;
+      customerPhoneNumber     : String(15)              @mandatory;
       customerEmail           : String(50);
       items                   : Composition of many SalesOrderItems
-                                  on items.salesOrder = $self;
+                                  on items.parent = $self;
 }
 
 entity SalesOrderItems : managed {
-  key ID         : UUID @(Core.Computed: true);
-      identifier : Integer;
-      salesOrder : Association to SalesOrders;
-      product    : Association to Products;
-      quantity   : Integer;
-      price      : Decimal;
-      amount     : Decimal;
-      currency   : Currency;
+  key ID       : UUID                    @Core.Computed: true;
+      parent   : Association to SalesOrders;
+      product  : Association to Products @mandatory;
+      quantity : Integer                 @mandatory;
+      price    : Decimal                 @mandatory;
+      amount   : Decimal                 @mandatory;
+      currency : Currency                @mandatory;
 }
 
 entity Statuses {
-  key ID         : UUID @(Core.Computed: true);
-      identifier : Integer;
-      title      : String(50);
+  key ID         : UUID       @Core.Computed: true;
+      identifier : Integer    @Core.Computed: true;
+      title      : String(50) @mandatory;
 }
 
 type RangeFilterParameters : {

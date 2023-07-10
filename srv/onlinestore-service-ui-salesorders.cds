@@ -74,8 +74,9 @@ annotate OnlineStoreService.SalesOrders with
   {Value: customerDeliveryAddress},
   {Value: customerPhoneNumber},
   {Value: customerEmail}
-]} {
+]}
 
+{
   @UI.Hidden
   ID;
 
@@ -121,7 +122,7 @@ annotate OnlineStoreService.SalesOrders with
 };
 
 // -------------------------------------------------
-// Product images
+// Sales order items
 // -------------------------------------------------
 annotate OnlineStoreService.SalesOrderItems with
 
@@ -143,22 +144,19 @@ annotate OnlineStoreService.SalesOrderItems with
 }]
 
 @UI.FieldGroup #Main: {Data: [
-  {Value: identifier},
   {Value: product_ID},
   {Value: quantity},
   {Value: price},
   {Value: amount},
   {Value: currency_code}
-]} {
+]}
 
+{
   @UI.Hidden
   ID;
 
-  @title : 'ID'
-  identifier;
-
-  @title : 'Sales order'
-  salesOrder;
+  @UI.Hidden
+  parent;
 
   @title : 'Product'
   @Common: {
@@ -193,5 +191,4 @@ annotate OnlineStoreService.SalesOrderItems with
 
   @title : 'Currency'
   currency;
-
 };
