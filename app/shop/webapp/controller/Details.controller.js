@@ -1,6 +1,6 @@
 sap.ui.define(
   ['./BaseController', 'sap/ui/model/Filter', 'sap/ui/model/FilterOperator', 'sap/m/ButtonType', '../model/constants'],
-  function (BaseController, Filter, FilterOperator, ButtonType, constants) {
+  function (BaseController, ButtonType, constants) {
     'use strict';
 
     return BaseController.extend('ns.shop.controller.Details', {
@@ -16,13 +16,6 @@ sap.ui.define(
       _onPatternMatched: function (oEvent) {
         const iProductID = oEvent.getParameter('arguments').id;
         this.getView().bindElement({ path: `/Products(ID=${iProductID},IsActiveEntity=true)`, model: 'main' });
-
-        const aFilters = [];
-        aFilters.push(new Filter('product_ID', FilterOperator.EQ, iProductID));
-
-        const oMediaGallery = this.byId('idMediaGallery');
-        const oBinding = oMediaGallery.getBinding('items');
-        oBinding.filter(aFilters);
 
         const oAddToCartButton = this.byId('idAddToCartButton');
         this._setAddToCartButtonAttributes(iProductID, oAddToCartButton);
