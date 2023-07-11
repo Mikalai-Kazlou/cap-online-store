@@ -71,24 +71,33 @@ annotate OnlineStoreService.Products with
   }
 ]
 
-@UI.FieldGroup #Main       : {Data: [
-  {Value: identifier},
-  {Value: category_ID},
-  {Value: brand_ID},
-  {Value: title}
-]}
+@UI.FieldGroup #Main       : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: identifier},
+    {Value: category_ID},
+    {Value: brand_ID},
+    {Value: title}
+  ]
+}
 
-@UI.FieldGroup #Description: {Data: [{
-  Value: description,
-  Label: '',
-}]}
+@UI.FieldGroup #Description: {
+  $Type: 'UI.FieldGroupType',
+  Data : [{
+    Value: description,
+    Label: '',
+  }]
+}
 
-@UI.FieldGroup #Properties : {Data: [
-  {Value: price},
-  {Value: discount},
-  {Value: rating},
-  {Value: stock}
-]}
+@UI.FieldGroup #Properties : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: price},
+    {Value: discount},
+    {Value: rating},
+    {Value: stock}
+  ]
+}
 
 {
   @UI.Hidden
@@ -191,7 +200,10 @@ annotate OnlineStoreService.ProductImages with
   Target: '@UI.FieldGroup#Main'
 }]
 
-@UI.FieldGroup #Main: {Data: [{Value: url}]}
+@UI.FieldGroup #Main: {
+  $Type: 'UI.FieldGroupType',
+  Data : [{Value: url}]
+}
 
 {
   @UI.Hidden

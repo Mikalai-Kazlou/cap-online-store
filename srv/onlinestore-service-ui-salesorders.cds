@@ -63,18 +63,24 @@ annotate OnlineStoreService.SalesOrders with
   }
 ]
 
-@UI.FieldGroup #Main    : {Data: [
-  {Value: identifier},
-  {Value: status_ID},
-  {Value: deliveryDate}
-]}
+@UI.FieldGroup #Main    : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: identifier},
+    {Value: status_ID},
+    {Value: deliveryDate}
+  ]
+}
 
-@UI.FieldGroup #Customer: {Data: [
-  {Value: customerName},
-  {Value: customerDeliveryAddress},
-  {Value: customerPhoneNumber},
-  {Value: customerEmail}
-]}
+@UI.FieldGroup #Customer: {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: customerName},
+    {Value: customerDeliveryAddress},
+    {Value: customerPhoneNumber},
+    {Value: customerEmail}
+  ]
+}
 
 {
   @UI.Hidden
@@ -126,7 +132,7 @@ annotate OnlineStoreService.SalesOrders with
 // -------------------------------------------------
 annotate OnlineStoreService.SalesOrderItems with
 
-@UI.LineItem        : [
+@UI.LineItem                        : [
   {
     Value                : product_ID,
     ![@HTML5.CssDefaults]: {width: '100%'}
@@ -136,18 +142,36 @@ annotate OnlineStoreService.SalesOrderItems with
   {Value: amount}
 ]
 
-@UI.Facets          : [{
+@UI.Facets                          : [{
   $Type : 'UI.ReferenceFacet',
   Label : 'Main',
   Target: '@UI.FieldGroup#Main'
 }]
 
-@UI.FieldGroup #Main: {Data: [
-  {Value: product_ID},
-  {Value: quantity},
-  {Value: price},
-  {Value: amount}
-]}
+@UI.FieldGroup #Main                : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: product_ID},
+    {Value: quantity},
+    {Value: price},
+    {Value: amount}
+  ]
+}
+
+@Common.SideEffects #ProductChanged : {
+  SourceProperties: ['product_ID'],
+  TargetProperties: [
+    'quantity',
+    'price',
+    'currency_code',
+    'amount'
+  ]
+}
+
+@Common.SideEffects #QuantityChanged: {
+  SourceProperties: ['quantity'],
+  TargetProperties: ['amount']
+}
 
 {
   @UI.Hidden
@@ -182,10 +206,12 @@ annotate OnlineStoreService.SalesOrderItems with
   quantity;
 
   @title               : 'Price'
+  @Common.FieldControl : #ReadOnly
   @Measures.ISOCurrency: currency_code
   price;
 
   @title               : 'Amount'
+  @Common.FieldControl : #ReadOnly
   @Measures.ISOCurrency: currency_code
   amount;
 };
