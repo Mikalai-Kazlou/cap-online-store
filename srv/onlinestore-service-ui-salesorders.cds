@@ -37,11 +37,11 @@ annotate OnlineStoreService.SalesOrders with
   TypeNamePlural: 'Sales orders',
   Title         : {
     $Type: 'UI.DataField',
-    Value: identifier
+    Value: customerName
   },
   Description   : {
     $Type: 'UI.DataField',
-    Value: customerName
+    Value: customerDeliveryAddress
   }
 }
 
@@ -133,8 +133,7 @@ annotate OnlineStoreService.SalesOrderItems with
   },
   {Value: quantity},
   {Value: price},
-  {Value: amount},
-  {Value: currency_code}
+  {Value: amount}
 ]
 
 @UI.Facets          : [{
@@ -147,8 +146,7 @@ annotate OnlineStoreService.SalesOrderItems with
   {Value: product_ID},
   {Value: quantity},
   {Value: price},
-  {Value: amount},
-  {Value: currency_code}
+  {Value: amount}
 ]}
 
 {
@@ -158,8 +156,8 @@ annotate OnlineStoreService.SalesOrderItems with
   @UI.Hidden
   parent;
 
-  @title : 'Product'
-  @Common: {
+  @title               : 'Product'
+  @Common              : {
     Text           : product.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -180,15 +178,14 @@ annotate OnlineStoreService.SalesOrderItems with
   }
   product;
 
-  @title : 'Quantity'
+  @title               : 'Quantity'
   quantity;
 
-  @title : 'Price'
+  @title               : 'Price'
+  @Measures.ISOCurrency: currency_code
   price;
 
-  @title : 'Amount'
+  @title               : 'Amount'
+  @Measures.ISOCurrency: currency_code
   amount;
-
-  @title : 'Currency'
-  currency;
 };

@@ -5,12 +5,12 @@ using OnlineStoreService from './onlinestore-service';
 // -------------------------------------------------
 annotate OnlineStoreService.Products with
 
-@UI.PresentationVariant   : {
+@UI.PresentationVariant    : {
   Visualizations: ['@UI.LineItem'],
   SortOrder     : [{Property: identifier}]
 }
 
-@UI.SelectionFields       : [
+@UI.SelectionFields        : [
   category_ID,
   brand_ID,
   price,
@@ -20,7 +20,7 @@ annotate OnlineStoreService.Products with
   stock
 ]
 
-@UI.LineItem              : [
+@UI.LineItem               : [
   {Value: identifier},
   {Value: category_ID},
   {Value: brand_ID},
@@ -29,31 +29,35 @@ annotate OnlineStoreService.Products with
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: price},
-  {Value: currency_code},
   {Value: discount},
   {Value: rating},
   {Value: stock},
 ]
 
-@UI.HeaderInfo            : {
+@UI.HeaderInfo             : {
   TypeName      : 'Product',
   TypeNamePlural: 'Products',
   Title         : {
     $Type: 'UI.DataField',
-    Value: title
+    Value: title,
   },
   Description   : {
     $Type: 'UI.DataField',
-    Value: description
+    Value: brand.title
   },
   ImageUrl      : thumbnail
 }
 
-@UI.Facets                : [
+@UI.Facets                 : [
   {
     $Type : 'UI.ReferenceFacet',
     Label : 'Main',
     Target: '@UI.FieldGroup#Main'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : 'Description',
+    Target: '@UI.FieldGroup#Description'
   },
   {
     $Type : 'UI.ReferenceFacet',
@@ -67,16 +71,17 @@ annotate OnlineStoreService.Products with
   }
 ]
 
-@UI.FieldGroup #Main      : {Data: [
+@UI.FieldGroup #Main       : {Data: [
   {Value: identifier},
   {Value: category_ID},
   {Value: brand_ID},
   {Value: title}
 ]}
 
-@UI.FieldGroup #Properties: {Data: [
+@UI.FieldGroup #Description: {Data: [{Value: description}]}
+
+@UI.FieldGroup #Properties : {Data: [
   {Value: price},
-  {Value: currency_code},
   {Value: discount},
   {Value: rating},
   {Value: stock}
@@ -84,17 +89,17 @@ annotate OnlineStoreService.Products with
 
 {
   @UI.Hidden
-  @Common: {
+  @Common              : {
     Text           : title,
     TextArrangement: #TextOnly
   }
   ID;
 
-  @title : 'ID'
+  @title               : 'ID'
   identifier;
 
-  @title : 'Category'
-  @Common: {
+  @title               : 'Category'
+  @Common              : {
     Text           : category.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -115,8 +120,8 @@ annotate OnlineStoreService.Products with
   }
   category;
 
-  @title : 'Brand'
-  @Common: {
+  @title               : 'Brand'
+  @Common              : {
     Text           : brand.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -137,25 +142,27 @@ annotate OnlineStoreService.Products with
   }
   brand;
 
-  @title : 'Title'
+  @title               : 'Title'
   title;
 
-  @title : 'Description'
+  @title               : 'Description'
+  @UI.MultiLineText
   description;
 
-  @title : 'Price'
+  @title               : 'Price'
+  @Measures.ISOCurrency: currency_code
   price;
 
-  @title : 'Discount'
+  @title               : 'Discount'
   discount;
 
-  @title : 'Rating'
+  @title               : 'Rating'
   rating;
 
-  @title : 'Stock'
+  @title               : 'Stock'
   stock;
 
-  @title : 'Thumbnail'
+  @title               : 'Thumbnail'
   thumbnail;
 };
 
