@@ -39,7 +39,7 @@ annotate OnlineStoreService.Products with
   TypeNamePlural: 'Products',
   Title         : {
     $Type: 'UI.DataField',
-    Value: title,
+    Value: title
   },
   Description   : {
     $Type: 'UI.DataField',
@@ -56,13 +56,13 @@ annotate OnlineStoreService.Products with
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Description',
-    Target: '@UI.FieldGroup#Description'
+    Label : 'Properties',
+    Target: '@UI.FieldGroup#Properties'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Properties',
-    Target: '@UI.FieldGroup#Properties'
+    Label : 'Description',
+    Target: '@UI.FieldGroup#Description'
   },
   {
     $Type : 'UI.ReferenceFacet',
@@ -78,7 +78,10 @@ annotate OnlineStoreService.Products with
   {Value: title}
 ]}
 
-@UI.FieldGroup #Description: {Data: [{Value: description}]}
+@UI.FieldGroup #Description: {Data: [{
+  Value: description,
+  Label: '',
+}]}
 
 @UI.FieldGroup #Properties : {Data: [
   {Value: price},
@@ -173,7 +176,9 @@ annotate OnlineStoreService.ProductImages with
 
 @UI.LineItem        : [
   {
+    $Type                : 'UI.DataFieldWithUrl',
     Value                : url,
+    Url                  : url,
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: createdAt},
