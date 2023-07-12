@@ -20,6 +20,16 @@ annotate OnlineStoreService.SalesOrders with
   totalAmount
 ]
 
+@UI.Identification                      : [{
+  $Type        : 'UI.DataFieldForAction',
+  Label        : 'Set to Delivered',
+  Action       : 'OnlineStoreService.setDeliveredStatus',
+  ![@UI.Hidden]: {$edmJson: {$Ne: [
+    {$Path: 'status/title'},
+    'Confirmed'
+  ]}}
+}]
+
 @UI.LineItem                            : [
   {Value: identifier},
   {Value: status_ID},

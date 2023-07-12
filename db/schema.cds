@@ -43,7 +43,7 @@ entity Brands : managed {
 entity SalesOrders : managed {
   key ID                      : UUID                    @Core.Computed;
       identifier              : Integer                 @Core.Computed;
-      status                  : Association to Statuses @mandatory;
+      status                  : Association to Statuses @Core.Computed;
       deliveryDate            : DateTime;
       customerName            : String(100)             @mandatory;
       customerDeliveryAddress : String(250)             @mandatory;

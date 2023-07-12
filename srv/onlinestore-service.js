@@ -19,6 +19,19 @@ module.exports = cds.service.impl(function () {
     return await cds.run(oQuery);
   });
 
+  this.on("setDeliveredStatus", async (req) => {
+    const oParams = req.params[0];
+    const oTarget = oParams.IsActiveEntity ? req.target : req.target.drafts;
+
+    const oStatusDelivered = await SELECT.one
+      .from(Statuses)
+      .where({ title: "Delivered" });
+
+    await cds
+      .update(oTarget, oParams.ID)
+      .set({ status_ID: oStatusDelivered.ID });
+  });
+
   this.before(
     "CREATE",
     [Categories, Brands, Products, SalesOrders],

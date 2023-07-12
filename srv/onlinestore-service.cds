@@ -1,4 +1,4 @@
-using {epam.btp.onlinestore as os} from '../db/schema';
+using {epam.btp.onlinestore as db} from '../db/schema';
 
 @path: 'onlinestore'
 service OnlineStoreService {
@@ -18,7 +18,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on os.Products;
+  ])              as projection on db.Products;
 
   @odata.draft.enabled
   entity Categories @(restrict: [
@@ -36,7 +36,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on os.Categories;
+  ])              as projection on db.Categories;
 
   @odata.draft.enabled
   entity Brands @(restrict: [
@@ -54,7 +54,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on os.Brands;
+  ])              as projection on db.Brands;
 
   @odata.draft.enabled
   entity SalesOrders @(restrict: [
@@ -77,10 +77,15 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on os.SalesOrders;
+  ])              as projection on db.SalesOrders actions {
+
+    @cds.odata.bindingparameter.name: '_it'
+    @Common.SideEffects             : {TargetProperties: ['_it/status_ID']}
+    action setDeliveredStatus();
+  };
 
   @readonly
-  entity Statuses as projection on os.Statuses;
+  entity Statuses as projection on db.Statuses;
 
-  function getProductRangeFilterParameters(property : String) returns os.RangeFilterParameters;
+  function getProductRangeFilterParameters(property : String) returns db.RangeFilterParameters;
 }
