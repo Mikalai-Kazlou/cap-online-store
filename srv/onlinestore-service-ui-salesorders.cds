@@ -5,12 +5,12 @@ using OnlineStoreService from './onlinestore-service';
 // -------------------------------------------------
 annotate OnlineStoreService.SalesOrders with
 
-@UI.PresentationVariant         : {
+@UI.PresentationVariant                 : {
   Visualizations: ['@UI.LineItem'],
   SortOrder     : [{Property: identifier}]
 }
 
-@UI.SelectionFields             : [
+@UI.SelectionFields                     : [
   status_ID,
   deliveryDate,
   customerName,
@@ -20,7 +20,7 @@ annotate OnlineStoreService.SalesOrders with
   totalAmount
 ]
 
-@UI.LineItem                    : [
+@UI.LineItem                            : [
   {Value: identifier},
   {Value: status_ID},
   {Value: deliveryDate},
@@ -34,7 +34,7 @@ annotate OnlineStoreService.SalesOrders with
   {Value: totalAmount}
 ]
 
-@UI.HeaderInfo                  : {
+@UI.HeaderInfo                          : {
   TypeName      : 'Sales order',
   TypeNamePlural: 'Sales orders',
   Title         : {
@@ -47,7 +47,7 @@ annotate OnlineStoreService.SalesOrders with
   }
 }
 
-@UI.Facets                      : [
+@UI.Facets                              : [
   {
     $Type : 'UI.ReferenceFacet',
     Label : 'Main',
@@ -70,7 +70,7 @@ annotate OnlineStoreService.SalesOrders with
   }
 ]
 
-@UI.FieldGroup #Main            : {
+@UI.FieldGroup #Main                    : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: identifier},
@@ -79,7 +79,7 @@ annotate OnlineStoreService.SalesOrders with
   ]
 }
 
-@UI.FieldGroup #Customer        : {
+@UI.FieldGroup #Customer                : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: customerName},
@@ -89,12 +89,17 @@ annotate OnlineStoreService.SalesOrders with
   ]
 }
 
-@UI.FieldGroup #Totals          : {
+@UI.FieldGroup #Totals                  : {
   $Type: 'UI.FieldGroupType',
   Data : [{Value: totalAmount}, ]
 }
 
-@Common.SideEffects #ItemChanged: {
+@Common.SideEffects #DeliveryDateChanged: {
+  SourceProperties: ['deliveryDate'],
+  TargetProperties: ['status_ID']
+}
+
+@Common.SideEffects #ItemChanged        : {
   SourceEntities  : [items],
   TargetProperties: [
     'totalAmount',

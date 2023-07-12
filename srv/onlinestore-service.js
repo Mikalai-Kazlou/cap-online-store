@@ -31,6 +31,10 @@ module.exports = cds.service.impl(function () {
     await assignSalesOrderHeaderDefault(req.data, Statuses);
   });
 
+  this.before("PATCH", [SalesOrders], async (req) => {
+    await setSalesOrderConfirmedStatus(req.data, Statuses);
+  });
+
   this.before(["NEW", "PATCH"], [SalesOrderItems], async (req) => {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
@@ -49,6 +53,16 @@ async function assignNewIdentifier(data, target) {
 async function assignSalesOrderHeaderDefault(data, Statuses) {
   const oStatusNew = await SELECT.one.from(Statuses).where({ title: "New" });
   data.status_ID = oStatusNew.ID;
+}
+
+async function setSalesOrderConfirmedStatus(data, Statuses) {
+  if (data.deliveryDate) {
+    const oStatusConfirmed = await SELECT.one
+      .from(Statuses)
+      .where({ title: "Confirmed" });
+
+    data.status_ID = oStatusConfirmed.ID;
+  }
 }
 
 async function recalculateSalesOrderItem(data, target, Products) {
