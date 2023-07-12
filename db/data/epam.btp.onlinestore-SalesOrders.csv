@@ -1,4 +1,4 @@
-ID,identifier,status_id,customerName,customerDeliveryAddress,customerPhoneNumber,customerEmail,deliveryDate
-d0c9c658-a3f6-a672-3a12-b64eee64ccb1,1,8ce13917-3f18-f429-e255-5345dc68ceb9,John Doe,"76 Center ave, Brookliyn, NY 11201, USA",+19092355380,john.doe@gmail.com,
-76d1fced-2e53-841f-207f-691cea547120,2,6e1542a6-bae7-30f7-e25f-3e76c98268a9,Emily Taylor,"57 Caldwell street, London, SW9 0EU, UK",+447459164843,emily.taylor@gmail.com,2023-07-25T17:00:00Z
-12747e9b-fca1-f46f-782f-bd5540879848,3,df32b456-2e25-f026-e36a-16e35b384211,Henry Robinson,"7 Chaloner street, Liverpool, L1 0AE, UK",+447465194740,henry.robinson@gmail.com,2023-07-01T09:00:00Z
+ID,identifier,status_id,customerName,customerDeliveryAddress,customerPhoneNumber,customerEmail,deliveryDate,totalAmount,currency_code
+d0c9c658-a3f6-a672-3a12-b64eee64ccb1,1,8ce13917-3f18-f429-e255-5345dc68ceb9,John Doe,"76 Center ave, Brookliyn, NY 11201, USA",+19092355380,john.doe@gmail.com,,2589,USD
+76d1fced-2e53-841f-207f-691cea547120,2,6e1542a6-bae7-30f7-e25f-3e76c98268a9,Emily Taylor,"57 Caldwell street, London, SW9 0EU, UK",+447459164843,emily.taylor@gmail.com,2023-07-25T17:00:00Z,1999,USD
+12747e9b-fca1-f46f-782f-bd5540879848,3,df32b456-2e25-f026-e36a-16e35b384211,Henry Robinson,"7 Chaloner street, Liverpool, L1 0AE, UK",+447465194740,henry.robinson@gmail.com,2023-07-01T09:00:00Z,1980,USD

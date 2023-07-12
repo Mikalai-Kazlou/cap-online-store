@@ -23,7 +23,7 @@ module.exports = cds.service.impl(function () {
     "CREATE",
     [Categories, Brands, Products, SalesOrders],
     async (req) => {
-      await assignNewIdentifier(req.target, req.data);
+      await assignNewIdentifier(req.data, req.target);
     }
   );
 
@@ -32,12 +32,16 @@ module.exports = cds.service.impl(function () {
   });
 
   this.before(["NEW", "PATCH"], [SalesOrderItems], async (req) => {
-    await recalculateSalesOrderItem(req.target, req.data, Products);
+    await recalculateSalesOrderItem(req.data, req.target, Products);
+  });
+
+  this.after("PATCH", [SalesOrderItems], async (data, req) => {
+    await recalculateSalesOrderTotals(data, req.target, SalesOrders);
   });
 });
 
-async function assignNewIdentifier(entity, data) {
-  const oQuery = SELECT(`MAX(identifier) as max`).from(entity);
+async function assignNewIdentifier(data, target) {
+  const oQuery = SELECT(`MAX(identifier) as max`).from(target);
   const [result] = await cds.run(oQuery);
   data.identifier = ++result.max;
 }
@@ -47,16 +51,38 @@ async function assignSalesOrderHeaderDefault(data, Statuses) {
   data.status_ID = oStatusNew.ID;
 }
 
-async function recalculateSalesOrderItem(entity, data, Products) {
-  const dbItemInfo = await cds.read(entity.drafts).where({ ID: data.ID });
-  let oProduct = {};
+async function recalculateSalesOrderItem(data, target, Products) {
+  const dbItemInfo = await cds.read(target.drafts).where({ ID: data.ID });
 
-  if (data.product_ID) {
-    oProduct = await SELECT.one.from(Products).where({ ID: data.product_ID });
-  }
+  const oProduct = data.product_ID
+    ? await SELECT.one.from(Products).where({ ID: data.product_ID })
+    : {};
 
   data.quantity = data.quantity || dbItemInfo[0]?.quantity || 1;
   data.price = oProduct?.price || dbItemInfo[0]?.price || 0;
+
   data.currency_code = oProduct?.currency_code || dbItemInfo[0]?.currency_code;
   data.amount = data.quantity * data.price;
+}
+
+async function recalculateSalesOrderTotals(data, target, SalesOrders) {
+  const orderInfo = { totalAmount: 0 };
+
+  const result = await cds
+    .read(target.drafts)
+    .where({ ID: data.ID })
+    .columns(["parent_ID"]);
+
+  const sOrderID = result[0].parent_ID;
+
+  const dbItemInfos = await cds
+    .read(target.drafts)
+    .where({ parent_ID: sOrderID });
+
+  dbItemInfos.forEach((dbItemInfo) => {
+    orderInfo.totalAmount += dbItemInfo.amount;
+    orderInfo.currency_code = dbItemInfo.currency_code;
+  });
+
+  await cds.update(SalesOrders.drafts, sOrderID).set(orderInfo);
 }

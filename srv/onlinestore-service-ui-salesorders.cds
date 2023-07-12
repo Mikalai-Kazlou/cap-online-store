@@ -5,21 +5,22 @@ using OnlineStoreService from './onlinestore-service';
 // -------------------------------------------------
 annotate OnlineStoreService.SalesOrders with
 
-@UI.PresentationVariant : {
+@UI.PresentationVariant         : {
   Visualizations: ['@UI.LineItem'],
   SortOrder     : [{Property: identifier}]
 }
 
-@UI.SelectionFields     : [
+@UI.SelectionFields             : [
   status_ID,
   deliveryDate,
   customerName,
   customerDeliveryAddress,
   customerPhoneNumber,
-  customerEmail
+  customerEmail,
+  totalAmount
 ]
 
-@UI.LineItem            : [
+@UI.LineItem                    : [
   {Value: identifier},
   {Value: status_ID},
   {Value: deliveryDate},
@@ -29,10 +30,11 @@ annotate OnlineStoreService.SalesOrders with
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: customerPhoneNumber},
-  {Value: customerEmail}
+  {Value: customerEmail},
+  {Value: totalAmount}
 ]
 
-@UI.HeaderInfo          : {
+@UI.HeaderInfo                  : {
   TypeName      : 'Sales order',
   TypeNamePlural: 'Sales orders',
   Title         : {
@@ -45,7 +47,7 @@ annotate OnlineStoreService.SalesOrders with
   }
 }
 
-@UI.Facets              : [
+@UI.Facets                      : [
   {
     $Type : 'UI.ReferenceFacet',
     Label : 'Main',
@@ -58,12 +60,17 @@ annotate OnlineStoreService.SalesOrders with
   },
   {
     $Type : 'UI.ReferenceFacet',
+    Label : 'Totals',
+    Target: '@UI.FieldGroup#Totals'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
     Label : 'Items',
     Target: 'items/@UI.LineItem'
   }
 ]
 
-@UI.FieldGroup #Main    : {
+@UI.FieldGroup #Main            : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: identifier},
@@ -72,7 +79,7 @@ annotate OnlineStoreService.SalesOrders with
   ]
 }
 
-@UI.FieldGroup #Customer: {
+@UI.FieldGroup #Customer        : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: customerName},
@@ -82,15 +89,28 @@ annotate OnlineStoreService.SalesOrders with
   ]
 }
 
+@UI.FieldGroup #Totals          : {
+  $Type: 'UI.FieldGroupType',
+  Data : [{Value: totalAmount}, ]
+}
+
+@Common.SideEffects #ItemChanged: {
+  SourceEntities  : [items],
+  TargetProperties: [
+    'totalAmount',
+    'currency_code'
+  ]
+}
+
 {
   @UI.Hidden
   ID;
 
-  @title : 'ID'
+  @title               : 'ID'
   identifier;
 
-  @title : 'Status'
-  @Common: {
+  @title               : 'Status'
+  @Common              : {
     Text           : status.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -111,20 +131,24 @@ annotate OnlineStoreService.SalesOrders with
   }
   status;
 
-  @title : 'Delivery date'
+  @title               : 'Delivery date'
   deliveryDate;
 
-  @title : 'Customer'
+  @title               : 'Customer'
   customerName;
 
-  @title : 'Delivery Address'
+  @title               : 'Delivery Address'
   customerDeliveryAddress;
 
-  @title : 'Phone number'
+  @title               : 'Phone number'
   customerPhoneNumber;
 
-  @title : 'Email'
+  @title               : 'Email'
   customerEmail;
+
+  @title               : 'Total amount'
+  @Measures.ISOCurrency: currency_code
+  totalAmount;
 };
 
 // -------------------------------------------------
@@ -206,12 +230,10 @@ annotate OnlineStoreService.SalesOrderItems with
   quantity;
 
   @title               : 'Price'
-  @Common.FieldControl : #ReadOnly
   @Measures.ISOCurrency: currency_code
   price;
 
   @title               : 'Amount'
-  @Common.FieldControl : #ReadOnly
   @Measures.ISOCurrency: currency_code
   amount;
 };
