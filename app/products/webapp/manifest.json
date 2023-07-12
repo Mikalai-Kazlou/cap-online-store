@@ -106,11 +106,6 @@
                     "pattern": "Products({key}):?query:",
                     "name": "ProductsObjectPage",
                     "target": "ProductsObjectPage"
-                },
-                {
-                    "pattern": "Products({key})/images({key2}):?query:",
-                    "name": "ProductImagesObjectPage",
-                    "target": "ProductImagesObjectPage"
                 }
             ],
             "targets": {
@@ -140,25 +135,7 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Products",
-                            "navigation": {
-                                "images": {
-                                    "detail": {
-                                        "route": "ProductImagesObjectPage"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "ProductImagesObjectPage": {
-                    "type": "Component",
-                    "id": "ProductImagesObjectPage",
-                    "name": "sap.fe.templates.ObjectPage",
-                    "options": {
-                        "settings": {
-                            "editableHeaderContent": false,
-                            "entitySet": "ProductImages"
+                            "entitySet": "Products"
                         }
                     }
                 }

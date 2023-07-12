@@ -183,7 +183,7 @@ annotate OnlineStoreService.Products with
 // -------------------------------------------------
 annotate OnlineStoreService.ProductImages with
 
-@UI.LineItem        : [
+@UI.LineItem: [
   {
     $Type                : 'UI.DataFieldWithUrl',
     Value                : url,
@@ -193,17 +193,6 @@ annotate OnlineStoreService.ProductImages with
   {Value: createdAt},
   {Value: modifiedAt}
 ]
-
-@UI.Facets          : [{
-  $Type : 'UI.ReferenceFacet',
-  Label : 'Main',
-  Target: '@UI.FieldGroup#Main'
-}]
-
-@UI.FieldGroup #Main: {
-  $Type: 'UI.FieldGroupType',
-  Data : [{Value: url}]
-}
 
 {
   @UI.Hidden
