@@ -18,7 +18,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on db.Products;
+  ])  as projection on db.Products;
 
   @odata.draft.enabled
   entity Categories @(restrict: [
@@ -36,7 +36,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on db.Categories;
+  ])  as projection on db.Categories;
 
   @odata.draft.enabled
   entity Brands @(restrict: [
@@ -54,7 +54,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on db.Brands;
+  ])  as projection on db.Brands;
 
   @odata.draft.enabled
   entity SalesOrders @(restrict: [
@@ -77,7 +77,7 @@ service OnlineStoreService {
         'Administrator'
       ]
     }
-  ])              as projection on db.SalesOrders actions {
+  ])  as projection on db.SalesOrders actions {
 
     @cds.odata.bindingparameter.name: '_it'
     @Common.SideEffects             : {TargetProperties: ['_it/status_ID']}
@@ -85,7 +85,14 @@ service OnlineStoreService {
   };
 
   @readonly
-  entity Statuses as projection on db.Statuses;
+  entity Statuses @(restrict: [{
+    grant: 'READ',
+    to   : 'authenticated-user'
+  }]) as projection on db.Statuses;
 
-  function getProductRangeFilterParameters(property : String) returns db.RangeFilterParameters;
+  function getProductRangeFilterParameters @(restrict: [{to: [
+    'Customer',
+    'SalesManager',
+    'Administrator'
+  ]}])(property : String) returns db.RangeFilterParameters;
 }

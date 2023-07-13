@@ -83,10 +83,17 @@ annotate OnlineStoreService.Products with
 
 @UI.FieldGroup #Description: {
   $Type: 'UI.FieldGroupType',
-  Data : [{
-    Value: description,
-    Label: '',
-  }]
+  Data : [
+    {
+      Value: description,
+      Label: '',
+    },
+    {
+      $Type: 'UI.DataFieldWithUrl',
+      Value: thumbnail,
+      Url  : thumbnail
+    }
+  ]
 }
 
 @UI.FieldGroup #Properties : {

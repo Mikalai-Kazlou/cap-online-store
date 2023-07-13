@@ -1,11 +1,13 @@
 namespace epam.btp.onlinestore;
 
 using {
+  cuid,
   managed,
   Currency
 } from '@sap/cds/common';
 
-entity Products : managed {
+@assert.unique.identifier: [identifier]
+entity Products : cuid, managed {
   key ID          : UUID                      @Core.Computed;
       identifier  : Integer                   @Core.Computed;
       category    : Association to Categories @mandatory;
@@ -17,7 +19,9 @@ entity Products : managed {
       discount    : Decimal;
       rating      : Decimal;
       stock       : Integer;
-      thumbnail   : String;
+
+      @assert.format: '^(http:\/\/|https:\/\/)'
+      thumbnail   : String                    @mandatory;
       images      : Composition of many ProductImages
                       on images.parent = $self;
 }
@@ -25,22 +29,27 @@ entity Products : managed {
 entity ProductImages : managed {
   key ID     : UUID   @Core.Computed;
       parent : Association to Products;
+
+      @assert.format: '^(http:\/\/|https:\/\/)'
       url    : String @mandatory;
 }
 
-entity Categories : managed {
+@assert.unique.identifier: [identifier]
+entity Categories : cuid, managed {
   key ID         : UUID       @Core.Computed;
       identifier : Integer    @Core.Computed;
       title      : String(50) @mandatory;
 }
 
-entity Brands : managed {
+@assert.unique.identifier: [identifier]
+entity Brands : cuid, managed {
   key ID         : UUID       @Core.Computed;
       identifier : Integer    @Core.Computed;
       title      : String(50) @mandatory;
 }
 
-entity SalesOrders : managed {
+@assert.unique.identifier: [identifier]
+entity SalesOrders : cuid, managed {
   key ID                      : UUID                    @Core.Computed;
       identifier              : Integer                 @Core.Computed;
       status                  : Association to Statuses @Core.Computed;
@@ -65,7 +74,8 @@ entity SalesOrderItems : managed {
       currency : Currency                @Core.Computed;
 }
 
-entity Statuses {
+@assert.unique.identifier: [identifier]
+entity Statuses : cuid {
   key ID         : UUID       @Core.Computed;
       identifier : Integer    @Core.Computed;
       title      : String(50) @mandatory;
