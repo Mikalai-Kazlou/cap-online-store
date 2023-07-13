@@ -23,13 +23,21 @@ module.exports = cds.service.impl(function () {
     const oParams = req.params[0];
     const oTarget = oParams.IsActiveEntity ? req.target : req.target.drafts;
 
-    const oStatusDelivered = await SELECT.one
-      .from(Statuses)
-      .where({ title: "Delivered" });
+    const oStatuses = await SELECT.from(Statuses)
+      .where({ title: ["Confirmed", "Delivered"] })
+      .columns(["ID", "title"]);
+
+    const oStatusDelivered = oStatuses.find(
+      (oStatus) => oStatus.title === "Delivered"
+    );
+    const oStatusConfirmed = oStatuses.find(
+      (oStatus) => oStatus.title === "Confirmed"
+    );
 
     await cds
       .update(oTarget, oParams.ID)
-      .set({ status_ID: oStatusDelivered.ID });
+      .set({ status_ID: oStatusDelivered.ID })
+      .where({ status_ID: oStatusConfirmed.ID });
   });
 
   this.before(

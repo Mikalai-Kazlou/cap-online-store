@@ -31,6 +31,11 @@ annotate OnlineStoreService.SalesOrders with
 }]
 
 @UI.LineItem                            : [
+  {
+    $Type : 'UI.DataFieldForAction',
+    Label : 'Set to Delivered',
+    Action: 'OnlineStoreService.setDeliveredStatus'
+  },
   {Value: identifier},
   {Value: status_ID},
   {Value: deliveryDate},
