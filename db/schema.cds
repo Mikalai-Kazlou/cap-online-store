@@ -1,13 +1,12 @@
 namespace epam.btp.onlinestore;
 
 using {
-  cuid,
   managed,
   Currency
 } from '@sap/cds/common';
 
 @assert.unique.identifier: [identifier]
-entity Products : cuid, managed {
+entity Products : managed {
   key ID          : UUID;
       identifier  : Integer;
       category    : Association to Categories;
@@ -31,21 +30,21 @@ entity ProductImages : managed {
 }
 
 @assert.unique.identifier: [identifier]
-entity Categories : cuid, managed {
+entity Categories : managed {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
 }
 
 @assert.unique.identifier: [identifier]
-entity Brands : cuid, managed {
+entity Brands : managed {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
 }
 
 @assert.unique.identifier: [identifier]
-entity SalesOrders : cuid, managed {
+entity SalesOrders : managed {
   key ID                      : UUID;
       identifier              : Integer;
       status                  : Association to Statuses;
@@ -71,7 +70,7 @@ entity SalesOrderItems : managed {
 }
 
 @assert.unique.identifier: [identifier]
-entity Statuses : cuid {
+entity Statuses {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
