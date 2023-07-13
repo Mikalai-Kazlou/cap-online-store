@@ -26,12 +26,17 @@ annotate OnlineStoreService.Products with
   {Value: brand_ID},
   {
     Value                : title,
+    Criticality          : criticality,
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: price},
   {Value: discount},
   {Value: rating},
-  {Value: stock},
+  {
+    Value                    : stock,
+    Criticality              : criticality,
+    CriticalityRepresentation: #WithoutIcon
+  },
 ]
 
 @UI.HeaderInfo              : {
@@ -99,7 +104,10 @@ annotate OnlineStoreService.Products with
     {Value: price},
     {Value: discount},
     {Value: rating},
-    {Value: stock}
+    {
+      Value      : stock,
+      Criticality: criticality
+    }
   ]
 }
 
@@ -191,6 +199,9 @@ annotate OnlineStoreService.Products with
   @mandatory
   @assert.format       : '^(http:\/\/|https:\/\/)'
   thumbnail;
+
+  @UI.Hidden
+  criticality;
 };
 
 // -------------------------------------------------

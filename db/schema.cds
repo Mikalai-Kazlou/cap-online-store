@@ -19,6 +19,7 @@ entity Products : managed {
       rating      : Decimal;
       stock       : Integer;
       thumbnail   : String;
+      criticality : Integer;
       images      : Composition of many ProductImages
                       on images.parent = $self;
 }

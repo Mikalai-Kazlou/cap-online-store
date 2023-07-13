@@ -52,8 +52,12 @@ module.exports = cds.service.impl(function () {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
-  this.after('PATCH', [SalesOrderItems], async (data, req) => {
+  this.after(['NEW', 'PATCH'], [SalesOrderItems], async (data, req) => {
     await recalculateSalesOrderTotals(data, req.target, SalesOrders);
+  });
+
+  this.after('READ', Products, (data) => {
+    setProductsCriticality(data);
   });
 });
 
@@ -89,13 +93,28 @@ async function recalculateSalesOrderItem(data, target, Products) {
 async function recalculateSalesOrderTotals(data, target, SalesOrders) {
   const oOrderInfo = { totalAmount: 0 };
 
-  const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID }).columns(['parent_ID']);
-  const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: oItemData.ID });
+  const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID });
+  const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: oItemData.parent_ID });
 
-  dbItemInfos.forEach((dbItemInfo) => {
-    oOrderInfo.totalAmount += dbItemInfo.amount;
-    oOrderInfo.currency_code = dbItemInfo.currency_code;
+  oOrderInfo.currency_code = oItemData.currency_code;
+  oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
+
+  await cds.update(SalesOrders.drafts, oItemData.parent_ID).set(oOrderInfo);
+}
+
+function setProductsCriticality(data) {
+  const aProducts = Array.isArray(data) ? data : [data];
+  aProducts.forEach((oProduct) => {
+    switch (true) {
+      case oProduct.stock >= 20:
+        oProduct.criticality = 3;
+        break;
+      case oProduct.stock >= 10:
+        oProduct.criticality = 2;
+        break;
+      default:
+        oProduct.criticality = 1;
+        break;
+    }
   });
-
-  await cds.update(SalesOrders.drafts, sOrderID).set(oOrderInfo);
 }
