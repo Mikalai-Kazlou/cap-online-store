@@ -16,8 +16,8 @@ annotate OnlineStoreService.Brands with
 ]
 
 @UI.HeaderInfo         : {
-  TypeName      : 'Brand',
-  TypeNamePlural: 'Brands',
+  TypeName      : '{i18n>BrandsTypeName}',
+  TypeNamePlural: '{i18n>BrandsTypeNamePlural}',
   Title         : {
     $Type: 'UI.DataField',
     Value: title
@@ -44,11 +44,11 @@ annotate OnlineStoreService.Brands with
   }
   ID;
 
-  @title : 'ID'
+  @title : '{i18n>ID}'
   @Core.Computed
   identifier;
 
-  @title : 'Title'
+  @title : '{i18n>Title}'
   @mandatory
   title;
 };

@@ -5,12 +5,12 @@ using OnlineStoreService from './onlinestore-service';
 // -------------------------------------------------
 annotate OnlineStoreService.Products with
 
-@UI.PresentationVariant    : {
+@UI.PresentationVariant     : {
   Visualizations: ['@UI.LineItem'],
   SortOrder     : [{Property: identifier}]
 }
 
-@UI.SelectionFields        : [
+@UI.SelectionFields         : [
   category_ID,
   brand_ID,
   price,
@@ -20,7 +20,7 @@ annotate OnlineStoreService.Products with
   stock
 ]
 
-@UI.LineItem               : [
+@UI.LineItem                : [
   {Value: identifier},
   {Value: category_ID},
   {Value: brand_ID},
@@ -34,9 +34,9 @@ annotate OnlineStoreService.Products with
   {Value: stock},
 ]
 
-@UI.HeaderInfo             : {
-  TypeName      : 'Product',
-  TypeNamePlural: 'Products',
+@UI.HeaderInfo              : {
+  TypeName      : '{i18n>ProductsTypeName}',
+  TypeNamePlural: '{i18n>ProductsTypeNamePlural}',
   Title         : {
     $Type: 'UI.DataField',
     Value: title
@@ -48,30 +48,30 @@ annotate OnlineStoreService.Products with
   ImageUrl      : thumbnail
 }
 
-@UI.Facets                 : [
+@UI.Facets                  : [
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Main',
+    Label : '{i18n>FieldGroupMain}',
     Target: '@UI.FieldGroup#Main'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Properties',
+    Label : '{i18n>FieldGroupProperties}',
     Target: '@UI.FieldGroup#Properties'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Description',
-    Target: '@UI.FieldGroup#Description'
+    Label : '{i18n>FieldGroupPresentation}',
+    Target: '@UI.FieldGroup#Presentation'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Images',
+    Label : '{i18n>FieldGroupImages}',
     Target: 'images/@UI.PresentationVariant#Main'
   }
 ]
 
-@UI.FieldGroup #Main       : {
+@UI.FieldGroup #Main        : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: identifier},
@@ -81,13 +81,10 @@ annotate OnlineStoreService.Products with
   ]
 }
 
-@UI.FieldGroup #Description: {
+@UI.FieldGroup #Presentation: {
   $Type: 'UI.FieldGroupType',
   Data : [
-    {
-      Value: description,
-      Label: '',
-    },
+    {Value: description},
     {
       $Type: 'UI.DataFieldWithUrl',
       Value: thumbnail,
@@ -96,7 +93,7 @@ annotate OnlineStoreService.Products with
   ]
 }
 
-@UI.FieldGroup #Properties : {
+@UI.FieldGroup #Properties  : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: price},
@@ -115,17 +112,17 @@ annotate OnlineStoreService.Products with
   }
   ID;
 
-  @title               : 'ID'
+  @title               : '{i18n>ID}'
   @Core.Computed
   identifier;
 
-  @title               : 'Category'
+  @title               : '{i18n>Category}'
   @mandatory
   @Common              : {
     Text           : category.title,
     TextArrangement: #TextOnly,
     ValueList      : {
-      Label         : 'Categories',
+      Label         : '{i18n>CategoriesTypeNamePlural}',
       CollectionPath: 'Categories',
       Parameters    : [
         {
@@ -142,13 +139,13 @@ annotate OnlineStoreService.Products with
   }
   category;
 
-  @title               : 'Brand'
+  @title               : '{i18n>Brand}'
   @mandatory
   @Common              : {
     Text           : brand.title,
     TextArrangement: #TextOnly,
     ValueList      : {
-      Label         : 'Brands',
+      Label         : '{i18n>BrandsTypeNamePlural}',
       CollectionPath: 'Brands',
       Parameters    : [
         {
@@ -165,15 +162,15 @@ annotate OnlineStoreService.Products with
   }
   brand;
 
-  @title               : 'Title'
+  @title               : '{i18n>Title}'
   @mandatory
   title;
 
-  @title               : 'Description'
+  @title               : '{i18n>Description}'
   @UI.MultiLineText
   description;
 
-  @title               : 'Price'
+  @title               : '{i18n>Price}'
   @mandatory
   @Measures.ISOCurrency: currency_code
   price;
@@ -181,16 +178,16 @@ annotate OnlineStoreService.Products with
   @mandatory
   currency;
 
-  @title               : 'Discount'
+  @title               : '{i18n>Discount}'
   discount;
 
-  @title               : 'Rating'
+  @title               : '{i18n>Rating}'
   rating;
 
-  @title               : 'Stock'
+  @title               : '{i18n>Stock}'
   stock;
 
-  @title               : 'Thumbnail'
+  @title               : '{i18n>Thumbnail}'
   @mandatory
   @assert.format       : '^(http:\/\/|https:\/\/)'
   thumbnail;
@@ -225,7 +222,7 @@ annotate OnlineStoreService.ProductImages with
   @UI.Hidden
   parent;
 
-  @title        : 'Url'
+  @title        : '{i18n>Url}'
   @mandatory
   @assert.format: '^(http:\/\/|https:\/\/)'
   url;

@@ -10,11 +10,11 @@ annotate OnlineStoreService.Statuses with {
   }
   ID;
 
-  @title : 'ID'
+  @title : '{i18n>ID}'
   @Core.Computed
   identifier;
 
-  @title : 'Title'
+  @title : '{i18n>Title}'
   @mandatory
   title;
 

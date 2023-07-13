@@ -22,7 +22,7 @@ annotate OnlineStoreService.SalesOrders with
 
 @UI.Identification                      : [{
   $Type        : 'UI.DataFieldForAction',
-  Label        : 'Set to Delivered',
+  Label        : '{i18n>ButtonSetToDelivered}',
   Action       : 'OnlineStoreService.setDeliveredStatus',
   ![@UI.Hidden]: {$edmJson: {$Ne: [
     {$Path: 'status/title'},
@@ -33,7 +33,7 @@ annotate OnlineStoreService.SalesOrders with
 @UI.LineItem                            : [
   {
     $Type : 'UI.DataFieldForAction',
-    Label : 'Set to Delivered',
+    Label : '{i18n>ButtonSetToDelivered}',
     Action: 'OnlineStoreService.setDeliveredStatus'
   },
   {Value: identifier},
@@ -50,8 +50,8 @@ annotate OnlineStoreService.SalesOrders with
 ]
 
 @UI.HeaderInfo                          : {
-  TypeName      : 'Sales order',
-  TypeNamePlural: 'Sales orders',
+  TypeName      : '{i18n>SalesOrdersTypeName}',
+  TypeNamePlural: '{i18n>SalesOrdersTypeNamePlural}',
   Title         : {
     $Type: 'UI.DataField',
     Value: customerName
@@ -65,22 +65,22 @@ annotate OnlineStoreService.SalesOrders with
 @UI.Facets                              : [
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Main',
+    Label : '{i18n>FieldGroupMain}',
     Target: '@UI.FieldGroup#Main'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Customer',
+    Label : '{i18n>FieldGroupCustomer}',
     Target: '@UI.FieldGroup#Customer'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Totals',
+    Label : '{i18n>FieldGroupTotals}',
     Target: '@UI.FieldGroup#Totals'
   },
   {
     $Type : 'UI.ReferenceFacet',
-    Label : 'Items',
+    Label : '{i18n>FieldGroupItems}',
     Target: 'items/@UI.PresentationVariant#Main'
   }
 ]
@@ -127,17 +127,17 @@ annotate OnlineStoreService.SalesOrders with
   @Core.Computed
   ID;
 
-  @title               : 'ID'
+  @title               : '{i18n>ID}'
   @Core.Computed
   identifier;
 
-  @title               : 'Status'
+  @title               : '{i18n>Status}'
   @Core.Computed
   @Common              : {
     Text           : status.title,
     TextArrangement: #TextOnly,
     ValueList      : {
-      Label         : 'Statuses',
+      Label         : '{i18n>StatusesTypeNamePlural}',
       CollectionPath: 'Statuses',
       Parameters    : [
         {
@@ -154,25 +154,25 @@ annotate OnlineStoreService.SalesOrders with
   }
   status;
 
-  @title               : 'Delivery date'
+  @title               : '{i18n>DeliveryDate}'
   deliveryDate;
 
-  @title               : 'Customer'
+  @title               : '{i18n>Customer}'
   @mandatory
   customerName;
 
-  @title               : 'Delivery Address'
+  @title               : '{i18n>DeliveryAddress}'
   @mandatory
   customerDeliveryAddress;
 
-  @title               : 'Phone number'
+  @title               : '{i18n>PhoneNumber}'
   @mandatory
   customerPhoneNumber;
 
-  @title               : 'Email'
+  @title               : '{i18n>Email}'
   customerEmail;
 
-  @title               : 'Total amount'
+  @title               : '{i18n>TotalAmount}'
   @Core.Computed
   @Measures.ISOCurrency: currency_code
   totalAmount;
@@ -203,7 +203,7 @@ annotate OnlineStoreService.SalesOrderItems with
 
 @UI.Facets                          : [{
   $Type : 'UI.ReferenceFacet',
-  Label : 'Main',
+  Label : '{i18n>FieldGroupMain}',
   Target: '@UI.FieldGroup#Main'
 }]
 
@@ -240,13 +240,13 @@ annotate OnlineStoreService.SalesOrderItems with
   @UI.Hidden
   parent;
 
-  @title               : 'Product'
+  @title               : '{i18n>Product}'
   @mandatory
   @Common              : {
     Text           : product.title,
     TextArrangement: #TextOnly,
     ValueList      : {
-      Label         : 'Products',
+      Label         : '{i18n>ProductsTypeNamePlural}',
       CollectionPath: 'Products',
       Parameters    : [
         {
@@ -263,16 +263,16 @@ annotate OnlineStoreService.SalesOrderItems with
   }
   product;
 
-  @title               : 'Quantity'
+  @title               : '{i18n>Quantity}'
   @mandatory
   quantity;
 
-  @title               : 'Price'
+  @title               : '{i18n>Price}'
   @Core.Computed
   @Measures.ISOCurrency: currency_code
   price;
 
-  @title               : 'Amount'
+  @title               : '{i18n>Amount}'
   @Core.Computed
   @Measures.ISOCurrency: currency_code
   amount;

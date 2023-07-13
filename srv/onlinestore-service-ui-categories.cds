@@ -16,8 +16,8 @@ annotate OnlineStoreService.Categories with
 ]
 
 @UI.HeaderInfo         : {
-  TypeName      : 'Category',
-  TypeNamePlural: 'Categories',
+  TypeName      : '{i18n>CategoriesTypeName}',
+  TypeNamePlural: '{i18n>CategoriesTypeNamePlural}',
   Title         : {
     $Type: 'UI.DataField',
     Value: title
@@ -44,11 +44,11 @@ annotate OnlineStoreService.Categories with
   }
   ID;
 
-  @title : 'ID'
+  @title : '{i18n>ID}'
   @Core.Computed
   identifier;
 
-  @title : 'Title'
+  @title : '{i18n>Title}'
   @mandatory
   title;
 };
