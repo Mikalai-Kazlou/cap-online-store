@@ -108,6 +108,7 @@ annotate OnlineStoreService.Products with
 
 {
   @UI.Hidden
+  @Core.Computed
   @Common              : {
     Text           : title,
     TextArrangement: #TextOnly
@@ -115,9 +116,11 @@ annotate OnlineStoreService.Products with
   ID;
 
   @title               : 'ID'
+  @Core.Computed
   identifier;
 
   @title               : 'Category'
+  @mandatory
   @Common              : {
     Text           : category.title,
     TextArrangement: #TextOnly,
@@ -140,6 +143,7 @@ annotate OnlineStoreService.Products with
   category;
 
   @title               : 'Brand'
+  @mandatory
   @Common              : {
     Text           : brand.title,
     TextArrangement: #TextOnly,
@@ -162,6 +166,7 @@ annotate OnlineStoreService.Products with
   brand;
 
   @title               : 'Title'
+  @mandatory
   title;
 
   @title               : 'Description'
@@ -169,8 +174,12 @@ annotate OnlineStoreService.Products with
   description;
 
   @title               : 'Price'
+  @mandatory
   @Measures.ISOCurrency: currency_code
   price;
+
+  @mandatory
+  currency;
 
   @title               : 'Discount'
   discount;
@@ -182,6 +191,8 @@ annotate OnlineStoreService.Products with
   stock;
 
   @title               : 'Thumbnail'
+  @mandatory
+  @assert.format       : '^(http:\/\/|https:\/\/)'
   thumbnail;
 };
 
@@ -203,11 +214,14 @@ annotate OnlineStoreService.ProductImages with
 
 {
   @UI.Hidden
+  @Core.Computed
   ID;
 
   @UI.Hidden
   parent;
 
-  @title: 'Url'
+  @title        : 'Url'
+  @mandatory
+  @assert.format: '^(http:\/\/|https:\/\/)'
   url;
 };

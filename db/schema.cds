@@ -8,77 +8,73 @@ using {
 
 @assert.unique.identifier: [identifier]
 entity Products : cuid, managed {
-  key ID          : UUID                      @Core.Computed;
-      identifier  : Integer                   @Core.Computed;
-      category    : Association to Categories @mandatory;
-      brand       : Association to Brands     @mandatory;
-      title       : String(100)               @mandatory;
+  key ID          : UUID;
+      identifier  : Integer;
+      category    : Association to Categories;
+      brand       : Association to Brands;
+      title       : String(100);
       description : String;
-      price       : Decimal                   @mandatory;
-      currency    : Currency                  @mandatory;
+      price       : Decimal;
+      currency    : Currency;
       discount    : Decimal;
       rating      : Decimal;
       stock       : Integer;
-
-      @assert.format: '^(http:\/\/|https:\/\/)'
-      thumbnail   : String                    @mandatory;
+      thumbnail   : String;
       images      : Composition of many ProductImages
                       on images.parent = $self;
 }
 
 entity ProductImages : managed {
-  key ID     : UUID   @Core.Computed;
+  key ID     : UUID;
       parent : Association to Products;
-
-      @assert.format: '^(http:\/\/|https:\/\/)'
-      url    : String @mandatory;
+      url    : String;
 }
 
 @assert.unique.identifier: [identifier]
 entity Categories : cuid, managed {
-  key ID         : UUID       @Core.Computed;
-      identifier : Integer    @Core.Computed;
-      title      : String(50) @mandatory;
+  key ID         : UUID;
+      identifier : Integer;
+      title      : String(50);
 }
 
 @assert.unique.identifier: [identifier]
 entity Brands : cuid, managed {
-  key ID         : UUID       @Core.Computed;
-      identifier : Integer    @Core.Computed;
-      title      : String(50) @mandatory;
+  key ID         : UUID;
+      identifier : Integer;
+      title      : String(50);
 }
 
 @assert.unique.identifier: [identifier]
 entity SalesOrders : cuid, managed {
-  key ID                      : UUID                    @Core.Computed;
-      identifier              : Integer                 @Core.Computed;
-      status                  : Association to Statuses @Core.Computed;
+  key ID                      : UUID;
+      identifier              : Integer;
+      status                  : Association to Statuses;
       deliveryDate            : DateTime;
-      customerName            : String(100)             @mandatory;
-      customerDeliveryAddress : String(250)             @mandatory;
-      customerPhoneNumber     : String(15)              @mandatory;
+      customerName            : String(100);
+      customerDeliveryAddress : String(250);
+      customerPhoneNumber     : String(15);
       customerEmail           : String(50);
-      totalAmount             : Decimal                 @Core.Computed;
-      currency                : Currency                @Core.Computed;
+      totalAmount             : Decimal;
+      currency                : Currency;
       items                   : Composition of many SalesOrderItems
                                   on items.parent = $self;
 }
 
 entity SalesOrderItems : managed {
-  key ID       : UUID                    @Core.Computed;
+  key ID       : UUID;
       parent   : Association to SalesOrders;
-      product  : Association to Products @mandatory;
-      quantity : Integer                 @mandatory;
-      price    : Decimal                 @Core.Computed;
-      amount   : Decimal                 @Core.Computed;
-      currency : Currency                @Core.Computed;
+      product  : Association to Products;
+      quantity : Integer;
+      price    : Decimal;
+      amount   : Decimal;
+      currency : Currency;
 }
 
 @assert.unique.identifier: [identifier]
 entity Statuses : cuid {
-  key ID         : UUID       @Core.Computed;
-      identifier : Integer    @Core.Computed;
-      title      : String(50) @mandatory;
+  key ID         : UUID;
+      identifier : Integer;
+      title      : String(50);
 }
 
 type RangeFilterParameters : {

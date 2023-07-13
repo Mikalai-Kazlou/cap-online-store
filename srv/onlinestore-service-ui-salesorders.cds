@@ -124,12 +124,15 @@ annotate OnlineStoreService.SalesOrders with
 
 {
   @UI.Hidden
+  @Core.Computed
   ID;
 
   @title               : 'ID'
+  @Core.Computed
   identifier;
 
   @title               : 'Status'
+  @Core.Computed
   @Common              : {
     Text           : status.title,
     TextArrangement: #TextOnly,
@@ -155,20 +158,27 @@ annotate OnlineStoreService.SalesOrders with
   deliveryDate;
 
   @title               : 'Customer'
+  @mandatory
   customerName;
 
   @title               : 'Delivery Address'
+  @mandatory
   customerDeliveryAddress;
 
   @title               : 'Phone number'
+  @mandatory
   customerPhoneNumber;
 
   @title               : 'Email'
   customerEmail;
 
   @title               : 'Total amount'
+  @Core.Computed
   @Measures.ISOCurrency: currency_code
   totalAmount;
+
+  @Core.Computed
+  currency;
 };
 
 // -------------------------------------------------
@@ -219,12 +229,14 @@ annotate OnlineStoreService.SalesOrderItems with
 
 {
   @UI.Hidden
+  @Core.Computed
   ID;
 
   @UI.Hidden
   parent;
 
   @title               : 'Product'
+  @mandatory
   @Common              : {
     Text           : product.title,
     TextArrangement: #TextOnly,
@@ -247,13 +259,19 @@ annotate OnlineStoreService.SalesOrderItems with
   product;
 
   @title               : 'Quantity'
+  @mandatory
   quantity;
 
   @title               : 'Price'
+  @Core.Computed
   @Measures.ISOCurrency: currency_code
   price;
 
   @title               : 'Amount'
+  @Core.Computed
   @Measures.ISOCurrency: currency_code
   amount;
+
+  @Core.Computed
+  currency;
 };

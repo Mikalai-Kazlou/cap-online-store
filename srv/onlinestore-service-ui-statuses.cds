@@ -3,6 +3,7 @@ using OnlineStoreService from './onlinestore-service';
 annotate OnlineStoreService.Statuses with {
 
   @UI.Hidden
+  @Core.Computed
   @Common: {
     Text           : title,
     TextArrangement: #TextOnly
@@ -10,9 +11,11 @@ annotate OnlineStoreService.Statuses with {
   ID;
 
   @title : 'ID'
+  @Core.Computed
   identifier;
 
   @title : 'Title'
+  @mandatory
   title;
 
 };

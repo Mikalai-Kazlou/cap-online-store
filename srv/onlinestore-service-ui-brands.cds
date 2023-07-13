@@ -37,6 +37,7 @@ annotate OnlineStoreService.Brands with
 
 {
   @UI.Hidden
+  @Core.Computed
   @Common: {
     Text           : title,
     TextArrangement: #TextOnly
@@ -44,8 +45,10 @@ annotate OnlineStoreService.Brands with
   ID;
 
   @title : 'ID'
+  @Core.Computed
   identifier;
 
   @title : 'Title'
+  @mandatory
   title;
 };
