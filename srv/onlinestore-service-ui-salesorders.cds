@@ -81,7 +81,7 @@ annotate OnlineStoreService.SalesOrders with
   {
     $Type : 'UI.ReferenceFacet',
     Label : 'Items',
-    Target: 'items/@UI.LineItem'
+    Target: 'items/@UI.PresentationVariant#Main'
   }
 ]
 
@@ -185,6 +185,11 @@ annotate OnlineStoreService.SalesOrders with
 // Sales order items
 // -------------------------------------------------
 annotate OnlineStoreService.SalesOrderItems with
+
+@UI.PresentationVariant #Main       : {
+  Visualizations: ['@UI.LineItem'],
+  SortOrder     : [{Property: createdAt}]
+}
 
 @UI.LineItem                        : [
   {

@@ -67,7 +67,7 @@ annotate OnlineStoreService.Products with
   {
     $Type : 'UI.ReferenceFacet',
     Label : 'Images',
-    Target: 'images/@UI.LineItem'
+    Target: 'images/@UI.PresentationVariant#Main'
   }
 ]
 
@@ -201,7 +201,12 @@ annotate OnlineStoreService.Products with
 // -------------------------------------------------
 annotate OnlineStoreService.ProductImages with
 
-@UI.LineItem: [
+@UI.PresentationVariant #Main: {
+  Visualizations: ['@UI.LineItem'],
+  SortOrder     : [{Property: createdAt}]
+}
+
+@UI.LineItem                 : [
   {
     $Type                : 'UI.DataFieldWithUrl',
     Value                : url,
