@@ -54,7 +54,7 @@ module.exports = cds.service.impl(function () {
   });
 
   this.before(['CANCEL'], [SalesOrderItems], async (req) => {
-    addParentToProcessedData(req.data, req.target, oProcessedData);
+    await addParentToProcessedData(req.data, req.target, oProcessedData);
   });
 
   this.after(['NEW', 'PATCH', 'CANCEL'], [SalesOrderItems], async (data, req) => {
@@ -110,7 +110,10 @@ async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessed
   if (sParentID) {
     const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
     oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
-    await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
+
+    try {
+      await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
+    } catch (error) {}
   }
 }
 
