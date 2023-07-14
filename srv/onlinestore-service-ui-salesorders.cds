@@ -277,6 +277,6 @@ annotate OnlineStoreService.SalesOrderItems with
   @Measures.ISOCurrency: currency_code
   amount;
 
-  @Core.Computed
+  @UI.Hidden
   currency;
 };

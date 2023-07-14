@@ -2,6 +2,7 @@ const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(function () {
   const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = this.entities();
+  const oProcessedData = {};
 
   this.on('getProductRangeFilterParameters', async (req) => {
     const sProperty = req.data.property;
@@ -52,8 +53,12 @@ module.exports = cds.service.impl(function () {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
-  this.after(['NEW', 'PATCH'], [SalesOrderItems], async (data, req) => {
-    await recalculateSalesOrderTotals(data, req.target, SalesOrders);
+  this.before(['CANCEL'], [SalesOrderItems], async (req) => {
+    addParentToProcessedData(req.data, req.target, oProcessedData);
+  });
+
+  this.after(['NEW', 'PATCH', 'CANCEL'], [SalesOrderItems], async (data, req) => {
+    await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, oProcessedData);
   });
 
   this.after('READ', Products, (data) => {
@@ -70,6 +75,7 @@ async function assignNewIdentifier(data, target) {
 async function assignSalesOrderHeaderDefault(data, Statuses) {
   const oStatusNew = await SELECT.one.from(Statuses).where({ title: 'New' });
   data.status_ID = oStatusNew.ID;
+  data.currency_code = 'USD';
 }
 
 async function setSalesOrderConfirmedStatus(data, Statuses) {
@@ -77,6 +83,11 @@ async function setSalesOrderConfirmedStatus(data, Statuses) {
     const oStatusConfirmed = await SELECT.one.from(Statuses).where({ title: 'Confirmed' });
     data.status_ID = oStatusConfirmed.ID;
   }
+}
+
+async function addParentToProcessedData(data, target, oProcessedData) {
+  const [dbItemInfo] = await cds.read(target.drafts).where({ ID: data.ID });
+  oProcessedData.sParentID = dbItemInfo.parent_ID;
 }
 
 async function recalculateSalesOrderItem(data, target, Products) {
@@ -90,16 +101,16 @@ async function recalculateSalesOrderItem(data, target, Products) {
   data.amount = data.quantity * data.price;
 }
 
-async function recalculateSalesOrderTotals(data, target, SalesOrders) {
+async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessedData) {
   const oOrderInfo = { totalAmount: 0 };
 
   const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID });
-  const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: oItemData.parent_ID });
+  const sParentID = oItemData?.parent_ID || oProcessedData?.sParentID;
 
-  oOrderInfo.currency_code = oItemData.currency_code;
+  const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
   oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
 
-  await cds.update(SalesOrders.drafts, oItemData.parent_ID).set(oOrderInfo);
+  await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
 }
 
 function setProductsCriticality(data) {
