@@ -107,10 +107,11 @@ async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessed
   const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID });
   const sParentID = oItemData?.parent_ID || oProcessedData?.sParentID;
 
-  const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
-  oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
-
-  await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
+  if (sParentID) {
+    const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
+    oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
+    await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
+  }
 }
 
 function setProductsCriticality(data) {

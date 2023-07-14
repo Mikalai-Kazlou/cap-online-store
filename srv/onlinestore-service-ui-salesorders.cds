@@ -167,6 +167,7 @@ annotate OnlineStoreService.SalesOrders with
 
   @title               : '{i18n>PhoneNumber}'
   @mandatory
+  @assert.format       : '^\+[0-9]{9,}$'
   customerPhoneNumber;
 
   @title               : '{i18n>Email}'
