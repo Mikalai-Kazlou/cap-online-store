@@ -1,5 +1,5 @@
 sap.ui.define(
-  ['./BaseController', 'sap/ui/model/Filter', 'sap/ui/model/FilterOperator', 'sap/m/ButtonType', '../model/constants'],
+  ['./BaseController', 'sap/m/ButtonType', '../model/constants'],
   function (BaseController, ButtonType, constants) {
     'use strict';
 
