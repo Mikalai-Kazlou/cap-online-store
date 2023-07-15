@@ -1,6 +1,14 @@
 {
   "scopes": [
     {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Administrator"
+    },
+    {
+      "name": "$XSAPPNAME.SalesManager",
+      "description": "Sales Manager"
+    },
+    {
       "name": "$XSAPPNAME.ShopManager",
       "description": "Shop Manager"
     },
@@ -10,6 +18,22 @@
     }
   ],
   "role-templates": [
+    {
+      "name": "Administrator",
+      "description": "Administrator",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "SalesManager",
+      "description": "Sales Manager",
+      "scope-references": [
+        "$XSAPPNAME.SalesManager"
+      ],
+      "attribute-references": []
+    },
     {
       "name": "ShopManager",
       "description": "Shop Manager",

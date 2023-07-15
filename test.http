@@ -1,0 +1,7 @@
+###
+GET http://localhost:4004/onlinestore/Products
+Authorization: Basic YWRtaW5pc3RyYXRvckB0ZXN0ZXIuY29tOmluaXRpYWw=
+
+###
+GET http://localhost:4004/onlinestore/SalesOrders?$expand=items
+Authorization: Basic YWRtaW5pc3RyYXRvckB0ZXN0ZXIuY29tOmluaXRpYWw=

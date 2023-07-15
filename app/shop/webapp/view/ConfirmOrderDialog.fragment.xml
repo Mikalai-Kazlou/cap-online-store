@@ -14,7 +14,7 @@
                 id="idConfirmOrderContainer"
             >
                 <f:SimpleForm
-                    id="ifConfirmOrderForm"
+                    id="idConfirmOrderForm"
                     title="{i18n>dialogFormTitle}"
                     editable="true"
                 >

@@ -1,7 +1,7 @@
-_schema-version: "3.1"
+_schema-version: '3.1'
 ID: cap-online-store
 description: Online store
-version: 1.0.0
+version: 1.1.0
 modules:
   - name: cap-online-store-srv
     type: nodejs
@@ -87,6 +87,10 @@ modules:
             - nsshop.zip
           name: nsshop
           target-path: resources/
+        - artifacts:
+            - nssalesorders.zip
+          name: nssalesorders
+          target-path: resources/
   - name: nsbrands
     type: html5
     path: app/brands
@@ -127,6 +131,16 @@ modules:
         - npm install
         - npm run build:cf
       supported-platforms: []
+  - name: nssalesorders
+    type: html5
+    path: app/salesorders
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
 resources:
   - name: cap-online-store-db
     type: com.sap.xs.hdi-container
@@ -137,17 +151,25 @@ resources:
     type: org.cloudfoundry.managed-service
     parameters:
       config:
-        tenant-mode: dedicated
-        xsappname: cap-online-store-${space}
         role-collections:
-          - name: "ShopManager-${space}"
-            description: Shop Manager
+          - description: Administrator
+            name: Administrator-${space}
+            role-template-references:
+              - $XSAPPNAME.Administrator
+          - description: Sales Manager
+            name: SalesManager-${space}
+            role-template-references:
+              - $XSAPPNAME.SalesManager
+          - description: Shop Manager
+            name: ShopManager-${space}
             role-template-references:
               - $XSAPPNAME.ShopManager
-          - name: "Customer-${space}"
-            description: Customer
+          - description: Customer
+            name: Customer-${space}
             role-template-references:
               - $XSAPPNAME.Customer
+        tenant-mode: dedicated
+        xsappname: cap-online-store-${space}
       path: ./xs-security.json
       service: xsuaa
       service-plan: application

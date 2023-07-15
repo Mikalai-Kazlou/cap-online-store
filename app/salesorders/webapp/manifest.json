@@ -1,7 +1,7 @@
 {
     "_version": "1.49.0",
     "sap.app": {
-        "id": "ns.products",
+        "id": "ns.salesorders",
         "type": "application",
         "i18n": "i18n/i18n.properties",
         "applicationVersion": {
@@ -13,16 +13,16 @@
         "sourceTemplate": {
             "id": "@sap/generator-fiori:lrop",
             "version": "1.9.7",
-            "toolsId": "07b77a1b-c865-4dfc-8a24-b586face2140"
+            "toolsId": "3c05e495-f59e-4f3c-9bbc-ae430196f658"
         },
         "crossNavigation": {
             "inbounds": {
-                "Products-display": {
+                "SalesOrders-display": {
                     "signature": {
                         "parameters": {},
                         "additionalParameters": "allowed"
                     },
-                    "semanticObject": "Products",
+                    "semanticObject": "SalesOrders",
                     "action": "display"
                 }
             }
@@ -58,7 +58,7 @@
     "sap.ui5": {
         "flexEnabled": true,
         "dependencies": {
-            "minUI5Version": "1.115.0",
+            "minUI5Version": "1.115.1",
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
@@ -74,7 +74,7 @@
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {
-                    "bundleName": "ns.products.i18n.i18n"
+                    "bundleName": "ns.salesorders.i18n.i18n"
                 }
             },
             "": {
@@ -99,28 +99,33 @@
             "routes": [
                 {
                     "pattern": ":?query:",
-                    "name": "ProductsList",
-                    "target": "ProductsList"
+                    "name": "SalesOrdersList",
+                    "target": "SalesOrdersList"
                 },
                 {
-                    "pattern": "Products({key}):?query:",
-                    "name": "ProductsObjectPage",
-                    "target": "ProductsObjectPage"
+                    "pattern": "SalesOrders({key}):?query:",
+                    "name": "SalesOrdersObjectPage",
+                    "target": "SalesOrdersObjectPage"
+                },
+                {
+                    "pattern": "SalesOrders({key})/items({key2}):?query:",
+                    "name": "SalesOrderItemsObjectPage",
+                    "target": "SalesOrderItemsObjectPage"
                 }
             ],
             "targets": {
-                "ProductsList": {
+                "SalesOrdersList": {
                     "type": "Component",
-                    "id": "ProductsList",
+                    "id": "SalesOrdersList",
                     "name": "sap.fe.templates.ListReport",
                     "options": {
                         "settings": {
-                            "entitySet": "Products",
+                            "entitySet": "SalesOrders",
                             "variantManagement": "Page",
                             "navigation": {
-                                "Products": {
+                                "SalesOrders": {
                                     "detail": {
-                                        "route": "ProductsObjectPage"
+                                        "route": "SalesOrdersObjectPage"
                                     }
                                 }
                             },
@@ -128,14 +133,32 @@
                         }
                     }
                 },
-                "ProductsObjectPage": {
+                "SalesOrdersObjectPage": {
                     "type": "Component",
-                    "id": "ProductsObjectPage",
+                    "id": "SalesOrdersObjectPage",
                     "name": "sap.fe.templates.ObjectPage",
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Products"
+                            "entitySet": "SalesOrders",
+                            "navigation": {
+                                "items": {
+                                    "detail": {
+                                        "route": "SalesOrderItemsObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "SalesOrderItemsObjectPage": {
+                    "type": "Component",
+                    "id": "SalesOrderItemsObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "SalesOrderItems"
                         }
                     }
                 }

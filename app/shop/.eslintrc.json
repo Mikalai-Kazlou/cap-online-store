@@ -39,7 +39,12 @@
 			2,
 			"any"
 		],
-		"camelcase": 1,
+		"camelcase": [
+			1,
+			{
+				"properties": "never"
+			}
+		],
 		"consistent-return": 1,
 		"max-nested-callbacks": [
 			1,
