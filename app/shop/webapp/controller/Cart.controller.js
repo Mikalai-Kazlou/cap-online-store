@@ -379,14 +379,6 @@ sap.ui.define(
         const oButton = this.byId('idMessagePopoverButton');
         oButton.setVisible(true);
 
-        // this.byId('idDialogInputName').setValue('Test name');
-        // this.byId('idDialogInputDeliveryAddress').setValue('Test address');
-        // this.byId('idDialogInputPhoneNumber').setValue('+123456789');
-        // this.byId('idDialogInputEmail').setValue('test.name@test.com');
-        // this.byId('idDialogInputCardNumber').setValue('1234567890123456');
-        // this.byId('idDialogInputValid').setValue('12/25');
-        // this.byId('idDialogInputCVV').setValue('111');
-
         this.requiredFieldsIDs.forEach((id) => {
           const oInput = this.byId(id);
           this.handleRequiredField(oInput);

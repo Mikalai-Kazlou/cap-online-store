@@ -23,6 +23,7 @@
     "scripts": {
         "start": "cds-serve",
         "launchpad": "cds watch --open launchpage.html",
+        "launchpad-hana": "cds watch --profile hybrid --open launchpage.html",
         "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
         "watch-brands": "cds watch --open brands/webapp/index.html?sap-ui-xx-viewCache=false",
         "watch-products": "cds watch --open products/webapp/index.html?sap-ui-xx-viewCache=false",
@@ -39,6 +40,9 @@
                 "auth": "xsuaa"
             },
             "db": "sql"
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
         }
     },
     "sapux": [

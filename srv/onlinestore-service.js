@@ -109,11 +109,8 @@ async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessed
 
   if (sParentID) {
     const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
-    oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + dbItemInfo.amount, 0);
-
-    try {
-      await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
-    } catch (error) {}
+    oOrderInfo.totalAmount = dbItemInfos.reduce((sum, dbItemInfo) => sum + +dbItemInfo.amount, 0);
+    await cds.update(SalesOrders.drafts, sParentID).set(oOrderInfo);
   }
 }
 
