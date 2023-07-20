@@ -27,11 +27,19 @@ annotate OnlineStoreService.Products with
   {
     Value                : title,
     Criticality          : criticality,
+    ![@UI.Importance]    : #High,
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: price},
-  {Value: discount},
-  {Value: rating},
+  {
+    $Type                : 'UI.DataFieldForAnnotation',
+    Target               : '@UI.DataPoint#Discount',
+    ![@HTML5.CssDefaults]: {width: '10rem'}
+  },
+  {
+    $Type : 'UI.DataFieldForAnnotation',
+    Target: '@UI.DataPoint#Rating'
+  },
   {
     Value                    : stock,
     Criticality              : criticality,
@@ -76,6 +84,20 @@ annotate OnlineStoreService.Products with
   }
 ]
 
+@UI.DataPoint #Rating       : {
+  $Type        : 'UI.DataPointType',
+  Value        : rating,
+  TargetValue  : 5,
+  Visualization: #Rating
+}
+
+@UI.DataPoint #Discount     : {
+  $Type        : 'UI.DataPointType',
+  Value        : discount,
+  TargetValue  : 100,
+  Visualization: #Progress
+}
+
 @UI.FieldGroup #Main        : {
   $Type: 'UI.FieldGroupType',
   Data : [
@@ -102,8 +124,14 @@ annotate OnlineStoreService.Products with
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: price},
-    {Value: discount},
-    {Value: rating},
+    {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#Discount'
+    },
+    {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#Rating'
+    },
     {
       Value      : stock,
       Criticality: criticality
