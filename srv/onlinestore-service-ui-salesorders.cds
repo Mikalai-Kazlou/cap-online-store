@@ -252,9 +252,9 @@ annotate OnlineStoreService.SalesOrderItems with
   @UI.Hidden
   parent;
 
-  @title               : '{i18n>Product}'
+  @title                : '{i18n>Product}'
   @mandatory
-  @Common              : {
+  @Common               : {
     Text           : product.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -273,20 +273,21 @@ annotate OnlineStoreService.SalesOrderItems with
       ]
     }
   }
+  @Common.SemanticObject: 'Products'
   product;
 
-  @title               : '{i18n>Quantity}'
+  @title                : '{i18n>Quantity}'
   @mandatory
   quantity;
 
-  @title               : '{i18n>Price}'
+  @title                : '{i18n>Price}'
   @Core.Computed
-  @Measures.ISOCurrency: currency_code
+  @Measures.ISOCurrency : currency_code
   price;
 
-  @title               : '{i18n>Amount}'
+  @title                : '{i18n>Amount}'
   @Core.Computed
-  @Measures.ISOCurrency: currency_code
+  @Measures.ISOCurrency : currency_code
   amount;
 
   @UI.Hidden

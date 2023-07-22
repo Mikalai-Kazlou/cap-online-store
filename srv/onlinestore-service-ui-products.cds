@@ -57,11 +57,16 @@ annotate OnlineStoreService.Products with
   ImageUrl      : thumbnail
 }
 
+@UI.QuickViewFacets         : [{
+  $Type : 'UI.ReferenceFacet',
+  Target: '@UI.FieldGroup#QuickInfo'
+}]
+
 @UI.HeaderFacets            : [
   {
     $Type : 'UI.ReferenceFacet',
-    Label : '{i18n>FieldGroupGeneralInformation}',
-    Target: '@UI.FieldGroup#General'
+    Label : '{i18n>FieldGroupGeneralInfo}',
+    Target: '@UI.FieldGroup#GeneralInfo'
   },
   {
     $Type : 'UI.ReferenceFacet',
@@ -123,7 +128,18 @@ annotate OnlineStoreService.Products with
   Criticality: criticality
 }
 
-@UI.FieldGroup #General     : {
+@UI.FieldGroup #QuickInfo   : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: identifier},
+    {Value: category_ID},
+    {Value: brand_ID},
+    {Value: title},
+    {Value: stock},
+  ]
+}
+
+@UI.FieldGroup #GeneralInfo : {
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: brand_ID},
