@@ -54,12 +54,24 @@ annotate OnlineStoreService.Products with
     $Type: 'UI.DataField',
     Value: title
   },
-  Description   : {
-    $Type: 'UI.DataField',
-    Value: brand.title
-  },
   ImageUrl      : thumbnail
 }
+
+@UI.HeaderFacets            : [
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : '{i18n>FieldGroupGeneralInformation}',
+    Target: '@UI.FieldGroup#General'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.DataPoint#Price'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.DataPoint#Stock'
+  }
+]
 
 @UI.Facets                  : [
   {
@@ -96,6 +108,27 @@ annotate OnlineStoreService.Products with
   Value        : discount,
   TargetValue  : 100,
   Visualization: #Progress
+}
+
+@UI.DataPoint #Price        : {
+  $Type: 'UI.DataPointType',
+  Title: '{i18n>Price}',
+  Value: price
+}
+
+@UI.DataPoint #Stock        : {
+  $Type      : 'UI.DataPointType',
+  Title      : '{i18n>Stock}',
+  Value      : stock,
+  Criticality: criticality
+}
+
+@UI.FieldGroup #General     : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: brand_ID},
+    {Value: category_ID}
+  ]
 }
 
 @UI.FieldGroup #Main        : {
