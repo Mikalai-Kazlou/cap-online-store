@@ -62,6 +62,11 @@ annotate OnlineStoreService.SalesOrders with
   }
 }
 
+@UI.HeaderFacets                        : [{
+  $Type : 'UI.ReferenceFacet',
+  Target: '@UI.DataPoint#TotalAmount'
+}]
+
 @UI.Facets                              : [
   {
     $Type : 'UI.ReferenceFacet',
@@ -84,6 +89,12 @@ annotate OnlineStoreService.SalesOrders with
     Target: 'items/@UI.PresentationVariant#Main'
   }
 ]
+
+@UI.DataPoint #TotalAmount              : {
+  $Type: 'UI.DataPointType',
+  Title: '{i18n>TotalAmount}',
+  Value: totalAmount
+}
 
 @UI.FieldGroup #Main                    : {
   $Type: 'UI.FieldGroupType',
