@@ -27,11 +27,19 @@ annotate OnlineStoreService.Products with
   {
     Value                : title,
     Criticality          : criticality,
+    ![@UI.Importance]    : #High,
     ![@HTML5.CssDefaults]: {width: '100%'}
   },
   {Value: price},
-  {Value: discount},
-  {Value: rating},
+  {
+    $Type                : 'UI.DataFieldForAnnotation',
+    Target               : '@UI.DataPoint#Discount',
+    ![@HTML5.CssDefaults]: {width: '10rem'}
+  },
+  {
+    $Type : 'UI.DataFieldForAnnotation',
+    Target: '@UI.DataPoint#Rating'
+  },
   {
     Value                    : stock,
     Criticality              : criticality,
@@ -46,12 +54,29 @@ annotate OnlineStoreService.Products with
     $Type: 'UI.DataField',
     Value: title
   },
-  Description   : {
-    $Type: 'UI.DataField',
-    Value: brand.title
-  },
   ImageUrl      : thumbnail
 }
+
+@UI.QuickViewFacets         : [{
+  $Type : 'UI.ReferenceFacet',
+  Target: '@UI.FieldGroup#QuickInfo'
+}]
+
+@UI.HeaderFacets            : [
+  {
+    $Type : 'UI.ReferenceFacet',
+    Label : '{i18n>FieldGroupGeneralInfo}',
+    Target: '@UI.FieldGroup#GeneralInfo'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.DataPoint#Price'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.DataPoint#Stock'
+  }
+]
 
 @UI.Facets                  : [
   {
@@ -75,6 +100,67 @@ annotate OnlineStoreService.Products with
     Target: 'images/@UI.PresentationVariant#Main'
   }
 ]
+
+@UI.DataPoint #Rating       : {
+  $Type        : 'UI.DataPointType',
+  Value        : rating,
+  TargetValue  : 5,
+  Visualization: #Rating
+}
+
+@UI.DataPoint #Discount     : {
+  $Type        : 'UI.DataPointType',
+  Value        : discount,
+  TargetValue  : 100,
+  Visualization: #Progress
+}
+
+@UI.DataPoint #Price        : {
+  $Type: 'UI.DataPointType',
+  Title: '{i18n>Price}',
+  Value: price
+}
+
+@UI.DataPoint #Stock        : {
+  $Type      : 'UI.DataPointType',
+  Title      : '{i18n>Stock}',
+  Value      : stock,
+  Criticality: criticality
+}
+
+@UI.FieldGroup #QuickInfo   : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {
+      Label: '{i18n>ID}',
+      Value: identifier
+    },
+    {
+      Label: '{i18n>Category}',
+      Value: category_ID
+    },
+    {
+      Label: '{i18n>Brand}',
+      Value: brand_ID
+    },
+    {
+      Label: '{i18n>Title}',
+      Value: title
+    },
+    {
+      Label: '{i18n>Stock}',
+      Value: stock
+    },
+  ]
+}
+
+@UI.FieldGroup #GeneralInfo : {
+  $Type: 'UI.FieldGroupType',
+  Data : [
+    {Value: brand_ID},
+    {Value: category_ID}
+  ]
+}
 
 @UI.FieldGroup #Main        : {
   $Type: 'UI.FieldGroupType',
@@ -102,8 +188,14 @@ annotate OnlineStoreService.Products with
   $Type: 'UI.FieldGroupType',
   Data : [
     {Value: price},
-    {Value: discount},
-    {Value: rating},
+    {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#Discount'
+    },
+    {
+      $Type : 'UI.DataFieldForAnnotation',
+      Target: '@UI.DataPoint#Rating'
+    },
     {
       Value      : stock,
       Criticality: criticality

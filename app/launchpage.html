@@ -12,7 +12,7 @@
       applications: {
         "categories-app": {
           title: 'Categories',
-          description: 'Categories',
+          description: 'CAP Annotations',
           additionalInformation: 'SAPUI5.Component=ns.categories',
           applicationType: 'URL',
           url: "./categories/webapp",
@@ -20,7 +20,7 @@
         },
         "brands-app": {
           title: "Brands",
-          description: "Brands",
+          description: "CAP Annotations",
           additionalInformation: "SAPUI5.Component=ns.brands",
           applicationType: "URL",
           url: "./brands/webapp",
@@ -28,7 +28,7 @@
         },
         "products-app": {
           title: "Products",
-          description: "Products",
+          description: "CAP Annotations",
           additionalInformation: "SAPUI5.Component=ns.products",
           applicationType: "URL",
           url: "./products/webapp",
@@ -36,7 +36,7 @@
         },
         "salesorders-app": {
           title: "Sales orders",
-          description: "Sales orders",
+          description: "CAP Annotations",
           additionalInformation: "SAPUI5.Component=ns.salesorders",
           applicationType: "URL",
           url: "./salesorders/webapp",
@@ -44,7 +44,7 @@
         },
         "shop-app": {
           title: "Online-store",
-          description: "Online-store",
+          description: "SAPUI5",
           additionalInformation: "SAPUI5.Component=ns.shop",
           applicationType: "URL",
           url: "./shop/webapp",
@@ -56,13 +56,21 @@
 
   <script src="https://ui5.sap.com/test-resources/sap/ushell/bootstrap/sandbox.js"></script>
   <script src="https://ui5.sap.com/resources/sap-ui-core.js" data-sap-ui-libs="sap.m, sap.ushell, sap.fe.templates"
-    data-sap-ui-compatVersion="edge" data-sap-ui-theme="sap_fiori_3" data-sap-ui-frameOptions="allow"
+    data-sap-ui-compatVersion="edge" data-sap-ui-theme="sap_horizon" data-sap-ui-frameOptions="allow"
     data-sap-ui-bindingSyntax="complex"></script>
   <script>
     sap.ui.getCore().attachInit(function () {
       sap.ushell.Container.createRenderer().placeAt('content');
     });
   </script>
+
+  <style>
+    @media (min-width: 80rem) {
+      .sapUiMedia-Std-Desktop .sapUShellApplicationContainer.sapUShellApplicationContainerLimitedWidth.sapUshellDefaultBackground {
+        width: 100% !important;
+      }
+    }
+  </style>
 </head>
 
 <body class="sapUiBody" id="content"></body>

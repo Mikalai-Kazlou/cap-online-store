@@ -62,6 +62,11 @@ annotate OnlineStoreService.SalesOrders with
   }
 }
 
+@UI.HeaderFacets                        : [{
+  $Type : 'UI.ReferenceFacet',
+  Target: '@UI.DataPoint#TotalAmount'
+}]
+
 @UI.Facets                              : [
   {
     $Type : 'UI.ReferenceFacet',
@@ -84,6 +89,12 @@ annotate OnlineStoreService.SalesOrders with
     Target: 'items/@UI.PresentationVariant#Main'
   }
 ]
+
+@UI.DataPoint #TotalAmount              : {
+  $Type: 'UI.DataPointType',
+  Title: '{i18n>TotalAmount}',
+  Value: totalAmount
+}
 
 @UI.FieldGroup #Main                    : {
   $Type: 'UI.FieldGroupType',
@@ -241,9 +252,9 @@ annotate OnlineStoreService.SalesOrderItems with
   @UI.Hidden
   parent;
 
-  @title               : '{i18n>Product}'
+  @title                : '{i18n>Product}'
   @mandatory
-  @Common              : {
+  @Common               : {
     Text           : product.title,
     TextArrangement: #TextOnly,
     ValueList      : {
@@ -262,20 +273,21 @@ annotate OnlineStoreService.SalesOrderItems with
       ]
     }
   }
+  @Common.SemanticObject: 'Products'
   product;
 
-  @title               : '{i18n>Quantity}'
+  @title                : '{i18n>Quantity}'
   @mandatory
   quantity;
 
-  @title               : '{i18n>Price}'
+  @title                : '{i18n>Price}'
   @Core.Computed
-  @Measures.ISOCurrency: currency_code
+  @Measures.ISOCurrency : currency_code
   price;
 
-  @title               : '{i18n>Amount}'
+  @title                : '{i18n>Amount}'
   @Core.Computed
-  @Measures.ISOCurrency: currency_code
+  @Measures.ISOCurrency : currency_code
   amount;
 
   @UI.Hidden
