@@ -131,11 +131,26 @@ annotate OnlineStoreService.Products with
 @UI.FieldGroup #QuickInfo   : {
   $Type: 'UI.FieldGroupType',
   Data : [
-    {Value: identifier},
-    {Value: category_ID},
-    {Value: brand_ID},
-    {Value: title},
-    {Value: stock},
+    {
+      Label: '{i18n>ID}',
+      Value: identifier
+    },
+    {
+      Label: '{i18n>Category}',
+      Value: category_ID
+    },
+    {
+      Label: '{i18n>Brand}',
+      Value: brand_ID
+    },
+    {
+      Label: '{i18n>Title}',
+      Value: title
+    },
+    {
+      Label: '{i18n>Stock}',
+      Value: stock
+    },
   ]
 }
 
