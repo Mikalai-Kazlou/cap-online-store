@@ -8,7 +8,7 @@ modules:
     path: gen/srv
     requires:
       - name: cap-online-store-db
-      - name: cap-online-store-uaa
+      - name: cap-online-store-xsuaa
     provides:
       - name: srv-api
         properties:
@@ -27,14 +27,14 @@ modules:
   - name: cap-online-store-destinations
     type: com.sap.application.content
     requires:
-      - name: cap-online-store-uaa
+      - name: cap-online-store-xsuaa
         parameters:
           service-key:
-            name: cap-online-store-uaa-key
-      - name: cap-online-store-html5-repo-host
+            name: cap-online-store-xsuaa-key
+      - name: cap-online-store-html5
         parameters:
           service-key:
-            name: cap-online-store-html5-repo-host-key
+            name: cap-online-store-html5-key
       - name: srv-api
       - name: cap-online-store-destination
         parameters:
@@ -45,18 +45,18 @@ modules:
           destinations:
             - Authentication: OAuth2UserTokenExchange
               Name: cap-online-store-app-srv
-              TokenServiceInstanceName: cap-online-store-uaa
-              TokenServiceKeyName: cap-online-store-uaa-key
+              TokenServiceInstanceName: cap-online-store-xsuaa
+              TokenServiceKeyName: cap-online-store-xsuaa-key
               URL: ~{srv-api/srv-url}
               sap.cloud.service: cap-online-store.service
-            - Name: cap-online-store-html5-repo-host
-              ServiceInstanceName: cap-online-store-html5-repo-host
-              ServiceKeyName: cap-online-store-html5-repo-host-key
+            - Name: cap-online-store-html5
+              ServiceInstanceName: cap-online-store-html5
+              ServiceKeyName: cap-online-store-html5-key
               sap.cloud.service: cap-online-store.service
             - Authentication: OAuth2UserTokenExchange
-              Name: cap-online-store-uaa
-              ServiceInstanceName: cap-online-store-uaa
-              ServiceKeyName: cap-online-store-uaa-key
+              Name: cap-online-store-xsuaa
+              ServiceInstanceName: cap-online-store-xsuaa
+              ServiceKeyName: cap-online-store-xsuaa-key
               sap.cloud.service: cap-online-store.service
           existing_destinations_policy: update
     build-parameters:
@@ -65,7 +65,7 @@ modules:
     type: com.sap.application.content
     path: .
     requires:
-      - name: cap-online-store-html5-repo-host
+      - name: cap-online-store-html5
         parameters:
           content-target: true
     build-parameters:
@@ -147,7 +147,7 @@ resources:
     parameters:
       service: hana
       service-plan: hdi-shared
-  - name: cap-online-store-uaa
+  - name: cap-online-store-xsuaa
     type: org.cloudfoundry.managed-service
     parameters:
       config:
@@ -189,7 +189,7 @@ resources:
             existing_destinations_policy: update
       service: destination
       service-plan: lite
-  - name: cap-online-store-html5-repo-host
+  - name: cap-online-store-html5
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
