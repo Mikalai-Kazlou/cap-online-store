@@ -80,14 +80,20 @@ annotate OnlineStoreService.Products with
 
 @UI.Facets                  : [
   {
-    $Type : 'UI.ReferenceFacet',
-    Label : '{i18n>FieldGroupMain}',
-    Target: '@UI.FieldGroup#Main'
-  },
-  {
-    $Type : 'UI.ReferenceFacet',
-    Label : '{i18n>FieldGroupProperties}',
-    Target: '@UI.FieldGroup#Properties'
+    $Type : 'UI.CollectionFacet',
+    Label : '{i18n>FieldGroupGeneralInfo}',
+    Facets: [
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>FieldGroupMain}',
+        Target: '@UI.FieldGroup#Main',
+      },
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>FieldGroupProperties}',
+        Target: '@UI.FieldGroup#Properties'
+      }
+    ]
   },
   {
     $Type : 'UI.ReferenceFacet',
