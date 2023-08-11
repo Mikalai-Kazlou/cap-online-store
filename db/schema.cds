@@ -22,27 +22,27 @@ entity Products : managed {
       criticality : Integer;
       images      : Composition of many ProductImages
                       on images.parent = $self;
-}
+};
 
 entity ProductImages : managed {
   key ID     : UUID;
       parent : Association to Products;
       url    : String;
-}
+};
 
 @assert.unique.identifier: [identifier]
 entity Categories : managed {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
-}
+};
 
 @assert.unique.identifier: [identifier]
 entity Brands : managed {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
-}
+};
 
 @assert.unique.identifier: [identifier]
 entity SalesOrders : managed {
@@ -56,9 +56,12 @@ entity SalesOrders : managed {
       customerEmail           : String(50);
       totalAmount             : Decimal;
       currency                : Currency;
+      criticality             : Integer;
       items                   : Composition of many SalesOrderItems
                                   on items.parent = $self;
-}
+      averageValues           : Association to AverageSalesOrderValues
+                                  on averageValues.currency = currency;
+};
 
 entity SalesOrderItems : managed {
   key ID       : UUID;
@@ -68,16 +71,31 @@ entity SalesOrderItems : managed {
       price    : Decimal;
       amount   : Decimal;
       currency : Currency;
-}
+};
 
 @assert.unique.identifier: [identifier]
 entity Statuses {
   key ID         : UUID;
       identifier : Integer;
       title      : String(50);
-}
+};
 
 type RangeFilterParameters : {
   min : Decimal;
   max : Decimal;
 };
+
+view AverageSalesOrderValues as
+  select from SalesOrders {
+
+        @Semantics.currencyCode       : true
+    key currency,
+
+        @Semantics.amount.currencyCode: 'currency'
+        AVG(totalAmount) as avgTotalAmount : Decimal,
+
+        @Semantics.amount.currencyCode: 'currency'
+        MAX(totalAmount) as maxTotalAmount : Decimal
+  }
+  group by
+    currency;

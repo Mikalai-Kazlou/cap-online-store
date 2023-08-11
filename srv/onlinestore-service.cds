@@ -57,6 +57,7 @@ service OnlineStoreService {
   ])  as projection on db.Brands;
 
   @odata.draft.enabled
+  @cds.redirection.target: 'OnlineStoreService.SalesOrders'
   entity SalesOrders @(restrict: [
     {
       grant: ['CREATE'],
@@ -89,6 +90,12 @@ service OnlineStoreService {
     grant: 'READ',
     to   : 'authenticated-user'
   }]) as projection on db.Statuses;
+
+  @readonly
+  view AverageSalesOrderValues @(restrict: [{
+    grant: 'READ',
+    to   : 'authenticated-user'
+  }]) as select from db.AverageSalesOrderValues;
 
   function getProductRangeFilterParameters @(restrict: [{to: [
     'Customer',

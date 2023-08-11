@@ -49,6 +49,29 @@ annotate OnlineStoreService.SalesOrders with
   {Value: totalAmount}
 ]
 
+@UI.Chart #BulletChartTotalAmount       : {
+  $Type            : 'UI.ChartDefinitionType',
+  Title            : '{i18n>TitleAverageOrderValue}',
+  Description      : '{i18n>DescriptionAllTime}',
+  ChartType        : #Bullet,
+  Measures         : [totalAmount],
+  MeasureAttributes: [{
+    $Type    : 'UI.ChartMeasureAttributeType',
+    Measure  : totalAmount,
+    Role     : #Axis1,
+    DataPoint: '@UI.DataPoint#AverageOrderValue'
+  }]
+}
+
+@UI.DataPoint #AverageOrderValue        : {
+  Title       : '{i18n>TitleAverageOrderValue}',
+  Value       : totalAmount,
+  TargetValue : averageValues.avgTotalAmount,
+  MinimumValue: 0,
+  MaximumValue: averageValues.maxTotalAmount,
+  Criticality : criticality
+}
+
 @UI.HeaderInfo                          : {
   TypeName      : '{i18n>SalesOrdersTypeName}',
   TypeNamePlural: '{i18n>SalesOrdersTypeNamePlural}',
@@ -62,10 +85,16 @@ annotate OnlineStoreService.SalesOrders with
   }
 }
 
-@UI.HeaderFacets                        : [{
-  $Type : 'UI.ReferenceFacet',
-  Target: '@UI.DataPoint#TotalAmount'
-}]
+@UI.HeaderFacets                        : [
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.DataPoint#TotalAmount'
+  },
+  {
+    $Type : 'UI.ReferenceFacet',
+    Target: '@UI.Chart#BulletChartTotalAmount'
+  }
+]
 
 @UI.Facets                              : [
   {
@@ -129,7 +158,8 @@ annotate OnlineStoreService.SalesOrders with
   SourceEntities  : [items],
   TargetProperties: [
     'totalAmount',
-    'currency_code'
+    'currency_code',
+    'criticality'
   ]
 }
 
@@ -191,6 +221,9 @@ annotate OnlineStoreService.SalesOrders with
 
   @Core.Computed
   currency;
+
+  @UI.Hidden
+  criticality;
 };
 
 // -------------------------------------------------

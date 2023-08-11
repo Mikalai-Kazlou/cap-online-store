@@ -64,6 +64,10 @@ module.exports = cds.service.impl(function () {
   this.after('READ', Products, (data) => {
     setProductsCriticality(data);
   });
+
+  this.after('READ', SalesOrders, (data, req) => {
+    setSalesOrdersCriticality(data);
+  });
 });
 
 async function assignNewIdentifier(data, target) {
@@ -127,6 +131,35 @@ function setProductsCriticality(data) {
       default:
         oProduct.criticality = 1;
         break;
+    }
+  });
+}
+
+function setSalesOrdersCriticality(data) {
+  const aSalesOrders = Array.isArray(data) ? data : [data];
+  aSalesOrders.forEach((oSalesOrder) => {
+    let avgTotalAmount = 0;
+
+    if (oSalesOrder.averageValues) {
+      avgTotalAmount = oSalesOrder.averageValues.avgTotalAmount;
+    } else {
+      return;
+    }
+
+    if (avgTotalAmount > 0) {
+      const averageIndex = oSalesOrder.totalAmount / avgTotalAmount;
+
+      switch (true) {
+        case averageIndex >= 0.8:
+          oSalesOrder.criticality = 3;
+          break;
+        case averageIndex >= 0.5:
+          oSalesOrder.criticality = 2;
+          break;
+        default:
+          oSalesOrder.criticality = 1;
+          break;
+      }
     }
   });
 }
