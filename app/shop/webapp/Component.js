@@ -1,16 +1,11 @@
 sap.ui.define(
-  [
-    "sap/ui/core/UIComponent",
-    "sap/ui/Device",
-    "./model/models",
-    "./controller/ErrorHandler",
-  ],
+  ['sap/ui/core/UIComponent', 'sap/ui/Device', 'ns/shop/model/models', 'ns/shop/controller/ErrorHandler'],
   function (UIComponent, Device, models, ErrorHandler) {
-    "use strict";
+    'use strict';
 
-    return UIComponent.extend("ns.shop.Component", {
+    return UIComponent.extend('ns.shop.Component', {
       metadata: {
-        manifest: "json",
+        manifest: 'json',
       },
 
       /**
@@ -27,11 +22,11 @@ sap.ui.define(
         this._oErrorHandler = new ErrorHandler(this);
 
         // set the device model
-        this.setModel(models.createDeviceModel(), "device");
+        this.setModel(models.createDeviceModel(), 'device');
         // set the local data model
-        this.setModel(models.createLocalDataModel(), "localdata");
+        this.setModel(models.createLocalDataModel(), 'localdata');
         // set the cart model
-        this.setModel(models.createCartModel(), "cart");
+        this.setModel(models.createCartModel(), 'cart');
 
         // create the views based on the url/hash
         this.getRouter().initialize();
@@ -59,16 +54,16 @@ sap.ui.define(
         if (this._sContentDensityClass === undefined) {
           // check whether FLP has already set the content density class; do nothing in this case
           if (
-            document.body.classList.contains("sapUiSizeCozy") ||
-            document.body.classList.contains("sapUiSizeCompact")
+            document.body.classList.contains('sapUiSizeCozy') ||
+            document.body.classList.contains('sapUiSizeCompact')
           ) {
-            this._sContentDensityClass = "";
+            this._sContentDensityClass = '';
           } else if (!Device.support.touch) {
             // apply "compact" mode if touch is not supported
-            this._sContentDensityClass = "sapUiSizeCompact";
+            this._sContentDensityClass = 'sapUiSizeCompact';
           } else {
             // "cozy" in case of touch support; default for most sap.m controls, but needed for desktop-first controls like sap.ui.table.Table
-            this._sContentDensityClass = "sapUiSizeCozy";
+            this._sContentDensityClass = 'sapUiSizeCozy';
           }
         }
         return this._sContentDensityClass;

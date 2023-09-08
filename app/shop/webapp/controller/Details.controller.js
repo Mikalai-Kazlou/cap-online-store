@@ -1,5 +1,5 @@
 sap.ui.define(
-  ['./BaseController', 'sap/m/ButtonType', '../model/constants'],
+  ['ns/shop/controller/BaseController', 'sap/m/ButtonType', 'ns/shop/model/constants'],
   function (BaseController, ButtonType, constants) {
     'use strict';
 
@@ -10,18 +10,41 @@ sap.ui.define(
       },
 
       onOpenCart: function () {
-        this.navTo('cart');
+        this.navTo('cart', {}, true);
       },
 
       _onPatternMatched: function (oEvent) {
-        const iProductID = oEvent.getParameter('arguments').id;
-        this.getView().bindElement({ path: `/Products(ID=${iProductID},IsActiveEntity=true)`, model: 'main' });
+        const sProductID = oEvent.getParameter('arguments').id;
+        const oView = this.getView();
+
+        oView.bindElement({
+          path: `/Products(ID=${sProductID},IsActiveEntity=true)`,
+          model: 'main',
+          events: {
+            change: this._onBindingChange.bind(this),
+            dataRequested: function () {
+              oView.setBusy(true);
+            },
+            dataReceived: function () {
+              oView.setBusy(false);
+            },
+          },
+        });
 
         const oAddToCartButton = this.byId('idAddToCartButton');
-        this._setAddToCartButtonAttributes(iProductID, oAddToCartButton);
+        this._setAddToCartButtonAttributes(sProductID, oAddToCartButton);
 
         const oQuantityStepInput = this.byId('idQuantityStepInput');
-        this._setQuantityStepInputAttributes(iProductID, oQuantityStepInput);
+        this._setQuantityStepInputAttributes(sProductID, oQuantityStepInput);
+      },
+
+      _onBindingChange: function () {
+        const oElementBinding = this.getView().getElementBinding();
+
+        // No data for the binding
+        if (oElementBinding && !oElementBinding.getBoundContext()) {
+          this.getRouter().getTargets().display('notFound');
+        }
       },
 
       onAddToCart: function (oEvent) {
@@ -59,11 +82,13 @@ sap.ui.define(
         this._refreshCartModel();
         this._refreshLocalDataModel();
 
-        this.navTo('cart', {
+        const oParameters = {
           '?query': {
             action: constants.actions.buyNow,
           },
-        });
+        };
+
+        this.navTo('cart', oParameters, true);
       },
 
       _setAddToCartButtonAttributes: function (id, oButton) {

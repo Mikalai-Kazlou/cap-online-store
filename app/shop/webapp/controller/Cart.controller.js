@@ -1,6 +1,6 @@
 sap.ui.define(
   [
-    './BaseController',
+    'ns/shop/controller/BaseController',
     'sap/m/MessagePopover',
     'sap/m/MessageItem',
     'sap/m/MessageBox',
@@ -11,7 +11,7 @@ sap.ui.define(
     'sap/ui/core/MessageType',
     'sap/ui/core/Core',
     'sap/ui/core/Element',
-    '../model/constants',
+    'ns/shop/model/constants',
   ],
   function (
     BaseController,
