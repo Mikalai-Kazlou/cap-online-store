@@ -1,6 +1,6 @@
 sap.ui.define(
   [
-    './BaseController',
+    'ns/shop/controller/BaseController',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterType',
     'sap/ui/model/FilterOperator',

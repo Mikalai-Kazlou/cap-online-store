@@ -77,7 +77,11 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ns.shop.i18n.i18n"
+          "bundleName": "ns.shop.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
         }
       },
       "main": {
@@ -105,12 +109,12 @@
         "viewPath": "ns.shop.view",
         "controlId": "app",
         "controlAggregation": "pages",
+        "async": true,
         "bypassed": {
           "target": [
             "notFound"
           ]
-        },
-        "async": true
+        }
       },
       "routes": [
         {
@@ -132,19 +136,23 @@
       "targets": {
         "main": {
           "viewId": "main",
-          "viewName": "Main"
+          "viewName": "Main",
+          "viewLevel": 1
         },
         "cart": {
           "viewId": "cart",
-          "viewName": "Cart"
+          "viewName": "Cart",
+          "viewLevel": 1
         },
         "details": {
           "viewId": "details",
-          "viewName": "Details"
+          "viewName": "Details",
+          "viewLevel": 2
         },
         "notFound": {
+          "viewId": "notFound",
           "viewName": "NotFound",
-          "viewId": "notFound"
+          "transition": "show"
         }
       }
     },

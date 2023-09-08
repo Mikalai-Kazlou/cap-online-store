@@ -3,8 +3,8 @@ sap.ui.define(
     'sap/ui/core/mvc/Controller',
     'sap/ui/core/UIComponent',
     'sap/ui/core/routing/History',
-    '../model/Cart',
-    '../model/constants',
+    'ns/shop/model/Cart',
+    'ns/shop/model/constants',
   ],
   function (Controller, UIComponent, History, Cart, constants) {
     'use strict';
