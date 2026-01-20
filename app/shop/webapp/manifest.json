@@ -29,7 +29,7 @@
     },
     "dataSources": {
       "main": {
-        "uri": "/onlinestore/",
+        "uri": "odata/v4/onlinestore/",
         "type": "OData",
         "settings": {
           "annotations": [],
@@ -57,7 +57,7 @@
   },
   "sap.ui5": {
     "dependencies": {
-      "minUI5Version": "1.115.0",
+      "minUI5Version": "1.120.40",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
