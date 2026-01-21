@@ -37,6 +37,23 @@
     },
     "cds": {
         "requires": {
+            "[development]": {
+                "auth": {
+                    "kind": "mocked",
+                    "users": {
+                        "admin": {
+                            "roles": [
+                                "Administrator"
+                            ]
+                        },
+                        "sales": {
+                            "roles": [
+                                "SalesManager"
+                            ]
+                        }
+                    }
+                }
+            },
             "[production]": {
                 "db": "hana-cloud",
                 "auth": "xsuaa"
