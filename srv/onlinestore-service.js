@@ -26,7 +26,7 @@ module.exports = cds.service.impl(function () {
     const [dbItemInfo] = await SELECT.from(oTarget).where({ ID: oParams.ID }).columns('status_ID');
 
     if (dbItemInfo.status_ID === oStatusConfirmed.ID) {
-      const tx = cds.transaction(req);
+      const tx = cds.tx(req);
       const affectedRows = await tx.run(
         UPDATE(oTarget, oParams.ID).set({ status_ID: oStatusDelivered.ID }).where({ status_ID: oStatusConfirmed.ID })
       );
