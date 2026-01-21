@@ -6,10 +6,10 @@ module.exports = cds.service.impl(function () {
 
   this.on('getProductRangeFilterParameters', async (req) => {
     const sProperty = req.data.property;
-
-    const sValues = `{ MIN(${sProperty}) as min, MAX(${sProperty}) as max }`;
-    const oQuery = SELECT(`${sValues}`).from(Products);
-
+    const oQuery = SELECT.from(Products).columns([
+      { func: 'min', as: 'min', args: [{ ref: [sProperty] }] },
+      { func: 'max', as: 'max', args: [{ ref: [sProperty] }] }
+    ]);
     return await cds.run(oQuery);
   });
 
