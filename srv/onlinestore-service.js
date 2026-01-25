@@ -41,24 +41,27 @@ module.exports = cds.service.impl(function () {
     await assignNewIdentifier(req.data, req.target);
   });
 
-  this.before('NEW', [SalesOrders], async (req) => {
+  this.before('NEW', SalesOrders.drafts, async (req) => {
     await assignSalesOrderHeaderDefault(req.data, Statuses);
   });
 
-  this.before('PATCH', [SalesOrders], async (req) => {
+  this.before('PATCH', SalesOrders.drafts, async (req) => {
     await setSalesOrderConfirmedStatus(req.data, Statuses);
   });
 
-  this.before(['NEW', 'PATCH'], [SalesOrderItems], async (req) => {
+  this.before('PATCH', SalesOrderItems.drafts, async (req) => {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
-  this.before(['CANCEL'], [SalesOrderItems], async (req) => {
+  this.before('CANCEL', SalesOrderItems.drafts, async (req) => {
     await addParentToProcessedData(req.data, req.target, oProcessedData);
   });
 
-  this.after(['NEW', 'PATCH', 'CANCEL'], [SalesOrderItems], async (data, req) => {
+  this.on(['PATCH', 'CANCEL'], SalesOrderItems.drafts, async (req, next) => {
+    const result = await next();
+
     await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, oProcessedData);
+    return result;
   });
 
   this.after('READ', Products, (data) => {
