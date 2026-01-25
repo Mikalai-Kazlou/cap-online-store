@@ -1,7 +1,7 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(function () {
-  const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = this.entities();
+  const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = cds.entities(this.definition.name);
   const oProcessedData = {};
 
   this.on('getProductRangeFilterParameters', async (req) => {
