@@ -49,7 +49,7 @@ module.exports = cds.service.impl(function () {
     await setSalesOrderConfirmedStatus(req.data, Statuses);
   });
 
-  this.before('PATCH', SalesOrderItems.drafts, async (req) => {
+  this.before(['NEW', 'PATCH'], SalesOrderItems.drafts, async (req) => {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
@@ -57,7 +57,7 @@ module.exports = cds.service.impl(function () {
     await addParentToProcessedData(req.data, req.target, oProcessedData);
   });
 
-  this.on(['PATCH', 'CANCEL'], SalesOrderItems.drafts, async (req, next) => {
+  this.on(['NEW', 'PATCH', 'CANCEL'], SalesOrderItems.drafts, async (req, next) => {
     const result = await next();
 
     await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, oProcessedData);
