@@ -2,7 +2,6 @@ const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(function () {
   const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = cds.entities(this.definition.name);
-  const oProcessedData = {};
 
   this.on('getProductRangeFilterParameters', async (req) => {
     const sProperty = req.data.property;
@@ -53,14 +52,13 @@ module.exports = cds.service.impl(function () {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
-  this.before('CANCEL', SalesOrderItems.drafts, async (req) => {
-    await addParentToProcessedData(req.data, req.target, oProcessedData);
-  });
-
   this.on(['NEW', 'PATCH', 'CANCEL'], SalesOrderItems.drafts, async (req, next) => {
-    const result = await next();
+    const [dbItemInfo] = await cds.read(req.target.drafts).where({ ID: req.data.ID });
+    const ParentID = dbItemInfo?.parent_ID;
 
-    await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, oProcessedData);
+    const result = await next();
+    await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, ParentID);
+    
     return result;
   });
 
@@ -92,11 +90,6 @@ async function setSalesOrderConfirmedStatus(data, Statuses) {
   }
 }
 
-async function addParentToProcessedData(data, target, oProcessedData) {
-  const [dbItemInfo] = await cds.read(target.drafts).where({ ID: data.ID });
-  oProcessedData.sParentID = dbItemInfo.parent_ID;
-}
-
 async function recalculateSalesOrderItem(data, target, Products) {
   const [dbItemInfo] = await cds.read(target.drafts).where({ ID: data.ID });
   const oProduct = data.product_ID ? await SELECT.one.from(Products).where({ ID: data.product_ID }) : {};
@@ -108,11 +101,11 @@ async function recalculateSalesOrderItem(data, target, Products) {
   data.amount = data.quantity * data.price;
 }
 
-async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessedData) {
+async function recalculateSalesOrderTotals(data, target, SalesOrders, ParentID) {
   const oOrderInfo = { totalAmount: 0 };
 
   const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID });
-  const sParentID = oItemData?.parent_ID || oProcessedData?.sParentID;
+  const sParentID = oItemData?.parent_ID || ParentID;
 
   if (sParentID) {
     const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
