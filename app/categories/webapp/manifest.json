@@ -29,7 +29,7 @@
         },
         "dataSources": {
             "mainService": {
-                "uri": "/odata/v4/onlinestore/",
+                "uri": "odata/v4/onlinestore/",
                 "type": "OData",
                 "settings": {
                     "annotations": [],
