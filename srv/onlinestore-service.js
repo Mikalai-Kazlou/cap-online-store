@@ -1,15 +1,14 @@
 const cds = require('@sap/cds');
 
 module.exports = cds.service.impl(function () {
-  const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = this.entities();
-  const oProcessedData = {};
+  const { Brands, Categories, Products, SalesOrders, SalesOrderItems, Statuses } = cds.entities(this.definition.name);
 
   this.on('getProductRangeFilterParameters', async (req) => {
     const sProperty = req.data.property;
-
-    const sValues = `{ MIN(${sProperty}) as min, MAX(${sProperty}) as max }`;
-    const oQuery = SELECT(`${sValues}`).from(Products);
-
+    const oQuery = SELECT.from(Products).columns([
+      { func: 'min', as: 'min', args: [{ ref: [sProperty] }] },
+      { func: 'max', as: 'max', args: [{ ref: [sProperty] }] }
+    ]);
     return await cds.run(oQuery);
   });
 
@@ -26,7 +25,7 @@ module.exports = cds.service.impl(function () {
     const [dbItemInfo] = await SELECT.from(oTarget).where({ ID: oParams.ID }).columns('status_ID');
 
     if (dbItemInfo.status_ID === oStatusConfirmed.ID) {
-      const tx = cds.transaction(req);
+      const tx = cds.tx(req);
       const affectedRows = await tx.run(
         UPDATE(oTarget, oParams.ID).set({ status_ID: oStatusDelivered.ID }).where({ status_ID: oStatusConfirmed.ID })
       );
@@ -41,24 +40,26 @@ module.exports = cds.service.impl(function () {
     await assignNewIdentifier(req.data, req.target);
   });
 
-  this.before('NEW', [SalesOrders], async (req) => {
+  this.before('NEW', SalesOrders.drafts, async (req) => {
     await assignSalesOrderHeaderDefault(req.data, Statuses);
   });
 
-  this.before('PATCH', [SalesOrders], async (req) => {
+  this.before('PATCH', SalesOrders.drafts, async (req) => {
     await setSalesOrderConfirmedStatus(req.data, Statuses);
   });
 
-  this.before(['NEW', 'PATCH'], [SalesOrderItems], async (req) => {
+  this.before(['NEW', 'PATCH'], SalesOrderItems.drafts, async (req) => {
     await recalculateSalesOrderItem(req.data, req.target, Products);
   });
 
-  this.before(['CANCEL'], [SalesOrderItems], async (req) => {
-    await addParentToProcessedData(req.data, req.target, oProcessedData);
-  });
+  this.on(['NEW', 'PATCH', 'CANCEL'], SalesOrderItems.drafts, async (req, next) => {
+    const [dbItemInfo] = await cds.read(req.target.drafts).where({ ID: req.data.ID });
+    const ParentID = dbItemInfo?.parent_ID;
 
-  this.after(['NEW', 'PATCH', 'CANCEL'], [SalesOrderItems], async (data, req) => {
-    await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, oProcessedData);
+    const result = await next();
+    await recalculateSalesOrderTotals(req.data, req.target, SalesOrders, ParentID);
+    
+    return result;
   });
 
   this.after('READ', Products, (data) => {
@@ -89,11 +90,6 @@ async function setSalesOrderConfirmedStatus(data, Statuses) {
   }
 }
 
-async function addParentToProcessedData(data, target, oProcessedData) {
-  const [dbItemInfo] = await cds.read(target.drafts).where({ ID: data.ID });
-  oProcessedData.sParentID = dbItemInfo.parent_ID;
-}
-
 async function recalculateSalesOrderItem(data, target, Products) {
   const [dbItemInfo] = await cds.read(target.drafts).where({ ID: data.ID });
   const oProduct = data.product_ID ? await SELECT.one.from(Products).where({ ID: data.product_ID }) : {};
@@ -105,11 +101,11 @@ async function recalculateSalesOrderItem(data, target, Products) {
   data.amount = data.quantity * data.price;
 }
 
-async function recalculateSalesOrderTotals(data, target, SalesOrders, oProcessedData) {
+async function recalculateSalesOrderTotals(data, target, SalesOrders, ParentID) {
   const oOrderInfo = { totalAmount: 0 };
 
   const [oItemData] = await cds.read(target.drafts).where({ ID: data.ID });
-  const sParentID = oItemData?.parent_ID || oProcessedData?.sParentID;
+  const sParentID = oItemData?.parent_ID || ParentID;
 
   if (sParentID) {
     const dbItemInfos = await cds.read(target.drafts).where({ parent_ID: sParentID });
