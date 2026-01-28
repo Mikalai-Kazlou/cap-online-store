@@ -27,11 +27,11 @@
     "start": "cds-serve",
     "launchpad": "cds watch --open launchpage.html",
     "launchpad-hana": "cds watch --profile hybrid --open launchpage.html",
-    "watch-categories": "cds watch --open categories/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-brands": "cds watch --open brands/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-products": "cds watch --open products/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-salesorders": "cds watch --open salesorders/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-shop": "cds watch --open shop/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-categories": "cds watch --open ns.categories/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-brands": "cds watch --open ns.brands/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-products": "cds watch --open ns.products/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-salesorders": "cds watch --open ns.salesorders/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-shop": "cds watch --open ns.shop/index.html?sap-ui-xx-viewCache=false --livereload false",
     "undeploy": "cf undeploy cap-online-store --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
@@ -73,5 +73,8 @@
     "app/brands",
     "app/products",
     "app/salesorders"
+  ],
+  "workspaces": [
+    "app/*"
   ]
 }

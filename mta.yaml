@@ -71,6 +71,37 @@ modules:
           artifacts:
             - shop.zip
           target-path: app/
+  - name: cap-online-store-destinations
+    type: com.sap.application.content
+    requires:
+      - name: cap-online-store-auth
+        parameters:
+          service-key:
+            name: cap-online-store-auth-key
+      - name: cap-online-store-html5-repo-host
+        parameters:
+          service-key:
+            name: cap-online-store-html5-repo-host-key
+      - name: srv-api
+      - name: cap-online-store-destination
+        parameters:
+          content-target: true
+    build-parameters:
+      no-source: true
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: cap-online-store-html5-repository
+              ServiceInstanceName: cap-online-store-html5-repo-host
+              ServiceKeyName: cap-online-store-html5-repo-host-key
+              sap.cloud.service: caponlinestore.service
+            - Name: cap-online-store-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: cap-online-store-auth
+              ServiceKeyName: cap-online-store-auth-key
+              sap.cloud.service: caponlinestore.service
 
   - name: caponlinestorebrands
     type: html5
@@ -127,38 +158,6 @@ modules:
         - npm run build
       supported-platforms:
         []
-
-  - name: cap-online-store-destinations
-    type: com.sap.application.content
-    requires:
-      - name: cap-online-store-auth
-        parameters:
-          service-key:
-            name: cap-online-store-auth-key
-      - name: cap-online-store-html5-repo-host
-        parameters:
-          service-key:
-            name: cap-online-store-html5-repo-host-key
-      - name: srv-api
-      - name: cap-online-store-destination
-        parameters:
-          content-target: true
-    build-parameters:
-      no-source: true
-    parameters:
-      content:
-        instance:
-          existing_destinations_policy: update
-          destinations:
-            - Name: cap-online-store-html5-repository
-              ServiceInstanceName: cap-online-store-html5-repo-host
-              ServiceKeyName: cap-online-store-html5-repo-host-key
-              sap.cloud.service: caponlinestore.service
-            - Name: cap-online-store-auth
-              Authentication: OAuth2UserTokenExchange
-              ServiceInstanceName: cap-online-store-auth
-              ServiceKeyName: cap-online-store-auth-key
-              sap.cloud.service: caponlinestore.service
 
 resources:
   - name: cap-online-store-auth
