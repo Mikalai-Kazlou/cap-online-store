@@ -1,205 +1,223 @@
-_schema-version: '3.1'
+_schema-version: 3.3.0
 ID: cap-online-store
-description: Online store
-version: 1.1.5
+version: 1.0.0
+description: "Online store"
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
 modules:
   - name: cap-online-store-srv
     type: nodejs
     path: gen/srv
-    requires:
-      - name: cap-online-store-db
-      - name: cap-online-store-xsuaa
-    provides:
-      - name: srv-api
-        properties:
-          srv-url: ${default-url}
     parameters:
+      instances: 1
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: cap-online-store-auth
+      - name: cap-online-store-db
+      - name: cap-online-store-destination
+
   - name: cap-online-store-db-deployer
     type: hdb
     path: gen/db
-    requires:
-      - name: cap-online-store-db
     parameters:
       buildpack: nodejs_buildpack
+    requires:
+      - name: cap-online-store-db
+
+  - name: cap-online-store-app-deployer
+    type: com.sap.application.content
+    path: gen
+    requires:
+      - name: cap-online-store-auth
+      - name: srv-api
+      - name: cap-online-store-html5-repo-host
+        parameters:
+          content-target: true
+          config:
+            HTML5Runtime_enabled: true
+    build-parameters:
+      build-result: app/
+      requires:
+        - name: caponlinestorebrands
+          artifacts:
+            - brands.zip
+          target-path: app/
+        - name: caponlinestorecategories
+          artifacts:
+            - categories.zip
+          target-path: app/
+        - name: caponlinestoreproducts
+          artifacts:
+            - products.zip
+          target-path: app/
+        - name: caponlinestoresalesorders
+          artifacts:
+            - salesorders.zip
+          target-path: app/
+        - name: caponlinestoreshop
+          artifacts:
+            - shop.zip
+          target-path: app/
   - name: cap-online-store-destinations
     type: com.sap.application.content
     requires:
-      - name: cap-online-store-xsuaa
+      - name: cap-online-store-auth
         parameters:
           service-key:
-            name: cap-online-store-xsuaa-key
-      - name: cap-online-store-html5
+            name: cap-online-store-auth-key
+      - name: cap-online-store-html5-repo-host
         parameters:
           service-key:
-            name: cap-online-store-html5-key
+            name: cap-online-store-html5-repo-host-key
       - name: srv-api
       - name: cap-online-store-destination
         parameters:
           content-target: true
+    build-parameters:
+      no-source: true
     parameters:
       content:
         instance:
-          destinations:
-            - Authentication: OAuth2UserTokenExchange
-              Name: cap-online-store-app-srv
-              TokenServiceInstanceName: cap-online-store-xsuaa
-              TokenServiceKeyName: cap-online-store-xsuaa-key
-              URL: ~{srv-api/srv-url}
-              sap.cloud.service: cap-online-store.service
-            - Name: cap-online-store-html5
-              ServiceInstanceName: cap-online-store-html5
-              ServiceKeyName: cap-online-store-html5-key
-              sap.cloud.service: cap-online-store.service
-            - Authentication: OAuth2UserTokenExchange
-              Name: cap-online-store-xsuaa
-              ServiceInstanceName: cap-online-store-xsuaa
-              ServiceKeyName: cap-online-store-xsuaa-key
-              sap.cloud.service: cap-online-store.service
           existing_destinations_policy: update
-    build-parameters:
-      no-source: true
-  - name: cap-online-store-app-content
-    type: com.sap.application.content
-    path: .
-    requires:
-      - name: cap-online-store-html5
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: resources
-      requires:
-        - artifacts:
-            - nsbrands.zip
-          name: nsbrands
-          target-path: resources/
-        - artifacts:
-            - nscategories.zip
-          name: nscategories
-          target-path: resources/
-        - artifacts:
-            - nsproducts.zip
-          name: nsproducts
-          target-path: resources/
-        - artifacts:
-            - nsshop.zip
-          name: nsshop
-          target-path: resources/
-        - artifacts:
-            - nssalesorders.zip
-          name: nssalesorders
-          target-path: resources/
-  - name: nsbrands
+          destinations:
+            - Name: cap-online-store-html5-repository
+              ServiceInstanceName: cap-online-store-html5-repo-host
+              ServiceKeyName: cap-online-store-html5-repo-host-key
+              sap.cloud.service: caponlinestore.service
+            - Name: cap-online-store-auth
+              Authentication: OAuth2UserTokenExchange
+              ServiceInstanceName: cap-online-store-auth
+              ServiceKeyName: cap-online-store-auth-key
+              sap.cloud.service: caponlinestore.service
+
+  - name: caponlinestorebrands
     type: html5
     path: app/brands
     build-parameters:
       build-result: dist
       builder: custom
       commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms: []
-  - name: nscategories
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: caponlinestorecategories
     type: html5
     path: app/categories
     build-parameters:
       build-result: dist
       builder: custom
       commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms: []
-  - name: nsproducts
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: caponlinestoreproducts
     type: html5
     path: app/products
     build-parameters:
       build-result: dist
       builder: custom
       commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms: []
-  - name: nsshop
-    type: html5
-    path: app/shop
-    build-parameters:
-      build-result: dist
-      builder: custom
-      commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms: []
-  - name: nssalesorders
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: caponlinestoresalesorders
     type: html5
     path: app/salesorders
     build-parameters:
       build-result: dist
       builder: custom
       commands:
-        - npm install
-        - npm run build:cf
-      supported-platforms: []
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: caponlinestoreshop
+    type: html5
+    path: app/shop
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
 resources:
+  - name: cap-online-store-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: cap-online-store-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+        role-collections:
+          - name: 'Customer (cap-online-store ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Customer'
+          - name: 'SalesManager (cap-online-store ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.SalesManager'
+          - name: 'Administrator (cap-online-store ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Administrator'
+          - name: 'ShopManager (cap-online-store ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.ShopManager'
   - name: cap-online-store-db
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
       service-plan: hdi-shared
-  - name: cap-online-store-xsuaa
-    type: org.cloudfoundry.managed-service
-    parameters:
-      config:
-        role-collections:
-          - description: Administrator
-            name: Administrator-${space}
-            role-template-references:
-              - $XSAPPNAME.Administrator
-          - description: Sales Manager
-            name: SalesManager-${space}
-            role-template-references:
-              - $XSAPPNAME.SalesManager
-          - description: Shop Manager
-            name: ShopManager-${space}
-            role-template-references:
-              - $XSAPPNAME.ShopManager
-          - description: Customer
-            name: Customer-${space}
-            role-template-references:
-              - $XSAPPNAME.Customer
-        tenant-mode: dedicated
-        xsappname: cap-online-store-${space}
-      path: ./xs-security.json
-      service: xsuaa
-      service-plan: application
   - name: cap-online-store-destination
     type: org.cloudfoundry.managed-service
     parameters:
+      service: destination
+      service-plan: lite
       config:
         HTML5Runtime_enabled: true
         init_data:
           instance:
-            destinations:
-              - Authentication: NoAuthentication
-                Name: ui5
-                ProxyType: Internet
-                Type: HTTP
-                URL: https://ui5.sap.com
             existing_destinations_policy: update
-      service: destination
-      service-plan: lite
-  - name: cap-online-store-html5
+            destinations:
+              - Name: srv-api
+                URL: ~{srv-api/srv-url}
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                HTML5.ForwardAuthToken: true
+                HTML5.DynamicDestination: true
+    requires:
+      - name: srv-api
+
+  - name: cap-online-store-html5-repo-host
     type: org.cloudfoundry.managed-service
     parameters:
       service: html5-apps-repo
       service-plan: app-host
-parameters:
-  deploy_mode: html5-repo
-  enable-parallel-deployments: true
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npm install --production
-        - npx -p @sap/cds-dk cds build --production

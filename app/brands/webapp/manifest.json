@@ -1,5 +1,5 @@
 {
-    "_version": "1.49.0",
+    "_version": "1.73.1",
     "sap.app": {
         "id": "ns.brands",
         "type": "application",
@@ -12,20 +12,8 @@
         "resources": "resources.json",
         "sourceTemplate": {
             "id": "@sap/generator-fiori:lrop",
-            "version": "1.9.7",
-            "toolsId": "7782d0cc-640c-43d4-b6de-d1541e1941a3"
-        },
-        "crossNavigation": {
-            "inbounds": {
-                "Brands-display": {
-                    "signature": {
-                        "parameters": {},
-                        "additionalParameters": "allowed"
-                    },
-                    "semanticObject": "Brands",
-                    "action": "display"
-                }
-            }
+            "version": "1.20.1",
+            "toolsId": "694c7fa9-dc6b-4286-9b8b-eacdf0d668ef"
         },
         "dataSources": {
             "mainService": {
@@ -33,8 +21,19 @@
                 "type": "OData",
                 "settings": {
                     "annotations": [],
-                    "localUri": "localService/metadata.xml",
                     "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "shop-display": {
+                    "semanticObject": "brands",
+                    "action": "display",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
                 }
             }
         }
@@ -62,7 +61,6 @@
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
-                "sap.ushell": {},
                 "sap.fe.templates": {}
             }
         },
@@ -81,7 +79,6 @@
                 "dataSource": "mainService",
                 "preload": true,
                 "settings": {
-                    "synchronizationMode": "None",
                     "operationMode": "Server",
                     "autoExpandSelect": true,
                     "earlyRequests": true
@@ -96,6 +93,7 @@
             "css": []
         },
         "routing": {
+            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
@@ -115,7 +113,7 @@
                     "name": "sap.fe.templates.ListReport",
                     "options": {
                         "settings": {
-                            "entitySet": "Brands",
+                            "contextPath": "/Brands",
                             "variantManagement": "Page",
                             "navigation": {
                                 "Brands": {
@@ -124,7 +122,13 @@
                                     }
                                 }
                             },
-                            "initialLoad": "Enabled"
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "type": "ResponsiveTable"
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -135,16 +139,10 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Brands"
+                            "contextPath": "/Brands"
                         }
                     }
                 }
-            },
-            "config": {}
-        },
-        "extends": {
-            "extensions": {
-                "sap.ui.controllerExtensions": {}
             }
         }
     },
@@ -152,8 +150,13 @@
         "registrationIds": [],
         "archeType": "transactional"
     },
+    "sap.fe": {
+        "app": {
+            "enableLazyLoading": true
+        }
+    },
     "sap.cloud": {
         "public": true,
-        "service": "cap-online-store.service"
+        "service": "caponlinestore.service"
     }
 }
