@@ -1,5 +1,5 @@
 {
-    "_version": "1.49.0",
+    "_version": "1.73.1",
     "sap.app": {
         "id": "ns.categories",
         "type": "application",
@@ -13,19 +13,7 @@
         "sourceTemplate": {
             "id": "@sap/generator-fiori:lrop",
             "version": "1.9.7",
-            "toolsId": "95b410aa-d68c-476f-9ba6-6b605c18c640"
-        },
-        "crossNavigation": {
-            "inbounds": {
-                "Categories-display": {
-                    "signature": {
-                        "parameters": {},
-                        "additionalParameters": "allowed"
-                    },
-                    "semanticObject": "Categories",
-                    "action": "display"
-                }
-            }
+            "toolsId": "694c7fa9-dc6b-4286-9b8b-eacdf0d668ef"
         },
         "dataSources": {
             "mainService": {
@@ -33,8 +21,19 @@
                 "type": "OData",
                 "settings": {
                     "annotations": [],
-                    "localUri": "localService/metadata.xml",
                     "odataVersion": "4.0"
+                }
+            }
+        },
+        "crossNavigation": {
+            "inbounds": {
+                "shop-display": {
+                    "semanticObject": "categories",
+                    "action": "display",
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    }
                 }
             }
         }
@@ -62,7 +61,6 @@
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
-                "sap.ushell": {},
                 "sap.fe.templates": {}
             }
         },
@@ -81,7 +79,6 @@
                 "dataSource": "mainService",
                 "preload": true,
                 "settings": {
-                    "synchronizationMode": "None",
                     "operationMode": "Server",
                     "autoExpandSelect": true,
                     "earlyRequests": true
@@ -96,6 +93,7 @@
             "css": []
         },
         "routing": {
+            "config": {},
             "routes": [
                 {
                     "pattern": ":?query:",
@@ -115,7 +113,7 @@
                     "name": "sap.fe.templates.ListReport",
                     "options": {
                         "settings": {
-                            "entitySet": "Categories",
+                            "contextPath": "/Categories",
                             "variantManagement": "Page",
                             "navigation": {
                                 "Categories": {
@@ -124,7 +122,13 @@
                                     }
                                 }
                             },
-                            "initialLoad": "Enabled"
+                            "controlConfiguration": {
+                                "@com.sap.vocabularies.UI.v1.LineItem": {
+                                    "tableSettings": {
+                                        "type": "ResponsiveTable"
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -135,16 +139,10 @@
                     "options": {
                         "settings": {
                             "editableHeaderContent": false,
-                            "entitySet": "Categories"
+                            "contextPath": "/Categories"
                         }
                     }
                 }
-            },
-            "config": {}
-        },
-        "extends": {
-            "extensions": {
-                "sap.ui.controllerExtensions": {}
             }
         }
     },
@@ -152,8 +150,13 @@
         "registrationIds": [],
         "archeType": "transactional"
     },
+    "sap.fe": {
+        "app": {
+            "enableLazyLoading": true
+        }
+    },
     "sap.cloud": {
         "public": true,
-        "service": "cap-online-store.service"
+        "service": "caponlinestore.service"
     }
 }
